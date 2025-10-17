@@ -1615,3 +1615,18 @@ style slider_vbox:
 style slider_slider:
     variant "small"
     xsize 900
+
+
+################################################################################
+## Telas 
+################################################################################
+
+#Botão Vincent
+screen vincent_parado:
+    imagebutton:
+        xanchor 0.5
+        yanchor 0.5
+        xpos 0.5
+        ypos 0.5
+        idle "personagens/vincent.png"
+        action Jump("primeiro_dialogo_vincent")
