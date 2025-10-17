@@ -360,16 +360,16 @@ define gui.history_spacing = 0
 
 ## A posição, a largura e o alinhamento do rótulo que fornece o nome do
 ## caractere falante.
-define gui.history_name_xpos = 233
+define gui.history_name_xpos = 0.5
 define gui.history_name_ypos = 0
 define gui.history_name_width = 233
-define gui.history_name_xalign = 1.0
+define gui.history_name_xalign = 0.5
 
 ## A posição, a largura e o alinhamento do texto da caixa de diálogo.
-define gui.history_text_xpos = 255
-define gui.history_text_ypos = 3
+define gui.history_text_xpos = 0.5
+define gui.history_text_ypos = 60
 define gui.history_text_width = 1110
-define gui.history_text_xalign = 0.0
+define gui.history_text_xalign = 0.5
 
 
 ## Modo NVL ####################################################################
