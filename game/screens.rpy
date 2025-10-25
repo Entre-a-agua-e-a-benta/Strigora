@@ -1639,4 +1639,6 @@ screen vincent_parado:
         xpos 0.5
         ypos 0.5
         idle "personagens/vincent.png"
+        hover "personagens/vincent.png"
+        at zoom_botao
         action Jump("primeiro_dialogo_vincent")
