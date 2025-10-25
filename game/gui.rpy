@@ -491,3 +491,15 @@ init python:
 
         gui.nvl_button_width = 1860
         gui.nvl_button_xpos = 30
+
+
+################################################################################
+## Dispositivos móveis
+################################################################################
+
+#zoom no botao quando ele estiver selecionado
+transform zoom_botao:
+    on hover:
+        linear 0.05 zoom 1.1  # Zooms to 110% over 0.05 seconds
+    on idle:
+        linear 0.1 zoom 1.0   # Returns to original size over 0.1 seconds

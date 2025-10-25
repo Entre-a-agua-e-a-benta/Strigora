@@ -1621,6 +1621,16 @@ style slider_slider:
 ## Telas 
 ################################################################################
 
+#Botão Taverna
+screen botao_taverna_entrar:
+    imagebutton:
+        xpos 750
+        ypos 750
+        idle "botoes/botao passos.jpg"
+        hover "botoes/botao passos.jpg"
+        at zoom_botao
+        action Jump("tavernaint")
+
 #Botão Vincent
 screen vincent_parado:
     imagebutton:

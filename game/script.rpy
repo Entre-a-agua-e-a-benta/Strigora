@@ -9,7 +9,12 @@ define p = Character("Padre")
 
 # The game starts here.
 
-label start:    
+label start:   
+
+    scene  bg taverna ext
+    call screen botao_taverna_entrar
+
+label tavernaint:
 
     scene bg taverna int
     call screen vincent_parado
