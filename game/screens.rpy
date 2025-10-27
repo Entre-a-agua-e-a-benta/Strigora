@@ -105,6 +105,12 @@ screen say(who, what):
             window:
                 id "namebox"
                 style "namebox"
+
+                if name_side == "left":
+                    xalign 0.23
+                elif name_side == "right":
+                    xalign 0.73
+
                 text who id "who"
 
         text what id "what"
@@ -1619,7 +1625,7 @@ style slider_slider:
 
 ################################################################################
 ## Telas 
-################################################################################
+##############################################################################S##
 
 #Botão Taverna
 screen botao_taverna_entrar:
@@ -1636,9 +1642,9 @@ screen vincent_parado:
     imagebutton:
         xanchor 0.5
         yanchor 0.5
-        xpos 0.5
-        ypos 0.5
+        xpos 0.68
+        ypos 0.33
         idle "personagens/vincent.png"
         hover "personagens/vincent.png"
-        at zoom_botao
+        at zoom_vincent
         action Jump("primeiro_dialogo_vincent")

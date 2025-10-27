@@ -2,6 +2,7 @@
 
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
+default name_side = "left"
 
 define v = Character("Vincent")
 define p = Character("Padre")
@@ -19,9 +20,18 @@ label tavernaint:
     scene bg taverna int
     call screen vincent_parado
 
+transform padre_left:
+    ypos 0.3
+    xpos -0.09
+
+transform vincent_right:
+    zoom 0.9
+    ypos 0.3
+    xpos 0.63
+
 label primeiro_dialogo_vincent:
 
-    show padre
+    show padre at padre_left
     p "Buongiorno… Agradeço a hospitalidade, dizem que é perigoso ficar andando de noite por aí… Então me sinto agradecido por ter onde dormir…"
     p "Agora…"
     
@@ -34,6 +44,10 @@ label primeiro_dialogo_vincent:
             return
 
 label escolha1_vincent:
+    hide padre
+    # essa variavel faz com que o nome do personagem apareça na direita
+    $ name_side = "right"
+    show vincent at vincent_right
     v "Bom… Eu sou o Vincent, cuido da taverna e da estalagem… Ou o que sobrou dela, parece que a aldeia resolveu que o medo é  desculpa para parar de beber.  Mas desde que você chegou, tenho limpado o quarto duas vezes por dia, pelo menos um pouco de trabalho para manter a mente ocupada …. "
     v "Não gosto de falar do que não vi com meus próprios olhos. E, pra ser sincero, ultimamente, prefiro ver cada vez menos. Gente demais sussurrando. Portas que antes ficavam abertas agora estão fechadas…"
     v "Mas minha porta… essa fica aberta. Sempre tem quem precise esquecer o que viu. Meu irmão aparece por aqui às vezes… Mas nunca fica muito tempo e nem fala muito."
