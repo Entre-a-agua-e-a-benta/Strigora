@@ -1647,4 +1647,17 @@ screen vincent_parado:
         idle "personagens/vincent.png"
         hover "personagens/vincent.png"
         at zoom_vincent
-        action Jump("primeiro_dialogo_vincent")
+        action Jump("dialogo_vincent")
+
+#Hud
+screen HUD():
+    frame:
+        background None
+        xpos 25
+        ypos 25
+        text str(interacao) size 40 color "#050505"
+    frame:
+        background None
+        xpos 1100
+        ypos 20
+        text str(dia) size 40 color "#050505"

@@ -494,7 +494,7 @@ init python:
 
 
 ################################################################################
-## Dispositivos móveis
+## Transformações referentes à GUI
 ################################################################################
 
 #zoom no botao quando ele estiver selecionado
