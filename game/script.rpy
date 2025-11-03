@@ -149,13 +149,13 @@ label esposa_vincent:
     jump tavernaint
 
 label crianca_dialogo:
+    if 
     c "eu sou crianca"
     return
 
 
 label ontem_vincent:
     $ ontemvincent = True
-    $ alterar_interacao(-1)
     hide padre
     show vincent at vincent_right
     v "Fiz o que faço toda noite. Fechei a estalagem tarde, como sempre. Tinha um bêbado vomitando na entrada e um quarto reservado pro padre…"
@@ -166,7 +166,6 @@ label ontem_vincent:
 
 label suspeito_vincent:
     $ habitantevincent = True   
-    $ alterar_interacao(-1)
     hide padre
     show vincent at vincent_right
     v "Estranhos? Aqui todos andam com o pescoço encolhido, como galinha no fio da faca."
