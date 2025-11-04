@@ -18,6 +18,7 @@ define personagens_list = list()
 define personagens_dict = dict()
 define v = Character("Vincent")
 define p = Character("Padre")
+define s = Character("Seren")
 
 # The game starts here.
 
@@ -138,7 +139,7 @@ label esposa_vincent:
     hide padre
     show vincent at vincent_right
     v "Ela estava grávida…Foi um parto difícil, apenas ela e a parteira dentro do quarto…"
-    v "Infelizmente ela não resistiu, mas deu a luz a uma garotinha… Isso faz 10 anos, e desde então ele vive nesse estado…Conspiracionando e dizendo que há culpados pela morte da esposa."
+    v "Infelizmente ela não resistiu, mas deu a luz a uma garotinha… Isso faz 10 anos, e desde então ele vive nesse estado… Conspiracionando e dizendo que há culpados pela morte da esposa."
     hide vincent
     show padre at padre_left
     p "E a criança? Onde ela está?"
@@ -149,8 +150,14 @@ label esposa_vincent:
     jump tavernaint
 
 label crianca_dialogo:
-    if 
-    c "eu sou crianca"
+    v "Buongiorno, pequena. Deus lhe abençoe, eu gostaria de conversar um pouco com você."
+    menu:
+        "Me conte sobre você.":
+            jump meconte_seren
+        "Onde e o que você fez ontem a noite?":
+            jump ontem_seren
+        "Algum habitante te parece estranho?":
+            jump habitante_seren
     return
 
 
@@ -171,11 +178,51 @@ label suspeito_vincent:
     v "Estranhos? Aqui todos andam com o pescoço encolhido, como galinha no fio da faca."
     v "Mas se quer saber… Há alguém que me parece estranho, não sei o nome dele, mas ele mora quase fora da aldeia, isolado com razão. Alguém com o corpo ferido daquele jeito, com certeza boa coisa não fez e agora Deus o castiga pelos seus pecados."
     v "Não o deixo entrar aqui, mas não é pela doença. É por tudo o resto. Por esse silêncio dele que pesa, pelas coisas que diz sem dizer nada. Tem gente que traz má sorte sem precisar levantar a mão."
-
     jump tavernaint
 
 label default_vincent:
     hide padre
     show vincent at vincent_right
     v "Nós já conversamos sobre isso..."
+    jump tavernaint
+
+label meconte_seren:
+    s "Olá, me chamo Seren… Tenho dez anos, mas preferia não ter nascido… Desse jeito meu pai seria feliz e minha mãe ainda estaria aqui… Foi minha culpa ela ter morrido antes da hora."
+    s "Entendo o jeito que meu pai me olha, quando pensa que não estou vendo. Como se fosse difícil me enxergar… como se visse outra pessoa em mim… Acho que ele nunca me perdoou por isso, nem eu me perdoei…"
+    s "Ao menos ele bebe pra esquecer, mas eu lembro por nós dois. Lembro mesmo do que nunca vi… Ainda bem que meu tio me dá pão, me dá coberta, e até me deixa ficar atrás do balcão quando chove."
+    s "Ele nunca disse que me ama, mas também nunca me culpou. E isso já é mais do que o suficiente… Mas quando a noite chega… tudo muda… Não é todo sonho que dói. Só os que parecem verdade."
+    
+    menu:
+        "Me conte mais sobre esses sonhos":
+            jump sonhos_seren
+
+label sonhos_seren:
+    hide padre
+    s "No começo, eu só via silhuetas. Um campo, uma árvore sozinha, uma sombra me seguindo de longe. Depois vieram os sussurros. E agora, agora… Agora eu vejo tudo…"
+    s "No sonho, ando pelas ruas da aldeia com passos que não são meus… As mãos... as mãos que estendo são pequenas, como as minhas. Mas elas brilham. Como brasa acesa no escuro. E quando tocam algo, tudo escurece..."
+    s "E o que mais me assusta: há uma voz dentro de mim. Mas ela não fala comigo. Ela me usa… Mas o pior é quando vejo ele… o menino com voz de mulher… Ele fala, mas a boca não mexe… Ele parece viver numa tristeza que me queima..."
+    s "Quando acordo, a pele está quente como se eu tivesse corrido por horas. A febre queima atrás dos olhos, e minha garganta parece de vidro."
+    s "O tio diz que é só vento, ou comida estragada. Mas toda vez que eu sonho, algo na aldeia amanhece errado.Eu queria contar, gritar... Dizer o que vejo…Mas quem vai acreditar numa menina que até o próprio pai não quis segurar no colo?"
+    show padre at padre_left
+    menu:
+        "Com o que você sonhou ontem?":
+            jump sonhoontem_seren
+        "Qual foi o seu sonho mais recente?":
+            jump sonhoontem_seren
+label sonhoontem_seren:
+    hide padre
+    s "Ontem… ontem no sonho eu estava em frente ao espelho de uma casa grande, e o menino estava dentro do espelho me olhando de volta. Só que, por um instante, os olhos dele eram os meus…"
+    jump tavernaint
+
+label ontem_seren:
+    hide padre
+    s "Fiquei sentada na escada da estalagem, olhando a lua por trás das nuvens. O tio me deu um pedaço de pão com mel… e eu guardei metade. Sempre guardo, caso encontre alguém com mais fome do que eu…"
+    s "Depois subi pro quarto, mas não dormi logo. Fiquei ouvindo as vozes lá embaixo. Homens falando alto, rindo… e o padre perguntando coisas. Todo mundo pergunta coisas, ultimamente..."
+    s "Quando o salão ficou em silêncio, fechei os olhos. Mas aí o sonho veio…Como se ele me chamasse de algum lugar longe… como se já soubesse onde eu estava."
+    jump tavernaint
+
+label habitante_seren:
+    hide padre
+    s "A dona Margarida me dá arrepios… Não que ela seja má, eu acho. Mas ela olha pras pessoas como se enxergasse o que tem dentro."
+    s "Uma vez ela passou por mim e disse: 'Nem todo espelho mostra o que é de fora'. Eu nem entendi, mas senti um calafrio subir nas costas…"
     jump tavernaint
