@@ -52,13 +52,28 @@ label start:
             personagens_dict[personagem][0] = True
             personagens_dict[personagem][1] += 1
 
-## Cena da taverna externa
-    scene  bg taverna ext
-    call screen botao_taverna_entrar
+######################################## LOCAIS PELO MAPA ##############################################################
+
+## Cena externa da taverna
+
+    scene bg taverna ext
+    show screen tavernaext()
+    pause
+
+## Cena casa do bebado
+label casabebadoext:
+    hide screen tavernaext
+    scene bg casa bebado ext
+    pause
+
+
+
+######################################## CENAS QUE OCORREM NA TAVERNA #######################################################
 
 ## Cena dentro da taverna
 label tavernaint:
 
+    hide screen tavernaext
     scene bg taverna int
     call screen vincent_parado
 

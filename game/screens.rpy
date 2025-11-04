@@ -1627,15 +1627,25 @@ style slider_slider:
 ## Telas 
 ##############################################################################S##
 
-#Botão Taverna
-screen botao_taverna_entrar:
+image botao_passos = "botoes/botao passos.jpg"
+#Tela da taverna ext
+screen tavernaext():
+    #botao para a taverna
     imagebutton:
         xpos 750
         ypos 750
-        idle "botoes/botao passos.jpg"
-        hover "botoes/botao passos.jpg"
+        idle "botao_passos"
+        hover "botao_passos"
         at zoom_botao
         action Jump("tavernaint")
+    #botao para casa do bebado
+    imagebutton:
+        xpos 500
+        ypos 500
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action Jump("casabebadoext")
 
 #Botão Vincent
 screen vincent_parado:
