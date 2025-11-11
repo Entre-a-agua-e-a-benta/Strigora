@@ -27,8 +27,8 @@ define m = Character("Margarida") ##COSTUREIRA
 label start:
 
     show screen HUD
-    ## Faz a verificacao do progresso da interação com o personagem, podendo bloquear o dialogo caso seja o mesmo dia
-    python:
+
+    init python:
         personagens_list = ["Bartolomeu", "Salvatore", "Holga", "Leproso", "Joana", "Margarida", "Agnes", "Bêbado", "Wiliam", "Vincent", "Seren"]
         for personagem in personagens_list:
             personagens_dict[personagem] = [False, 0]
@@ -108,11 +108,12 @@ label caminholeproso:
 
 ## Arruma posição dos personagens dentro do dialogo
 transform padre_left:
+    zoom 0.3
     ypos 0.3
-    xpos -0.09
+    xpos -0.05
 
 transform vincent_right:
-    zoom 0.9
+    zoom 0.3
     ypos 0.3
     xpos 0.63
 
@@ -155,7 +156,7 @@ label escolhas_vincent:
                 jump default_vincen
         
         "Passar dia":
-            $ passar_dia()
+            # $ passar_dia()
             jump tavernaint
 
         "Não perguntar nada":

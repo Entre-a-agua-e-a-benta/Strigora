@@ -505,13 +505,12 @@ transform zoom_botao:
         linear 0.1 zoom 1  # Returns to original size over 0.1 seconds
 
 transform zoom_vincent:
-    zoom 0.33
     on show:
         pause 0.0
     on hover:
-        linear 0.05 zoom 0.35  # Zooms to 110% over 0.05 seconds
+        linear 0.05 zoom 0.16  # Zooms to 110% over 0.05 seconds
     on idle:
-        linear 0.1 zoom 0.33  # Returns to original size over 0.1 seconds
+        linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
 
 transform zoom_margarida:
     zoom 0.33
