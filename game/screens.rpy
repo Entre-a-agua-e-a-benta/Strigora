@@ -1627,9 +1627,20 @@ style slider_slider:
 ## Telas 
 ##############################################################################S##
 
+## Tela que escreve onde o jogador vai ao passar o mouse pelo botao
+screen texto_botao:
+    default displayText = ""
+    default x = 0
+    default y = 0
+    vbox:
+        xpos x
+        ypos y
+        frame:
+            text displayText
+
 image botao_passos = "botoes/botao passos.jpg"
 #Tela da taverna ext
-screen tavernaext():
+screen tavernaext:
     #botao para a taverna
     imagebutton:
         xpos 750
@@ -1637,7 +1648,11 @@ screen tavernaext():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action Jump("tavernaint")
+        action [Hide("texto_botao"), Jump("tavernaint")]
+        ## Faz com que apareça o texto indicando que caminho o botao irá levar
+        hovered Show("texto_botao",
+            displayText = "Entrar na estalagem", x=650, y=700)
+        unhovered Hide("texto_botao")
     #botao para casa do bebado
     imagebutton:
         xpos 100
@@ -1645,7 +1660,11 @@ screen tavernaext():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action Jump("casabebadoext")
+        action [Hide("texto_botao"), Jump("casabebadoext")]
+
+        hovered Show("texto_botao",
+            displayText = "Casa do bêbado")
+        unhovered Hide("texto_botao")
 
 ## Taverna interna
 screen tavernaint():
@@ -1655,14 +1674,22 @@ screen tavernaint():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action Jump("tavernaext")
+        action [Hide("texto_botao"), Jump("tavernaext")]
+
+        hovered Show("texto_botao",
+            displayText = "Sair da estalagem")
+        unhovered Hide("texto_botao")
     imagebutton:
         xpos 100
         ypos 400
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action Jump("casapadre")
+        action [Hide("texto_botao"), Jump("casapadre")]
+
+        hovered Show("texto_botao",
+            displayText = "Entrar no quarto")
+        unhovered Hide("texto_botao")
 
 ###Tela da casa do bebado ext
 screen casabebado():
@@ -1672,14 +1699,22 @@ screen casabebado():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action Jump("tavernaext")
+        action [Hide("texto_botao"), Jump("tavernaext")]
+
+        hovered Show("texto_botao",
+            displayText = "Estalagem")
+        unhovered Hide("texto_botao")
     imagebutton:
         xpos 100
         ypos 900
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action Jump("casamargaridaext")
+        action [Hide("texto_botao"), Jump("casamargaridaext")]
+
+        hovered Show("texto_botao",
+            displayText = "Casa da curandeira")
+        unhovered Hide("texto_botao")
 
 screen casapadre():
     imagebutton:
@@ -1688,7 +1723,11 @@ screen casapadre():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action Jump("tavernaint")
+        action [Hide("texto_botao"), Jump("tavernaint")]
+
+        hovered Show("texto_botao",
+            displayText = "Estalagem")
+        unhovered Hide("texto_botao")
 
 screen casaMargaridaEXT():
     imagebutton:
@@ -1697,14 +1736,22 @@ screen casaMargaridaEXT():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action Jump("casabebadoext")
+        action [Hide("texto_botao"), Jump("casabebadoext")]
+
+        hovered Show("texto_botao",
+            displayText = "Casa do bêbado")
+        unhovered Hide("texto_botao")
     imagebutton:
         xpos 100
         ypos 900
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action Jump("caminholeproso")   
+        action [Hide("texto_botao"), Jump("caminholeproso")]
+
+        hovered Show("texto_botao",
+            displayText = "Caminho para o leproso")
+        unhovered Hide("texto_botao")  
 
 screen casaLeprosoEXT():
     imagebutton:
@@ -1713,16 +1760,14 @@ screen casaLeprosoEXT():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action Jump("casamargaridaext")
+        action [Hide("texto_botao"), Jump("casamargaridaext")]
 
-## Esconde as telas 
-label hide_all_screens:
-    hide screen casabebado
-    hide screen tavernaext
-    hide screen tavernaint
-    hide screen casapadre
-    hide screen casaMargaridaEXT
-    return
+        hovered Show("texto_botao",
+            displayText = "Casa da curandeira")
+        unhovered Hide("texto_botao")
+
+
+############################################################# BOTÕES DE PERSONAGENS ##############################################################
 
 #Botão Vincent
 screen vincent_parado:
@@ -1734,7 +1779,11 @@ screen vincent_parado:
         idle "personagens/vincent.png"
         hover "personagens/vincent.png"
         at zoom_vincent
-        action Jump("dialogo_vincent")
+        action [Hide("texto_botao"), Jump("dialogo_vincent")]
+
+        hovered Show("texto_botao",
+            displayText = "Falar com o dono")
+        unhovered Hide("texto_botao")
 
 ##Botao Margarida
 screen margarida_parada:
@@ -1746,8 +1795,20 @@ screen margarida_parada:
         idle "personagens/margarida.png"
         hover "personagens/margarida.png"
         at zoom_margarida
-        action Jump("dialogo_margarida")
+        action [Hide("texto_botao"), Jump("dialogo_margarida")]
 
+        hovered Show("texto_botao",
+            displayText = "Falar com a curandeira")
+        unhovered Hide("texto_botao")
+
+## Esconde as telas 
+label hide_all_screens:
+    hide screen casabebado
+    hide screen tavernaext
+    hide screen tavernaint
+    hide screen casapadre
+    hide screen casaMargaridaEXT
+    return
 
 #Hud
 screen HUD():
@@ -1761,3 +1822,6 @@ screen HUD():
         xpos 1100
         ypos 20
         text str(dia) size 40 color "#050505"
+
+
+

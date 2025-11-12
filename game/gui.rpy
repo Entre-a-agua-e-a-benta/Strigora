@@ -522,3 +522,6 @@ transform zoom_margarida:
     on idle:
         linear 0.1 zoom 0.33  # Returns to original size over 0.1 seconds
 
+transform dynamic_pos:
+    xalign posicao_texto_x
+    yalign posicao_texto_y
