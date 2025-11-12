@@ -19,6 +19,7 @@ define personagens_dict = dict()
 define v = Character("Vincent")
 define p = Character("Padre")
 define s = Character("Seren")
+define m = Character("Margarida")
 
 # The game starts here.
 
@@ -55,27 +56,43 @@ label start:
 ######################################## LOCAIS PELO MAPA ##############################################################
 
 ## Cena externa da taverna
-
+label tavernaext:
+    call hide_all_screens
     scene bg taverna ext
-    show screen tavernaext()
-    pause
-
-## Cena casa do bebado
-label casabebadoext:
-    hide screen tavernaext
-    scene bg casa bebado ext
-    pause
-
-
-
-######################################## CENAS QUE OCORREM NA TAVERNA #######################################################
+    call screen tavernaext
 
 ## Cena dentro da taverna
 label tavernaint:
-
-    hide screen tavernaext
+    call hide_all_screens
     scene bg taverna int
+    show screen tavernaint
     call screen vincent_parado
+
+## Cena casa do bebado
+label casabebadoext:
+    call hide_all_screens
+    scene bg casa bebado ext
+    call screen casabebado
+
+## Cena quarto do padre dentro da taverna
+label casapadre:
+    call hide_all_screens
+    scene bg casa padre int
+    call screen casapadre
+
+## Cena Casa Margarida Ext
+label casamargaridaext:
+    call hide_all_screens
+    scene bg casa curandeira ext
+    show screen casaMargaridaEXT
+    call screen margarida_parada
+
+label caminholeproso:
+    call hide_all_screens
+    scene bg casa leproso
+    call screen casaLeprosoEXT
+
+######################################## CENAS QUE OCORREM NA TAVERNA #######################################################
 
 ## Arruma posição dos personagens dentro do dialogo
 transform padre_left:
@@ -89,7 +106,7 @@ transform vincent_right:
 
 ## Dialogo com o Vincent ao clicar no personagem
 label dialogo_vincent:
-
+    call hide_all_screens
     show padre at padre_left
     p "Buongiorno… Agradeço a hospitalidade, dizem que é perigoso ficar andando de noite por aí… Então me sinto agradecido por ter onde dormir…"
     p "Agora…"
@@ -237,7 +254,13 @@ label ontem_seren:
     jump tavernaint
 
 label habitante_seren:
+
     hide padre
     s "A dona Margarida me dá arrepios… Não que ela seja má, eu acho. Mas ela olha pras pessoas como se enxergasse o que tem dentro."
     s "Uma vez ela passou por mim e disse: 'Nem todo espelho mostra o que é de fora'. Eu nem entendi, mas senti um calafrio subir nas costas…"
     jump tavernaint
+
+label dialogo_margarida:
+    call hide_all_screens
+    m "Eu sou a margarida"
+    jump casamargaridaext

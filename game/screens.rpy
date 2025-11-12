@@ -1640,12 +1640,89 @@ screen tavernaext():
         action Jump("tavernaint")
     #botao para casa do bebado
     imagebutton:
-        xpos 500
+        xpos 100
         ypos 500
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
         action Jump("casabebadoext")
+
+## Taverna interna
+screen tavernaint():
+    imagebutton:
+        xpos 1800
+        ypos 600
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action Jump("tavernaext")
+    imagebutton:
+        xpos 100
+        ypos 400
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action Jump("casapadre")
+
+###Tela da casa do bebado ext
+screen casabebado():
+    imagebutton:
+        xpos 1700
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action Jump("tavernaext")
+    imagebutton:
+        xpos 100
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action Jump("casamargaridaext")
+
+screen casapadre():
+    imagebutton:
+        xpos 1700
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action Jump("tavernaint")
+
+screen casaMargaridaEXT():
+    imagebutton:
+        xpos 1300
+        ypos 1000
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action Jump("casabebadoext")
+    imagebutton:
+        xpos 100
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action Jump("caminholeproso")   
+
+screen casaLeprosoEXT():
+    imagebutton:
+        xpos 900
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action Jump("casamargaridaext")
+
+## Esconde as telas 
+label hide_all_screens:
+    hide screen casabebado
+    hide screen tavernaext
+    hide screen tavernaint
+    hide screen casapadre
+    hide screen casaMargaridaEXT
+    return
 
 #Botão Vincent
 screen vincent_parado:
@@ -1658,6 +1735,19 @@ screen vincent_parado:
         hover "personagens/vincent.png"
         at zoom_vincent
         action Jump("dialogo_vincent")
+
+##Botao Margarida
+screen margarida_parada:
+    imagebutton:
+        xanchor 0.5
+        yanchor 0.5
+        xpos 0.68
+        ypos 0.33
+        idle "personagens/margarida.png"
+        hover "personagens/margarida.png"
+        at zoom_margarida
+        action Jump("dialogo_margarida")
+
 
 #Hud
 screen HUD():
