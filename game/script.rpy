@@ -44,7 +44,7 @@ label start:
         
         def checar_interacao():
             global interacao
-            if interacao == 0:
+            #if interacao == 0:
                 # jump tela de escolher oq fazer a noite?
 
         #### Usar a função na tela de escolhas da noite ####
