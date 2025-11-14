@@ -289,31 +289,23 @@ style quick_button_text:
 ## Essa tela está incluída nos menus principal e do jogo e fornece navegação
 ## para outros menus e para iniciar o jogo.
 
-screen navigation():
+screen navigation:
 
     vbox:
         style_prefix "navigation"
+        spacing gui.navigation_spacing
 
         if main_menu:
 
-            xpos 350
+            xpos 150
             yalign 0.6
 
-            spacing gui.navigation_spacing
+            textbutton _("Novo Jogo") action Start()
 
         else:
 
             xpos gui.navigation_xpos
             yalign 0.6
-
-            spacing gui.navigation_spacing
-
-
-        if main_menu:
-
-            textbutton _("Novo Jogo") action Start()
-
-        else:
 
             textbutton _("Histórico") action ShowMenu("history")
 
