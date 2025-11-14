@@ -1,11 +1,12 @@
 ﻿# The script of the game goes in this file.
 
-# Declare characters used by this game. The color argument colorizes the
-# name of the character.
+# Define posicao de nome dos personagens
 default name_side = "left"
-
+# Define dia incial
 default dia = 1
-default interacao = 100
+# Define quantas interações pode ter
+default interacao = 1
+################# Ainda não foi feito sistema de 3 interações por dia terminar o dia ###########
 
 ## Variaveis do diálogo com o Vincent
 default progressoVincent = 0
@@ -16,17 +17,17 @@ default suspeitoVincent = False
 ## Personagens
 define personagens_list = list()
 define personagens_dict = dict()
-define v = Character("Vincent")
-define p = Character("Padre")
-define s = Character("Seren")
-define m = Character("Margarida")
+define p = Character("Padre") ## O JOGADOR
+define v = Character("Vincent") ## DONO DA ESTALAGEM/TAVERNA
+define s = Character("Seren") ## CRIANÇA GEMEA FILHA DO BEBADO
+define m = Character("Margarida") ##COSTUREIRA
 
 # The game starts here.
 
 label start:
 
     show screen HUD
-
+    ## Faz a verificacao do progresso da interação com o personagem, podendo bloquear o dialogo caso seja o mesmo dia
     python:
         personagens_list = ["Bartolomeu", "Salvatore", "Holga", "Leproso", "Joana", "Margarida", "Agnes", "Bêbado", "Wiliam", "Vincent", "Seren"]
         for personagem in personagens_list:
@@ -41,17 +42,27 @@ label start:
                 sinal = ""
             renpy.notify(sinal + str(valor) + " interação")
         
+        def checar_interacao():
+            global interacao
+            if interacao == 0:
+                # jump tela de escolher oq fazer a noite?
+
+        #### Usar a função na tela de escolhas da noite ####
         def passar_dia():
-            global dia, personagens_list, personagens_dict
+            global dia, interacao, personagens_list, personagens_dict
             dia = dia + 1
             for personagem in personagens_list:
                 personagens_dict[personagem][0] = False
+            interacao = 3
+            renpy.notify("interações restauradas")
             renpy.notify("passou o dia")
+            ## jump casa do padre
         
         def progredir(personagem: str):
             global personagens_dict
             personagens_dict[personagem][0] = True
             personagens_dict[personagem][1] += 1
+
 
 ######################################## LOCAIS PELO MAPA ##############################################################
 
@@ -91,6 +102,7 @@ label caminholeproso:
     call hide_all_screens
     scene bg casa leproso
     call screen casaLeprosoEXT
+
 
 ######################################## CENAS QUE OCORREM NA TAVERNA #######################################################
 
