@@ -1710,10 +1710,10 @@ screen casabebado():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action [Hide("texto_botao"), Jump("casamargaridaext")]
+        action [Hide("texto_botao"), Jump("caminhobebado_margarida")]
 
         hovered Show("texto_botao",
-            displayText = "Casa da curandeira")
+            displayText = "Viale")
         unhovered Hide("texto_botao")
 
 screen casapadre():
@@ -1736,13 +1736,14 @@ screen casaMargaridaEXT():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action [Hide("texto_botao"), Jump("casabebadoext")]
+        action [Hide("texto_botao"), Jump("caminhobebado_margarida")]
 
         hovered Show("texto_botao",
-            displayText = "Casa do bêbado")
+            displayText = "Viale")
         unhovered Hide("texto_botao")
+
     imagebutton:
-        xpos 100
+        xpos 90
         ypos 900
         idle "botao_passos"
         hover "botao_passos"
@@ -1765,6 +1766,44 @@ screen casaLeprosoEXT():
         hovered Show("texto_botao",
             displayText = "Casa da curandeira")
         unhovered Hide("texto_botao")
+
+screen caminhobebado_margarida():
+    imagebutton:
+        xpos 1600
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("casabebadoext")]
+
+        hovered Show("texto_botao",
+            displayText = "Casa do bêbado")
+        unhovered Hide("texto_botao")
+
+    imagebutton:
+        xpos 90
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("tavernaext")]
+
+        hovered Show("texto_botao",
+            displayText = "Estalagem")
+        unhovered Hide("texto_botao")
+    
+    imagebutton:
+        xpos 1000
+        ypos 300
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("casamargaridaext")]
+
+        hovered Show("texto_botao",
+            displayText = "Casa da curandeira")
+        unhovered Hide("texto_botao")
+    
 
 
 ############################################################# BOTÕES DE PERSONAGENS ##############################################################
@@ -1808,6 +1847,7 @@ label hide_all_screens:
     hide screen tavernaint
     hide screen casapadre
     hide screen casaMargaridaEXT
+    hide screen caminhobebado_margarida
     return
 
 #Hud
