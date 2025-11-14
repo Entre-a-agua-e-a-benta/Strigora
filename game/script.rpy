@@ -103,6 +103,11 @@ label caminholeproso:
     scene bg casa leproso
     call screen casaLeprosoEXT
 
+label caminhobebado_margarida:
+    call hide_all_screens
+    scene bg caminho curandeira
+    call screen caminhobebado_margarida
+
 
 ######################################## CENAS QUE OCORREM NA TAVERNA #######################################################
 
