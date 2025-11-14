@@ -156,7 +156,7 @@ label escolhas_vincent:
                 jump default_vincen
         
         "Passar dia":
-            # $ passar_dia()
+            $ passar_dia()
             jump tavernaint
 
         "Não perguntar nada":
