@@ -177,7 +177,6 @@ label meconte_vincent:
     v "Depois que a mulher dele se foi, sobrou pouco dele também."
     jump tavernaint
 
-
 label esposa_vincent:
     $ alterar_interacao(-1)
     hide padre
@@ -203,7 +202,6 @@ label crianca_dialogo:
         "Algum habitante te parece estranho?":
             jump habitante_seren
     return
-
 
 label ontem_vincent:
     $ ontemvincent = True
@@ -274,5 +272,51 @@ label habitante_seren:
 
 label dialogo_margarida:
     call hide_all_screens
-    m "Eu sou a margarida"
+    show padre
+    p "Buongiorno…"
+    hide padre
+    show margarida
+    m "A benção, padre. Veio aqui procurar um motivo para jogar a culpa em mim?"
+    hide margarida
+    show padre
+    p "Não, claro que não. Estou apenas investigando… Fale comigo…"
+    jump escolhas_margarida
+
+label escolhas_margarida:
+    menu:
+        "Me conte sobre você":
+            jump meconte_margarida
+        "Onde e o que você fez ontem a noite?":
+            jump ontem_margarida
+        "Me conte uma história":
+            jump historia_margarida
+
+label meconte_margarida:
+    hide padre
+    show margarida
+    m "Falar pra quê? Já sei o que pensa… Sei o que todos pensam… Vêem uma mulher sozinha, que mexe com coisas que não entendem, e já querem arrastar pra fogueira…"
+    m "Chamam-me de contadora de histórias, como se fosse só isso que faço. Talvez seja mesmo… As palavras me obedecem mais do que as pessoas. Conto o que o povo quer ouvir, e escondo o que não estão prontos pra saber."
+    m "Já vi mais gente morrer do que você viu nascer. Sei quando a terra tá doente, sei quando o vento muda de cheiro. Sei quando as mãos tremem antes mesmo de tocarem na porta"
+    m "Não mexo com mortos. Não falo com sombras. Só aprendi a ouvir o que ninguém mais quer escutar."
+    m "Quando o corpo deles falha… Eles veem rastejar até minha porta. Pedem chá e, pomadas. E depois… depois sussurram meu nome como se eu tivesse pacto com a minha própria sombra…"
+    m "Hipócritas. Agora que a vila sangra, lembram de mim… Agora… Agora tudo fede a medo e carne podre. Quer caçar uma bruxa? Pois que caçe! Mas olhe direito, porque se me queimar, vai doer. E não só em mim."
+    jump casamargaridaext
+
+label ontem_margarida:
+    hide padre
+    show margarida
+    m "O que eu fiz? O mesmo que faço quando o céu fica quieto demais."
+    m "Acendi o fogo, deixei a chaleira cantar... e fiquei escutando… Alguns dormem pra esquecer, eu fico acordada pra lembrar e vigiar. Às vezes, o que a gente precisa ouvir só aparece no silêncio entre um estalo da madeira e outro…"
+    jump casamargaridaext
+
+label historia_margarida:
+    hide padre
+    show margarida
+    m "Já ouviu a história da corça de três olhos? Não? Então sente e escute, ou vá embora de vez…"
+    m "Dizem que, certa vez, uma mulher andava sozinha pela mata, cheia de dor e raiva do mundo. Chorava tanto que as árvores taparam os ouvidos. Foi quando encontrou um ninho, entre galhos partidos, com um choro que não era de ave nem de fera…"
+    m "Lá dentro? Dois bebês, iguais… Como um espelho. Mas um tinha os olhos fechados e sorria dormindo. O outro tinha os olhos abertos… e não piscava… A mulher, sozinha no mundo, mesmo sabendo que não era seu,  levou um deles nos braços."
+    m "Disse que era um sinal... Que o destino havia escolhido aquele pra ela criar, alimentou, deu nome, cobriu de orações… O outro bebe? talvez você se pergunte, o outro… ficou."
+    m "Nunca chorou. Nunca morreu. Só ficou ali, esperando… Um dia, a criança levada perguntou quem era seu pai. Ela respondeu: “Um homem que não tem nome e que não pode ser acordado”."
+    m "Desde então, a corça de três olhos ronda a aldeia, procurando seu parente perdido."
+    m "E que a criança... bom, ela ainda vive entre nós. Só não sabe o que é."
     jump casamargaridaext
