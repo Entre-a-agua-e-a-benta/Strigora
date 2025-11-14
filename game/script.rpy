@@ -116,6 +116,11 @@ transform vincent_right:
     ypos 0.3
     xpos 0.63
 
+transform margarida_right:
+    zoom 0.7
+    ypos 0.3
+    xpos 0.50
+
 ## Dialogo com o Vincent ao clicar no personagem
 label dialogo_vincent:
     call hide_all_screens
@@ -272,13 +277,13 @@ label habitante_seren:
 
 label dialogo_margarida:
     call hide_all_screens
-    show padre
+    show padre at padre_left
     p "Buongiorno…"
     hide padre
-    show margarida
+    show margarida at margarida_right
     m "A benção, padre. Veio aqui procurar um motivo para jogar a culpa em mim?"
     hide margarida
-    show padre
+    show padre at padre_left
     p "Não, claro que não. Estou apenas investigando… Fale comigo…"
     jump escolhas_margarida
 
@@ -293,7 +298,7 @@ label escolhas_margarida:
 
 label meconte_margarida:
     hide padre
-    show margarida
+    show margarida at margarida_right
     m "Falar pra quê? Já sei o que pensa… Sei o que todos pensam… Vêem uma mulher sozinha, que mexe com coisas que não entendem, e já querem arrastar pra fogueira…"
     m "Chamam-me de contadora de histórias, como se fosse só isso que faço. Talvez seja mesmo… As palavras me obedecem mais do que as pessoas. Conto o que o povo quer ouvir, e escondo o que não estão prontos pra saber."
     m "Já vi mais gente morrer do que você viu nascer. Sei quando a terra tá doente, sei quando o vento muda de cheiro. Sei quando as mãos tremem antes mesmo de tocarem na porta"
@@ -304,14 +309,14 @@ label meconte_margarida:
 
 label ontem_margarida:
     hide padre
-    show margarida
+    show margarida at margarida_right
     m "O que eu fiz? O mesmo que faço quando o céu fica quieto demais."
     m "Acendi o fogo, deixei a chaleira cantar... e fiquei escutando… Alguns dormem pra esquecer, eu fico acordada pra lembrar e vigiar. Às vezes, o que a gente precisa ouvir só aparece no silêncio entre um estalo da madeira e outro…"
     jump casamargaridaext
 
 label historia_margarida:
     hide padre
-    show margarida
+    show margarida at margarida_right
     m "Já ouviu a história da corça de três olhos? Não? Então sente e escute, ou vá embora de vez…"
     m "Dizem que, certa vez, uma mulher andava sozinha pela mata, cheia de dor e raiva do mundo. Chorava tanto que as árvores taparam os ouvidos. Foi quando encontrou um ninho, entre galhos partidos, com um choro que não era de ave nem de fera…"
     m "Lá dentro? Dois bebês, iguais… Como um espelho. Mas um tinha os olhos fechados e sorria dormindo. O outro tinha os olhos abertos… e não piscava… A mulher, sozinha no mundo, mesmo sabendo que não era seu,  levou um deles nos braços."
