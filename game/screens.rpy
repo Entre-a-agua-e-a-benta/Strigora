@@ -1801,6 +1801,7 @@ screen caminhobebado_margarida():
 
 #Botão Vincent
 screen vincent_parado:
+    tag personagem
     imagebutton:
         xanchor 0.5
         yanchor 0.5
@@ -1817,11 +1818,12 @@ screen vincent_parado:
 
 ##Botao Margarida
 screen margarida_parada:
+    tag personagem
     imagebutton:
         xanchor 0.5
         yanchor 0.5
-        xpos 0.68
-        ypos 0.33
+        xpos 700
+        ypos 800
         idle "personagens/margarida.png"
         hover "personagens/margarida.png"
         at zoom_margarida
@@ -1839,6 +1841,8 @@ label hide_all_screens:
     hide screen casapadre
     hide screen casaMargaridaEXT
     hide screen caminhobebado_margarida
+    hide screen falas_padre
+    hide screen falas_vincent
     return
 
 #Hud
@@ -1854,5 +1858,19 @@ screen HUD():
         ypos 20
         text str(dia) size 40 color "#050505"
 
+screen vincentN:
+    tag personagem
+    add "vincent" at vincent_right
+    python:
+        name_side = "right"
 
+screen padre:
+    tag personagem
+    add "padre" at padre_left
+    python:
+        name_side = "left"
+
+screen margaridaN:
+    tag personagem
+    add "margarida" at margarida_right
 
