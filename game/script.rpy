@@ -300,9 +300,11 @@ label dialogo_margarida:
     show screen padre
     p "Buongiorno…"
     show screen margaridaN
-    m "A benção, padre. Veio aqui procurar um motivo para jogar a culpa em mim?"
+    m "A benção, padre."
+    m "Veio aqui procurar um motivo para jogar a culpa em mim?"
     show screen padre
-    p "Não, claro que não. Estou apenas investigando… Fale comigo…"
+    p "Não, claro que não. Estou apenas investigando… "
+    p "Fale comigo…"
     jump escolhas_margarida
 
 label escolhas_margarida:

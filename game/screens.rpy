@@ -1918,8 +1918,11 @@ label hide_all_screens:
     return
 
 ################################# TESTE DE PISTAS ##############################################
+image tela preta = Solid("#000")
+
 screen pistas():
     tag pistas
+    add "tela preta"
     imagemap:
         idle "vincent"
         hover "vincent"
@@ -1928,7 +1931,7 @@ screen pistas():
     
 screen vincent_pistas():
     tag pistas
-
+    add    "tela preta"
     frame:
         xpos 500 ypos 200
         vbox:
