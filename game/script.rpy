@@ -29,25 +29,17 @@ label start:
     show screen HUD
 
     init python:
+        ## Inicializa o dicionário de personagens
         personagens_list = ["Bartolomeu", "Salvatore", "Holga", "Leproso", "Joana", "Margarida", "Agnes", "Bêbado", "Wiliam", "Vincent", "Seren"]
         for personagem in personagens_list:
-            personagens_dict[personagem] = [False, 0]
-
-        def alterar_interacao(valor: int):
-            global interacao
-            interacao = interacao + valor
-            if valor >= 0:
-                sinal = "+"
-            else:
-                sinal = ""
-            renpy.notify(sinal + str(valor) + " interação")
+            personagens_dict[personagem] = [False, 0, list()]
+            # personagens_dict["nome do personagem"] = [já conversou hoje (bool), progresso (int), lista de pistas (começa vazia, vai adicionando)]
         
         def checar_interacao():
             global interacao
             #if interacao == 0:
                 # jump tela de escolher oq fazer a noite?
 
-        #### Usar a função na tela de escolhas da noite ####
         def passar_dia():
             global dia, interacao, personagens_list, personagens_dict
             dia = dia + 1
@@ -56,56 +48,90 @@ label start:
             interacao = 3
             renpy.notify("interações restauradas")
             renpy.notify("passou o dia")
-            ## jump casa do padre
+            # jump casa do padre
         
+        # Progride o diálogo de um personagem específico, aumentando seu progresso em 1 e marcando que já conversou hoje.
         def progredir(personagem: str):
             global personagens_dict
             personagens_dict[personagem][0] = True
             personagens_dict[personagem][1] += 1
+        def somar(a, b):
+            return a + b
+
+        """
+        Adiciona uma pista à lista de pistas de um personagem específico.
+        Após isso, notifica no formato "Pista adquirida: <Personagem> <pista>"
+        Args:
+            personagem (str): O nome do personagem ao qual a pista será adicionada.
+            pista (str): A pista a ser adicionada.
+        """
+        def adicionar_pista(personagem: str, pista: str):
+            global personagens_dict
+            personagens_dict[personagem][2].append(pista)
+            renpy.notify("Pista adquirida: " + personagem + " " + pista[0].lower() + pista[1:])
+ 
+        """
+        Atualiza a lista de pistas para mostrar na tela de pistas de cada personagem.
+        Args:
+            personagem (str): O nome do personagem cujas pistas serão atualizadas.
+        Returns:
+            list: Uma lista contendo as pistas do personagem (no momento são 5 no máximo para cada um).
+        """
+        def atualizar_pistas(personagem: str)->list:
+            pistas_list = ["", "", "", "", ""]
+            i = 0
+            for pista in personagens_dict[personagem][2]:
+                pistas_list[i] = pista
+                i += 1
+            return pistas_list
+
+#### $ adicionar_pista("Vincent", "Gosta de HOMENS") #### é assim que bota pista
+
+########################################## AQUI COMEÇA O JOGO ##############################################################    
+
+
+
 
 ######################################## LOCAIS PELO MAPA ##############################################################
 
 ## Cena externa da taverna
 label tavernaext:
-    call hide_all_screens
     scene bg taverna ext
     call screen tavernaext
 
 ## Cena dentro da taverna
 label tavernaint:
-    call hide_all_screens
     scene bg taverna int
     show screen tavernaint
     call screen vincent_parado
 
 ## Cena casa do bebado
 label casabebadoext:
-    call hide_all_screens
     scene bg casa bebado ext
     call screen casabebado
 
 ## Cena quarto do padre dentro da taverna
 label casapadre:
-    call hide_all_screens
     scene bg casa padre int
     call screen casapadre
 
 ## Cena Casa Margarida Ext
 label casamargaridaext:
-    call hide_all_screens
     scene bg casa curandeira ext
     show screen casaMargaridaEXT
     call screen margarida_parada
 
 label caminholeproso:
-    call hide_all_screens
     scene bg casa leproso ext
     call screen casaLeprosoEXT
 
 label caminhobebado_margarida:
-    call hide_all_screens
     scene bg caminho curandeira
     call screen caminhobebado_margarida
+
+label casaleprosoint:
+    scene bg leproso int
+    call screen casaLeprosoINT
 
 ############# Arruma posição dos personagens dentro do dialogo ###############################
 transform padre_left:
@@ -136,13 +162,13 @@ label dialogo_vincent:
 label escolhas_vincent:
     show screen padre
     menu:
-        "Me conte sobre você" if personagens_dict["Vincent"] == [False, 0]:
+        "Me conte sobre você" if personagens_dict["Vincent"][0] == False and personagens_dict["Vincent"][1] == 0:
             $ progredir("Vincent")
             jump meconte_vincent
-        "O que aconteceu com a esposa do seu irmão?" if personagens_dict["Vincent"] == [False, 1] and dia >= 2:
+        "O que aconteceu com a esposa do seu irmão?" if personagens_dict["Vincent"][0] == False and personagens_dict["Vincent"][1] == 1 and dia >= 2:
             $ progredir("Vincent")
             jump esposa_vincent
-        "Posso falar com a criança?" if personagens_dict["Vincent"] == [False, 2] and dia >= 3:
+        "Posso falar com a criança?" if personagens_dict["Vincent"][0] == False and personagens_dict["Vincent"][1] == 2 and dia >= 3:
             $ progredir("Vincent")
             jump crianca_dialogo
 
@@ -159,7 +185,7 @@ label escolhas_vincent:
         
         "Passar dia":
             $ passar_dia()
-            jump tavernaint
+            jump noite
 
         "Não perguntar nada":
             jump tavernaint
@@ -168,7 +194,7 @@ label meconte_vincent:
     #diminui interação do jogador
     $ alterar_interacao(-1)
     show screen vincentN
-    v "Bom… Eu sou o Vincent, cuido da taverna e da estalagem… Ou o que sobrou dela, parece que a aldeia resolveu que o medo é  desculpa para parar de beber."
+    v "Bom… Eu sou o Vincent, cuido da taverna e da estalagem… Ou o que sobrou dela, parece que a aldeia resolveu que o medo é desculpa para parar de beber."
     v "Mas desde que você chegou, tenho limpado o quarto duas vezes por dia, pelo menos um pouco de trabalho para manter a mente ocupada …. "
     v "Não gosto de falar do que não vi com meus próprios olhos. E, pra ser sincero, ultimamente, prefiro ver cada vez menos. Gente demais sussurrando. Portas que antes ficavam abertas agora estão fechadas…"
     v "Mas minha porta… essa fica aberta. Sempre tem quem precise esquecer o que viu. Meu irmão aparece por aqui às vezes… Mas nunca fica muito tempo e nem fala muito."
@@ -176,7 +202,7 @@ label meconte_vincent:
     menu:
         "Quem é seu irmão?":
             jump irmao_vincent
-            
+
 label irmao_vincent:
     show screen vincentN
     v "Ah, com certeza você vai vê- lo por aí… Ele está sempre pelos cantos da aldeia. Ele vem aqui, bebe sem pagar, mas não tenho coragem de cobrar."
@@ -315,3 +341,13 @@ label historia_margarida:
     m "Desde então, a corça de três olhos ronda a aldeia, procurando seu parente perdido."
     m "E que a criança... bom, ela ainda vive entre nós. Só não sabe o que é."
     jump casamargaridaext
+
+label noite:
+
+    call screen pistas
+
+label vincent_pistas:
+    $ pistas_list = atualizar_pistas("Vincent")
+    call hide_all_screens
+    call screen vincent_pistas
+    return

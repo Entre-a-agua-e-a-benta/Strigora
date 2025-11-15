@@ -1632,6 +1632,7 @@ screen texto_botao:
 image botao_passos = "botoes/botao passos.jpg"
 #Tela da taverna ext
 screen tavernaext:
+    tag passos
     #botao para a taverna
     imagebutton:
         xpos 750
@@ -1659,6 +1660,7 @@ screen tavernaext:
 
 ## Taverna interna
 screen tavernaint():
+    tag passos
     imagebutton:
         xpos 1800
         ypos 600
@@ -1684,6 +1686,7 @@ screen tavernaint():
 
 ###Tela da casa do bebado ext
 screen casabebado():
+    tag passos
     imagebutton:
         xpos 1700
         ypos 900
@@ -1708,6 +1711,7 @@ screen casabebado():
         unhovered Hide("texto_botao")
 
 screen casapadre():
+    tag passos
     imagebutton:
         xpos 1700
         ypos 900
@@ -1721,6 +1725,7 @@ screen casapadre():
         unhovered Hide("texto_botao")
 
 screen casaMargaridaEXT():
+    tag passos
     imagebutton:
         xpos 1300
         ypos 1000
@@ -1746,6 +1751,7 @@ screen casaMargaridaEXT():
         unhovered Hide("texto_botao")  
 
 screen casaLeprosoEXT():
+    tag passos
     imagebutton:
         xpos 900
         ypos 900
@@ -1757,8 +1763,36 @@ screen casaLeprosoEXT():
         hovered Show("texto_botao",
             displayText = "Casa da curandeira")
         unhovered Hide("texto_botao")
+    
+    imagebutton:
+        xpos 1000
+        ypos 400
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("casaleprosoint")]
+
+        hovered Show("texto_botao",
+            displayText = "Entrar na casa do leproso")
+        unhovered Hide("texto_botao")
+
+screen casaLeprosoINT():
+    tag passos
+    imagebutton:
+        xpos 1100
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("caminholeproso")]
+
+        hovered Show("texto_botao",
+            displayText = "Sair da casa")
+        unhovered Hide("texto_botao")
+    
 
 screen caminhobebado_margarida():
+    tag passos
     imagebutton:
         xpos 1600
         ypos 900
@@ -1822,7 +1856,7 @@ screen margarida_parada:
     imagebutton:
         xanchor 0.5
         yanchor 0.5
-        xpos 700
+        xpos 1000
         ypos 800
         idle "personagens/margarida.png"
         hover "personagens/margarida.png"
@@ -1833,19 +1867,7 @@ screen margarida_parada:
             displayText = "Falar com a curandeira")
         unhovered Hide("texto_botao")
 
-## Esconde as telas 
-label hide_all_screens:
-    hide screen casabebado
-    hide screen tavernaext
-    hide screen tavernaint
-    hide screen casapadre
-    hide screen casaMargaridaEXT
-    hide screen caminhobebado_margarida
-    hide screen falas_padre
-    hide screen falas_vincent
-    return
-
-#Hud
+############################################################# Hud ################################################
 screen HUD():
     frame:
         background None
@@ -1857,6 +1879,8 @@ screen HUD():
         xpos 1100
         ypos 20
         text str(dia) size 40 color "#050505"
+
+######################################################### Falas de personagens ##############################################################
 
 screen vincentN:
     tag personagem
@@ -1874,3 +1898,49 @@ screen margaridaN:
     tag personagem
     add "margarida" at margarida_right
 
+
+############################################################### Esconde as telas ######################################################
+label hide_all_screens:
+    hide screen casabebado
+    hide screen tavernaext
+    hide screen tavernaint
+    hide screen casapadre
+    hide screen casaMargaridaEXT
+    hide screen caminhobebado_margarida
+    hide screen padre
+    hide screen vincentN
+    hide screen margaridaN
+    hide screen vincent_parado
+    hide screen margarida_parada
+    hide screen texto_botao
+    hide screen pistas
+    hide screen vincent_pistas
+    return
+
+################################# TESTE DE PISTAS ##############################################
+screen pistas():
+    tag pistas
+    imagemap:
+        idle "vincent"
+        hover "vincent"
+
+        hotspot (0, 0, 1920, 1080) action Jump("vincent_pistas")
+    
+screen vincent_pistas():
+    tag pistas
+
+    frame:
+        xpos 500 ypos 200
+        vbox:
+            text "Pistas encontradas:"
+            text pistas_list[0]
+            text pistas_list[1]
+            text pistas_list[2]
+            text pistas_list[3]
+            text pistas_list[4]
+       
+    frame:
+        xpos 1000
+        ypos 500
+        textbutton "Matar vincent":
+            action Jump("casapadre") alt "Casapadre"
