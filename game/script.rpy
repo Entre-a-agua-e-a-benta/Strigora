@@ -100,16 +100,13 @@ label casamargaridaext:
 
 label caminholeproso:
     call hide_all_screens
-    scene bg casa leproso
+    scene bg casa leproso ext
     call screen casaLeprosoEXT
 
 label caminhobebado_margarida:
     call hide_all_screens
     scene bg caminho curandeira
     call screen caminhobebado_margarida
-
-
-######################################## CENAS QUE OCORREM NA TAVERNA #######################################################
 
 ## Arruma posição dos personagens dentro do dialogo
 transform padre_left:
@@ -126,6 +123,8 @@ transform margarida_right:
     zoom 0.7
     ypos 0.3
     xpos 0.50
+
+######################################## CENAS QUE OCORREM NA TAVERNA #######################################################
 
 ## Dialogo com o Vincent ao clicar no personagem
 label dialogo_vincent:
