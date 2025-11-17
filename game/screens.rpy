@@ -1657,6 +1657,32 @@ screen tavernaext:
         hovered Show("texto_botao",
             displayText = "Casa do bêbado")
         unhovered Hide("texto_botao")
+    
+    imagebutton:
+        xpos 1700
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("casaholgaext")]
+        
+        hovered Show("texto_botao",
+            displayText = "Casa da Holga")
+        unhovered Hide("texto_botao")
+
+## Holga
+screen casaHolgaEXT():
+    imagebutton:
+        xpos 100
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("tavernaext")]
+        
+        hovered Show("texto_botao",
+            displayText = "Taverna")
+        unhovered Hide("texto_botao")
 
 ## Taverna interna
 screen tavernaint():

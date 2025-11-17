@@ -96,6 +96,7 @@ label start:
 
 ## Cena externa da taverna
 label tavernaext:
+    play music "ambiencia_ext_geral.mp3"
     scene bg taverna ext
     call screen tavernaext
 
@@ -107,31 +108,42 @@ label tavernaint:
 
 ## Cena casa do bebado
 label casabebadoext:
+    play music "ambiencia_ext_geral.mp3"
     scene bg casa bebado ext
     call screen casabebado
 
 ## Cena quarto do padre dentro da taverna
 label casapadre:
+    play music "ambiencia_int_casas.wav"
     scene bg casa padre int
     call screen casapadre
 
 ## Cena Casa Margarida Ext
 label casamargaridaext:
+    play music "ambiencia_ext_geral.mp3"
     scene bg casa curandeira ext
     show screen casaMargaridaEXT
     call screen margarida_parada
 
 label caminholeproso:
+    play music "ambiencia_ext_floresta.wav"
     scene bg casa leproso ext
     call screen casaLeprosoEXT
 
 label caminhobebado_margarida:
+    play music "ambiencia_ext_floresta.wav"
     scene bg caminho curandeira
     call screen caminhobebado_margarida
 
 label casaleprosoint:
+    play music "ambiencia_int_casas.wav"
     scene bg leproso int
     call screen casaLeprosoINT
+
+label casaholgaext:
+    play music "ambiencia_ext_geral.mp3"
+    scene bg casa holga ext
+    call screen casaHolgaEXT
 
 ############# Arruma posição dos personagens dentro do dialogo ###############################
 transform padre_left:
