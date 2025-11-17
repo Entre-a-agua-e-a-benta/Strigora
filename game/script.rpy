@@ -219,6 +219,8 @@ label irmao_vincent:
     show screen vincentN
     v "Ah, com certeza você vai vê- lo por aí… Ele está sempre pelos cantos da aldeia. Ele vem aqui, bebe sem pagar, mas não tenho coragem de cobrar."
     v "Depois que a mulher dele se foi, sobrou pouco dele também."
+    #v "Eu sou mt mt gay"
+    #$ adicionar_pista("Vincent", "Gosta de HOMENS")
     jump tavernaint
 
 label esposa_vincent:
