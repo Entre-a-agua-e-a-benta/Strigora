@@ -5,8 +5,7 @@ default name_side = "left"
 # Define dia incial
 default dia = 1
 # Define quantas interações pode ter
-default interacao = 1
-################# Ainda não foi feito sistema de 3 interações por dia terminar o dia ###########
+default interacao = 3
 
 ## Variaveis do diálogo com o Vincent
 default progressoVincent = 0
@@ -37,8 +36,17 @@ label start:
         
         def checar_interacao():
             global interacao
-            #if interacao == 0:
-                # jump tela de escolher oq fazer a noite?
+            if interacao == 0:
+                renpy.jump("noite")
+
+        def alterar_interacao(valor: int):
+            global interacao
+            interacao = interacao + valor
+            if valor >= 0:
+                sinal = "+"
+            else:
+                sinal = ""
+            renpy.notify(sinal + str(valor) + " interação")
 
         def passar_dia():
             global dia, interacao, personagens_list, personagens_dict
@@ -221,6 +229,7 @@ label irmao_vincent:
     v "Depois que a mulher dele se foi, sobrou pouco dele também."
     #v "Eu sou mt mt gay"
     #$ adicionar_pista("Vincent", "Gosta de HOMENS")
+    $ checar_interacao()
     jump tavernaint
 
 label esposa_vincent:
@@ -236,6 +245,7 @@ label esposa_vincent:
     show screen vincentN
     v "A menina… Bom… Ela está viva, isso é mais do que posso dizer de muita gente…"
     v "Eu cuido dela, mas de um tempo para cá, ela parece doente, às vezes fala coisa dormindo e acorda com febre alta. Eu tento ser como um pai para ela, mas mesmo assim acho que às vezes não sou o suficiente."
+    $ checar_interacao()
     jump tavernaint
 
 label crianca_dialogo:
@@ -252,19 +262,22 @@ label crianca_dialogo:
 
 label ontem_vincent:
     $ ontemvincent = True
+    $ alterar_interacao(-1)
     show screen vincentN
     v "Fiz o que faço toda noite. Fechei a estalagem tarde, como sempre. Tinha um bêbado vomitando na entrada e um quarto reservado pro padre…"
     v "Passei a vassoura, contei os barris, limpei as mesas. E quando a lenha terminou, fui buscar mais atrás do depósito. Voltei antes da meia-noite."
     v "Tranquei tudo por dentro. Ninguém entrou depois disso, nem mesmo meu irmão, que vive dizendo que a bebida chama por ele."
-
+    $ checar_interacao()
     jump tavernaint
 
 label suspeito_vincent:
-    $ habitantevincent = True   
+    $ habitantevincent = True  
+    $ alterar_interacao(-1) 
     show screen vincentN
     v "Estranhos? Aqui todos andam com o pescoço encolhido, como galinha no fio da faca."
     v "Mas se quer saber… Há alguém que me parece estranho, não sei o nome dele, mas ele mora quase fora da aldeia, isolado com razão. Alguém com o corpo ferido daquele jeito, com certeza boa coisa não fez e agora Deus o castiga pelos seus pecados."
     v "Não o deixo entrar aqui, mas não é pela doença. É por tudo o resto. Por esse silêncio dele que pesa, pelas coisas que diz sem dizer nada. Tem gente que traz má sorte sem precisar levantar a mão."
+    $ checar_interacao()
     jump tavernaint
 
 label default_vincent:
@@ -273,6 +286,7 @@ label default_vincent:
     jump tavernaint
 
 label meconte_seren:
+    $ alterar_interacao(-1)
     s "Olá, me chamo Seren… Tenho dez anos, mas preferia não ter nascido… Desse jeito meu pai seria feliz e minha mãe ainda estaria aqui… Foi minha culpa ela ter morrido antes da hora."
     s "Entendo o jeito que meu pai me olha, quando pensa que não estou vendo. Como se fosse difícil me enxergar… como se visse outra pessoa em mim… Acho que ele nunca me perdoou por isso, nem eu me perdoei…"
     s "Ao menos ele bebe pra esquecer, mas eu lembro por nós dois. Lembro mesmo do que nunca vi… Ainda bem que meu tio me dá pão, me dá coberta, e até me deixa ficar atrás do balcão quando chove."
@@ -296,17 +310,22 @@ label sonhos_seren:
             jump sonhoontem_seren
 label sonhoontem_seren:
     s "Ontem… ontem no sonho eu estava em frente ao espelho de uma casa grande, e o menino estava dentro do espelho me olhando de volta. Só que, por um instante, os olhos dele eram os meus…"
+    $ checar_interacao()
     jump tavernaint
 
 label ontem_seren:
+    $ alterar_interacao(-1)
     s "Fiquei sentada na escada da estalagem, olhando a lua por trás das nuvens. O tio me deu um pedaço de pão com mel… e eu guardei metade. Sempre guardo, caso encontre alguém com mais fome do que eu…"
     s "Depois subi pro quarto, mas não dormi logo. Fiquei ouvindo as vozes lá embaixo. Homens falando alto, rindo… e o padre perguntando coisas. Todo mundo pergunta coisas, ultimamente..."
     s "Quando o salão ficou em silêncio, fechei os olhos. Mas aí o sonho veio…Como se ele me chamasse de algum lugar longe… como se já soubesse onde eu estava."
+    $ checar_interacao()
     jump tavernaint
 
 label habitante_seren:
+    $ alterar_interacao(-1)
     s "A dona Margarida me dá arrepios… Não que ela seja má, eu acho. Mas ela olha pras pessoas como se enxergasse o que tem dentro."
     s "Uma vez ela passou por mim e disse: 'Nem todo espelho mostra o que é de fora'. Eu nem entendi, mas senti um calafrio subir nas costas…"
+    $ checar_interacao()
     jump tavernaint
 
 label dialogo_margarida:
@@ -333,22 +352,27 @@ label escolhas_margarida:
 
 label meconte_margarida:
     show screen margaridaN
+    $ alterar_interacao(-1)
     m "Falar pra quê? Já sei o que pensa… Sei o que todos pensam… Vêem uma mulher sozinha, que mexe com coisas que não entendem, e já querem arrastar pra fogueira…"
     m "Chamam-me de contadora de histórias, como se fosse só isso que faço. Talvez seja mesmo… As palavras me obedecem mais do que as pessoas. Conto o que o povo quer ouvir, e escondo o que não estão prontos pra saber."
     m "Já vi mais gente morrer do que você viu nascer. Sei quando a terra tá doente, sei quando o vento muda de cheiro. Sei quando as mãos tremem antes mesmo de tocarem na porta"
     m "Não mexo com mortos. Não falo com sombras. Só aprendi a ouvir o que ninguém mais quer escutar."
     m "Quando o corpo deles falha… Eles veem rastejar até minha porta. Pedem chá e, pomadas. E depois… depois sussurram meu nome como se eu tivesse pacto com a minha própria sombra…"
     m "Hipócritas. Agora que a vila sangra, lembram de mim… Agora… Agora tudo fede a medo e carne podre. Quer caçar uma bruxa? Pois que caçe! Mas olhe direito, porque se me queimar, vai doer. E não só em mim."
+    $ checar_interacao()
     jump casamargaridaext
 
 label ontem_margarida:
     show screen margaridaN
+    $ alterar_interacao(-1)
     m "O que eu fiz? O mesmo que faço quando o céu fica quieto demais."
     m "Acendi o fogo, deixei a chaleira cantar... e fiquei escutando… Alguns dormem pra esquecer, eu fico acordada pra lembrar e vigiar. Às vezes, o que a gente precisa ouvir só aparece no silêncio entre um estalo da madeira e outro…"
+    $ checar_interacao()
     jump casamargaridaext
 
 label historia_margarida:
     show screen margaridaN
+    $ alterar_interacao(-1)
     m "Já ouviu a história da corça de três olhos? Não? Então sente e escute, ou vá embora de vez…"
     m "Dizem que, certa vez, uma mulher andava sozinha pela mata, cheia de dor e raiva do mundo. Chorava tanto que as árvores taparam os ouvidos. Foi quando encontrou um ninho, entre galhos partidos, com um choro que não era de ave nem de fera…"
     m "Lá dentro? Dois bebês, iguais… Como um espelho. Mas um tinha os olhos fechados e sorria dormindo. O outro tinha os olhos abertos… e não piscava… A mulher, sozinha no mundo, mesmo sabendo que não era seu,  levou um deles nos braços."
@@ -356,6 +380,7 @@ label historia_margarida:
     m "Nunca chorou. Nunca morreu. Só ficou ali, esperando… Um dia, a criança levada perguntou quem era seu pai. Ela respondeu: “Um homem que não tem nome e que não pode ser acordado”."
     m "Desde então, a corça de três olhos ronda a aldeia, procurando seu parente perdido."
     m "E que a criança... bom, ela ainda vive entre nós. Só não sabe o que é."
+    $ checar_interacao()
     jump casamargaridaext
 
 label noite:
