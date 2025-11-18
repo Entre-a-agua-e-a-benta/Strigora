@@ -1629,7 +1629,10 @@ screen texto_botao:
         frame:
             text displayText
 
+#################################### Definindo imagens ##################################################
 image botao_passos = "botoes/botao passos.jpg"
+
+###################################################### Telas de lugares ###################################################
 #Tela da taverna ext
 screen tavernaext:
     tag passos
@@ -1816,7 +1819,6 @@ screen casaLeprosoINT():
             displayText = "Sair da casa")
         unhovered Hide("texto_botao")
     
-
 screen caminhobebado_margarida():
     tag passos
     imagebutton:
@@ -1867,8 +1869,8 @@ screen vincent_parado:
         yanchor 0.5
         xpos 0.68
         ypos 0.33
-        idle "personagens/vincent.png"
-        hover "personagens/vincent.png"
+        idle "personagens/vincent/vincent.png"
+        hover "personagens/vincent/vincent.png"
         at zoom_vincent
         action [Hide("texto_botao"), Jump("dialogo_vincent")]
 
@@ -1884,14 +1886,31 @@ screen margarida_parada:
         yanchor 0.5
         xpos 1000
         ypos 800
-        idle "personagens/margarida.png"
-        hover "personagens/margarida.png"
+        idle "personagens/margarida/margarida.png"
+        hover "personagens/margarida/margarida.png"
         at zoom_margarida
         action [Hide("texto_botao"), Jump("dialogo_margarida")]
 
         hovered Show("texto_botao",
             displayText = "Falar com a curandeira")
         unhovered Hide("texto_botao")
+
+## Botao leproso
+screen leproso_parado:
+    tag personagem
+    imagebutton:
+        xanchor 0.5
+        yanchor 0.5
+        xpos 500
+        ypos 600
+        idle "personagens/leproso/leproso.png"
+        hover "personagens/leproso/leproso.png"
+        at zoom_leproso
+        action [Hide("texto_botao"), Jump("dialogo_leproso")]
+
+        hovered Show("texto_botao",
+            displayText = "Falar com o leproso")
+        unhovered Hide("texto_botao")   
 
 ############################################################# Hud ################################################
 screen HUD():
@@ -1908,6 +1927,12 @@ screen HUD():
 
 ######################################################### Falas de personagens ##############################################################
 
+image leproso = "personagens/leproso/leproso.png"
+image vincent = "personagens/vincent/vincent.png"
+image margarida = "personagens/margarida/margarida.png" 
+image padre = "personagens/padre/padre.png"
+image holga = "personagens/holga/holga.png"
+
 screen vincentN:
     tag personagem
     add "vincent" at vincent_right
@@ -1922,7 +1947,11 @@ screen padre:
 
 screen margaridaN:
     tag personagem
-    add "margarida/margarida" at margarida_right
+    add "margarida" at margarida_right
+
+screen leprosoN:
+    tag personagem
+    add "leproso" at leproso_right
 
 
 ############################################################### Esconde as telas ######################################################

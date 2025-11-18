@@ -13,13 +13,20 @@ default progrediuVincent = False
 default ontemVincent = False
 default suspeitoVincent = False
 
+## Variaveis do diálogo com o Leproso
+default dor_leproso = False
+default afastou_leproso = False
+default progressoLeproso = 0
+default progrediuLeproso = False
+
 ## Personagens
 define personagens_list = list()
 define personagens_dict = dict()
 define p = Character("Padre") ## O JOGADOR
 define v = Character("Vincent") ## DONO DA ESTALAGEM/TAVERNA
 define s = Character("Seren") ## CRIANÇA GEMEA FILHA DO BEBADO
-define m = Character("Margarida") ##COSTUREIRA
+define m = Character("Margarida") ## COSTUREIRA
+define l = Character("Leproso") ## LEPROSO
 
 # The game starts here.
 
@@ -146,7 +153,8 @@ label caminhobebado_margarida:
 label casaleprosoint:
     play music "ambiencia_int_casas.wav"
     scene bg leproso int
-    call screen casaLeprosoINT
+    show screen casaLeprosoINT
+    call screen leproso_parado
 
 label casaholgaext:
     play music "ambiencia_ext_geral.mp3"
@@ -165,6 +173,10 @@ transform vincent_right:
     xpos 0.63
 
 transform margarida_right:
+    zoom 0.3
+    ypos 0.3
+    xpos 0.70
+transform leproso_right:
     zoom 0.3
     ypos 0.3
     xpos 0.70
@@ -209,6 +221,31 @@ label escolhas_vincent:
 
         "Não perguntar nada":
             jump tavernaint
+
+label ontem_vincent:
+    $ ontemvincent = True
+    $ alterar_interacao(-1)
+    show screen vincentN
+    v "Fiz o que faço toda noite. Fechei a estalagem tarde, como sempre. Tinha um bêbado vomitando na entrada e um quarto reservado pro padre…"
+    v "Passei a vassoura, contei os barris, limpei as mesas. E quando a lenha terminou, fui buscar mais atrás do depósito. Voltei antes da meia-noite."
+    v "Tranquei tudo por dentro. Ninguém entrou depois disso, nem mesmo meu irmão, que vive dizendo que a bebida chama por ele."
+    $ checar_interacao()
+    jump tavernaint
+
+label suspeito_vincent:
+    $ habitantevincent = True  
+    $ alterar_interacao(-1) 
+    show screen vincentN
+    v "Estranhos? Aqui todos andam com o pescoço encolhido, como galinha no fio da faca."
+    v "Mas se quer saber… Há alguém que me parece estranho, não sei o nome dele, mas ele mora quase fora da aldeia, isolado com razão. Alguém com o corpo ferido daquele jeito, com certeza boa coisa não fez e agora Deus o castiga pelos seus pecados."
+    v "Não o deixo entrar aqui, mas não é pela doença. É por tudo o resto. Por esse silêncio dele que pesa, pelas coisas que diz sem dizer nada. Tem gente que traz má sorte sem precisar levantar a mão."
+    $ checar_interacao()
+    jump tavernaint
+
+label default_vincent:
+    show screen vincentN
+    v "De novo com essa pergunta..."
+    jump tavernaint
 
 label meconte_vincent:
     #diminui interação do jogador
@@ -260,31 +297,6 @@ label crianca_dialogo:
             jump habitante_seren
     return
 
-label ontem_vincent:
-    $ ontemvincent = True
-    $ alterar_interacao(-1)
-    show screen vincentN
-    v "Fiz o que faço toda noite. Fechei a estalagem tarde, como sempre. Tinha um bêbado vomitando na entrada e um quarto reservado pro padre…"
-    v "Passei a vassoura, contei os barris, limpei as mesas. E quando a lenha terminou, fui buscar mais atrás do depósito. Voltei antes da meia-noite."
-    v "Tranquei tudo por dentro. Ninguém entrou depois disso, nem mesmo meu irmão, que vive dizendo que a bebida chama por ele."
-    $ checar_interacao()
-    jump tavernaint
-
-label suspeito_vincent:
-    $ habitantevincent = True  
-    $ alterar_interacao(-1) 
-    show screen vincentN
-    v "Estranhos? Aqui todos andam com o pescoço encolhido, como galinha no fio da faca."
-    v "Mas se quer saber… Há alguém que me parece estranho, não sei o nome dele, mas ele mora quase fora da aldeia, isolado com razão. Alguém com o corpo ferido daquele jeito, com certeza boa coisa não fez e agora Deus o castiga pelos seus pecados."
-    v "Não o deixo entrar aqui, mas não é pela doença. É por tudo o resto. Por esse silêncio dele que pesa, pelas coisas que diz sem dizer nada. Tem gente que traz má sorte sem precisar levantar a mão."
-    $ checar_interacao()
-    jump tavernaint
-
-label default_vincent:
-    show screen vincentN
-    v "De novo com essa pergunta..."
-    jump tavernaint
-
 label meconte_seren:
     $ alterar_interacao(-1)
     s "Olá, me chamo Seren… Tenho dez anos, mas preferia não ter nascido… Desse jeito meu pai seria feliz e minha mãe ainda estaria aqui… Foi minha culpa ela ter morrido antes da hora."
@@ -328,6 +340,7 @@ label habitante_seren:
     $ checar_interacao()
     jump tavernaint
 
+######################################## CENAS QUE OCORREM NA CASA DA MARGARIDA #######################################################
 label dialogo_margarida:
     call hide_all_screens
     show screen padre
@@ -383,6 +396,111 @@ label historia_margarida:
     $ checar_interacao()
     jump casamargaridaext
 
+######################################## CENAS QUE OCORREM NA CASA DO LEPROSO #######################################################
+label dialogo_leproso:
+    show screen leprosoN
+    p "Buongiorno…"
+    p "Não sei a notícia chegou aqui, mas eu estou encarregado de achar o culpado pelas coisas que vem acontecendo na região, pensei que mesmo doente você talvez tivesse alguma informação para contribuir, ou algo no mínimo interessante a dizer."
+    jump escolhas_leproso
+
+label escolhas_leproso:
+    show screen padre
+    menu:
+        "Me conte sobre você" if personagens_dict["Leproso"][0] == False and personagens_dict["Leproso"][1] == 0:
+            $ progredir("Leproso")
+            jump meconte_leproso
+        "O que o Salvatore fez?" if personagens_dict["Leproso"][0] == False and personagens_dict["Leproso"][1] == 1 and dia >= 2:
+            $ progredir("Leproso")
+            jump salvatorefez_leproso
+
+        "Há quanto tempo está doente?":
+            jump doenca_leproso
+        "O que você fez ontem a noite?":
+            jump ontem_leproso
+
+label meconte_leproso:
+    show screen leprosoN
+    $ alterar_interacao(-1)
+    l "Pode chegar mais perto…"
+    l "Dizem que a bruxa me amaldiçoou, eles tem medo de mim. Sussurram isso quando pensam que não ouço. Mas meus ouvidos ainda funcionam."
+    l "O povo da aldeia acredita que esta carne apodrecida, estas mãos imóveis e este rosto que já não reconheço no reflexo da água... são obra de feitiçaria. São muitos boatos que circulam sobre eu ter ficado assim."
+    l "Alguns dizem que cruzei o caminho da costureira e não lhe dei a devida reverência. Que tomei algo que era dela."
+    l "Ou que fui tolo o bastante para recusar um favor da contadora de histórias, aquela que anda com ervas estranhas pendendo do cinto e olhos que nunca piscam."
+    show screen padre
+    menu:
+        "O que você acha disso?":
+            jump acredita_leproso
+        "E o que você acredita?":
+            jump acredita_leproso
+
+label acredita_leproso:
+    show screen leprosoN
+    l "Eu sei que a verdade é outra. Não fui amaldiçoado por uma mulher, fui esquecido por Deus…"
+    show screen padre
+    menu:
+        "Dizer que foi esquecido por Deus é fácil quando o mundo inteiro vira o rosto. Mas será que foi Deus quem se afastou de você… ou foi você quem se escondeu afastou e se escondeu dele?":
+            jump afastou_leproso
+
+        "Às vezes, eu também me pergunto se Ele nos ouve... ou se apenas observa. Mas me diga… quando foi a última vez que sentiu algo que não fosse dor?":
+            jump dor_leproso
+           
+label afastou_leproso:
+    $ afastou_leproso = True
+    show screen leprosoN
+    l "Procurei, sim. Por anos. Rezei até a garganta secar. E tudo o que ouvi foi o som da minha pele caindo."
+    l "Se Deus está me testando... então por que ninguém mais sangra como eu?"
+    if dor_leproso == False:
+        show screen padre
+        menu:
+            "Às vezes, eu também me pergunto se Ele nos ouve... ou se apenas observa. Mas me diga… quando foi a última vez que sentiu algo que não fosse dor?":
+                jump dor_leproso
+    else:
+        jump salvatorevinda_leproso
+
+label dor_leproso:
+    $ dor_leproso = True
+    show screen leprosoN
+    l "Senti algo... Uma vez. Quando o Salvatore veio aqui com olhos de choro e mãos trêmulas. Mas não era piedade, era medo."
+    l "Medo de que eu soubesse o que ele fez, ou de que eu ainda lembrasse…"
+    if afastou_leproso == False:
+        show screen padre
+        menu:
+            "Dizer que foi esquecido por Deus é fácil quando o mundo inteiro vira o rosto. Mas será que foi Deus quem se afastou de você… ou foi você quem se escondeu afastou e se escondeu dele?":
+                jump afastou_leproso
+    else:
+        jump salvatorevinda_leproso
+
+label salvatorefez_leproso:
+    show screen leprosoN
+    $ alterar_interacao(-1)
+    l "Aquela moça…"
+    l "Aquelas crianças nascidas…"
+    menu:
+        "Crianças? Que crianças?":
+            jump criancas_leproso
+label criancas_leproso:
+    show screen leprosoN
+    l "Não posso… Meu corpo dói ainda mais ao se lembrar disso…"
+    l "Me deixe em paz"
+    $ checar_interacao ()
+    jump casaleprosoint
+
+label salvatorevinda_leproso:
+    show screen padre
+    menu:
+        "O que você sentiu?":
+            jump sentiu_leproso
+
+label sentiu_leproso:
+    show screen leprosoN
+    l "Um calor estranho… Não fisico, mas emocional."
+    l "Pela primeira vez em muito tempo, alguém olhou pra mim como uma pessoa que sabia de algo e não só como um doente."
+    l "Mas esse sentimento veio com confusão, medo e culpa. Como se eu soubesse de mais e estivesse mascarando isso com febre e dor…"
+    $ checar_interacao ()
+    jump casaleprosoint
+
+
+######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
 label noite:
 
     call screen pistas
@@ -392,3 +510,5 @@ label vincent_pistas:
     call hide_all_screens
     call screen vincent_pistas
     return
+
+
