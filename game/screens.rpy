@@ -1922,7 +1922,7 @@ screen padre:
 
 screen margaridaN:
     tag personagem
-    add "margarida" at margarida_right
+    add "margarida/margarida" at margarida_right
 
 
 ############################################################### Esconde as telas ######################################################
