@@ -1673,19 +1673,6 @@ screen tavernaext:
             displayText = "Casa da Holga")
         unhovered Hide("texto_botao")
 
-## Holga
-screen casaHolgaEXT():
-    imagebutton:
-        xpos 100
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("tavernaext")]
-        
-        hovered Show("texto_botao",
-            displayText = "Taverna")
-        unhovered Hide("texto_botao")
 
 ## Taverna interna
 screen tavernaint():
@@ -1712,7 +1699,6 @@ screen tavernaint():
         hovered Show("texto_botao",
             displayText = "Entrar no quarto")
         unhovered Hide("texto_botao")
-
 ###Tela da casa do bebado ext
 screen casabebado():
     tag passos
@@ -1738,7 +1724,7 @@ screen casabebado():
         hovered Show("texto_botao",
             displayText = "Viale")
         unhovered Hide("texto_botao")
-
+## Tela da casa do padre interna
 screen casapadre():
     tag passos
     imagebutton:
@@ -1752,7 +1738,7 @@ screen casapadre():
         hovered Show("texto_botao",
             displayText = "Estalagem")
         unhovered Hide("texto_botao")
-
+## Tela da casa da curandeira externa
 screen casaMargaridaEXT():
     tag passos
     imagebutton:
@@ -1776,9 +1762,9 @@ screen casaMargaridaEXT():
         action [Hide("texto_botao"), Jump("caminholeproso")]
 
         hovered Show("texto_botao",
-            displayText = "Caminho para o leproso")
+            displayText = "Casa do Lázaro")
         unhovered Hide("texto_botao")  
-
+## Tela da casa do leproso externa
 screen casaLeprosoEXT():
     tag passos
     imagebutton:
@@ -1802,9 +1788,9 @@ screen casaLeprosoEXT():
         action [Hide("texto_botao"), Jump("casaleprosoint")]
 
         hovered Show("texto_botao",
-            displayText = "Entrar na casa do leproso")
+            displayText = "Entrar na casa do Lázaro")
         unhovered Hide("texto_botao")
-
+## Tela da casa do leproso interna
 screen casaLeprosoINT():
     tag passos
     imagebutton:
@@ -1818,7 +1804,7 @@ screen casaLeprosoINT():
         hovered Show("texto_botao",
             displayText = "Sair da casa")
         unhovered Hide("texto_botao")
-    
+## Tela do caminho entre o leproso e a curandeira
 screen caminhobebado_margarida():
     tag passos
     imagebutton:
@@ -1856,9 +1842,181 @@ screen caminhobebado_margarida():
         hovered Show("texto_botao",
             displayText = "Casa da curandeira")
         unhovered Hide("texto_botao")
-    
+## Holga
+screen casaHolgaEXT():
+    tag passos
+    imagebutton:
+        xpos 100
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("tavernaext")]
+        
+        hovered Show("texto_botao",
+            displayText = "Taverna")
+        unhovered Hide("texto_botao")
+    imagebutton:
+        xpos 1700
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("praca2")]
 
+        hovered Show("texto_botao",
+            displayText = "Scultura")
+        unhovered Hide("texto_botao")
+## Praca 2
+screen praca2():
+    tag passos
+    imagebutton:
+        xpos 400
+        ypos 500
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("casaholgaext")]
 
+        hovered Show("texto_botao",
+            displayText = "Casa da Holga")
+        unhovered Hide("texto_botao")
+    imagebutton:
+        xpos 600
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("praca1")]
+
+        hovered Show("texto_botao",
+            displayText = "Piazza")
+        unhovered Hide("texto_botao")
+
+screen praca1():
+    tag passos
+    imagebutton:
+        xpos 1000
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("praca2")]
+
+        hovered Show("texto_botao",
+            displayText = "Scultura")
+        unhovered Hide("texto_botao")
+    imagebutton:
+        xpos 450
+        ypos 650
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("igreja")]
+
+        hovered Show("texto_botao",
+            displayText = "Entrar na igreja")
+        unhovered Hide("texto_botao")
+    imagebutton:
+        xpos 1200
+        ypos 600
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("padaria")]
+
+        hovered Show("texto_botao",
+            displayText = "Entrar na padaria")
+        unhovered Hide("texto_botao")
+    imagebutton:
+        xpos 1600
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("casajoanaext")]
+
+        hovered Show("texto_botao",
+            displayText = "Casa da costureira")
+        unhovered Hide("texto_botao")
+
+screen igrejaINT():
+    tag passos
+    imagebutton:
+        xpos 900
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("praca1")]
+
+        hovered Show("texto_botao",
+            displayText = "Piazza")
+        unhovered Hide("texto_botao")
+
+screen padariaINT():
+    tag passos
+    imagebutton:
+        xpos 300
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("praca1")]
+
+        hovered Show("texto_botao",
+            displayText = "Piazza")
+        unhovered Hide("texto_botao")
+
+screen casaJoanaEXT():
+    tag passos
+    imagebutton:
+        xpos 200
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("praca1")]
+
+        hovered Show("texto_botao",
+            displayText = "Piazza")
+        unhovered Hide("texto_botao")
+    imagebutton:
+        xpos 250
+        ypos 400
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("plantacao")]
+
+        hovered Show("texto_botao",
+            displayText = "Campo")
+        unhovered Hide("texto_botao")
+    imagebutton:
+        xpos 1600
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("caminholeproso")]
+
+        hovered Show("texto_botao",
+            displayText = "Casa do Lázaro")
+        unhovered Hide("texto_botao")
+
+screen plantacao():
+    tag passos
+    imagebutton:
+        xpos 1600
+        ypos 1000
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("casajoanaext")]
+
+        hovered Show("texto_botao",
+            displayText = "Casa da costureira")
+        unhovered Hide("texto_botao")
 ############################################################# BOTÕES DE PERSONAGENS ##############################################################
 
 #Botão Vincent
@@ -1912,6 +2070,22 @@ screen leproso_parado:
             displayText = "Falar com o leproso")
         unhovered Hide("texto_botao")   
 
+screen holga_parada:
+    tag personagem
+    imagebutton:
+        xanchor 0.5
+        yanchor 0.5
+        xpos 900
+        ypos 700
+        idle "personagens/holga/holga.png"
+        hover "personagens/holga/holga.png"
+        at zoom_holga
+        action [Hide("texto_botao"), Jump("dialogo_holga")]
+
+        hovered Show("texto_botao",
+            displayText = "Falar com a Holga")
+        unhovered Hide("texto_botao")
+
 ############################################################# Hud ################################################
 screen HUD():
     frame:
@@ -1938,21 +2112,20 @@ screen vincentN:
     add "vincent" at vincent_right
     python:
         name_side = "right"
-
 screen padre:
     tag personagem
     add "padre" at padre_left
     python:
         name_side = "left"
-
 screen margaridaN:
     tag personagem
     add "margarida" at margarida_right
-
 screen leprosoN:
     tag personagem
     add "leproso" at leproso_right
-
+screen holgaN:
+    tag personagem
+    add "holga" at holga_right   
 
 ############################################################### Esconde as telas ######################################################
 label hide_all_screens:
@@ -1970,6 +2143,15 @@ label hide_all_screens:
     hide screen texto_botao
     hide screen pistas
     hide screen vincent_pistas
+    hide screen leprosoN
+    hide screen leproso_parado
+    hide screen casaLeprosoEXT
+    hide screen casaLeprosoINT
+    hide screen holga_parada
+    hide screen casaHolgaEXT
+    hide screen praca2
+    hide screen praca1
+    hide screen igrejaINT
     return
 
 ################################# TESTE DE PISTAS ##############################################

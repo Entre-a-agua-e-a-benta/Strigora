@@ -26,7 +26,8 @@ define p = Character("Padre") ## O JOGADOR
 define v = Character("Vincent") ## DONO DA ESTALAGEM/TAVERNA
 define s = Character("Seren") ## CRIANÇA GEMEA FILHA DO BEBADO
 define m = Character("Margarida") ## COSTUREIRA
-define l = Character("Leproso") ## LEPROSO
+define l = Character("Lázaro") ## LEPROSO
+define h = Character("Holga") ## HOLGA
 
 # The game starts here.
 
@@ -140,44 +141,84 @@ label casamargaridaext:
     show screen casaMargaridaEXT
     call screen margarida_parada
 
+## Cena Casa Leproso Ext
 label caminholeproso:
     play music "ambiencia_ext_floresta.wav"
     scene bg casa leproso ext
     call screen casaLeprosoEXT
 
+## Cena Caminho entre bebado e margarida   
 label caminhobebado_margarida:
     play music "ambiencia_ext_floresta.wav"
     scene bg caminho curandeira
     call screen caminhobebado_margarida
 
+## Cena Casa Leproso Int
 label casaleprosoint:
     play music "ambiencia_int_casas.wav"
     scene bg leproso int
     show screen casaLeprosoINT
     call screen leproso_parado
 
+## Cena Casa Holga
 label casaholgaext:
     play music "ambiencia_ext_geral.mp3"
     scene bg casa holga ext
-    call screen casaHolgaEXT
+    show screen casaHolgaEXT
+    call screen holga_parada
+
+## Cena praca 2 que tem a escultura
+label praca2:
+    play music "ambiencia_ext_geral.mp3"
+    scene bg praca2
+    call screen praca2
+
+## Cena praca 1 que tem igreja e padaria
+label praca1:
+    play music "ambiencia_ext_geral.mp3"
+    scene bg praca1
+    call screen praca1
+
+label igreja:
+    play music "ambiencia_ext_geral.mp3"
+    scene bg igreja int
+    call screen igrejaINT
+
+label padaria:
+    play music "ambiencia_ext_geral.mp3"
+    scene bg padaria int
+    call screen padariaINT
+
+label casajoanaext:
+    play music "ambiencia_ext_geral.mp3"
+    scene bg costureira ext
+    call screen casaJoanaEXT
+
+label plantacao:
+    play music "ambiencia_ext_floresta.wav"
+    scene bg plantacao
+    call screen plantacao
+
 
 ############# Arruma posição dos personagens dentro do dialogo ###############################
 transform padre_left:
     zoom 0.3
     ypos 0.3
     xpos -0.05
-
 transform vincent_right:
     zoom 0.3
     ypos 0.3
     xpos 0.63
-
 transform margarida_right:
     zoom 0.3
     ypos 0.3
     xpos 0.70
 transform leproso_right:
     zoom 0.3
+    ypos 0.3
+    xpos 0.70
+transform holga_right:
+    zoom 0.3   
     ypos 0.3
     xpos 0.70
 
@@ -362,6 +403,8 @@ label escolhas_margarida:
             jump ontem_margarida
         "Me conte uma história":
             jump historia_margarida
+        "Não perguntar nada":
+            jump tavernaint
 
 label meconte_margarida:
     show screen margaridaN
@@ -398,6 +441,7 @@ label historia_margarida:
 
 ######################################## CENAS QUE OCORREM NA CASA DO LEPROSO #######################################################
 label dialogo_leproso:
+    call hide_all_screens
     show screen leprosoN
     p "Buongiorno…"
     p "Não sei a notícia chegou aqui, mas eu estou encarregado de achar o culpado pelas coisas que vem acontecendo na região, pensei que mesmo doente você talvez tivesse alguma informação para contribuir, ou algo no mínimo interessante a dizer."
@@ -417,6 +461,9 @@ label escolhas_leproso:
             jump doenca_leproso
         "O que você fez ontem a noite?":
             jump ontem_leproso
+
+        "Não perguntar nada":
+                jump tavernaint
 
 label meconte_leproso:
     show screen leprosoN
@@ -499,6 +546,12 @@ label sentiu_leproso:
     $ checar_interacao ()
     jump casaleprosoint
 
+############################################ CENAS HOLGA ###########################################################
+label dialogo_holga:
+    call hide_all_screens
+    show screen holgaN
+    h "eu sou holga"
+    jump casaholgaext
 
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
 label noite:
