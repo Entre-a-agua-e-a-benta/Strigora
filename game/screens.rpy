@@ -1768,7 +1768,7 @@ screen casaMargaridaEXT():
 screen casaLeprosoEXT():
     tag passos
     imagebutton:
-        xpos 900
+        xpos 1250
         ypos 900
         idle "botao_passos"
         hover "botao_passos"
@@ -1781,7 +1781,7 @@ screen casaLeprosoEXT():
     
     imagebutton:
         xpos 1000
-        ypos 400
+        ypos 300
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
@@ -1789,6 +1789,18 @@ screen casaLeprosoEXT():
 
         hovered Show("texto_botao",
             displayText = "Entrar na casa do Lázaro")
+        unhovered Hide("texto_botao")
+
+    imagebutton:
+        xpos 600
+        ypos 900
+        idle "botao_passos"
+        hover "botao_passos"
+        at zoom_botao
+        action [Hide("texto_botao"), Jump("casajoanaext")]
+
+        hovered Show("texto_botao",
+            displayText = "Casa da costureira")
         unhovered Hide("texto_botao")
 ## Tela da casa do leproso interna
 screen casaLeprosoINT():

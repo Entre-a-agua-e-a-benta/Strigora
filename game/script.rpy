@@ -404,7 +404,7 @@ label escolhas_margarida:
         "Me conte uma história":
             jump historia_margarida
         "Não perguntar nada":
-            jump tavernaint
+            jump casamargaridaext
 
 label meconte_margarida:
     show screen margaridaN
