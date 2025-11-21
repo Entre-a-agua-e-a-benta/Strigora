@@ -2098,6 +2098,21 @@ screen holga_parada:
             displayText = "Falar com a Holga")
         unhovered Hide("texto_botao")
 
+screen bartolomeu_parado:
+    tag personagem
+    imagebutton:
+        xanchor 0.5
+        yanchor 0.5
+        xpos 900
+        ypos 700
+        idle "personagens/padeiro/padeiro.png"
+        hover "personagens/padeiro/padeiro.png"
+        at zoom_bartolomeu
+        action [Hide("texto_botao"), Jump("dialogo_bartolomeu")]
+
+        hovered Show("texto_botao",
+            displayText = "Falar com o padeiro")
+        unhovered Hide("texto_botao")
 ############################################################# Hud ################################################
 screen HUD():
     frame:
@@ -2118,6 +2133,7 @@ image vincent = "personagens/vincent/vincent.png"
 image margarida = "personagens/margarida/margarida.png" 
 image padre = "personagens/padre/padre.png"
 image holga = "personagens/holga/holga.png"
+image padeiro = "personagens/padeiro/padeiro.png"
 
 screen vincentN:
     tag personagem
@@ -2138,6 +2154,9 @@ screen leprosoN:
 screen holgaN:
     tag personagem
     add "holga" at holga_right   
+screen bartolomeuN:
+    tag personagem
+    add "padeiro" at bartolomeu_right
 
 ############################################################### Esconde as telas ######################################################
 label hide_all_screens:
@@ -2164,7 +2183,23 @@ label hide_all_screens:
     hide screen praca2
     hide screen praca1
     hide screen igrejaINT
+    hide screen padaria
+    hide screen casaJoanaEXT
+    hide screen padeiroN
+    hide screen plantacao
+    hide screen padeiro_parado
     return
+######################################### NOITE ######################################################
+screen casaPadreNOITE():
+    imagebutton:
+        idle "botoes/quadro de pistas.jpg"
+        hover "botoes/quadro de pistas.jpg"
+        at zoom_quadropistas and quadropistas_posicao
+        action [Hide("texto_botao"), Jump("noite")]
+
+        hovered Show("texto_botao",
+            displayText = "Ver quadro de pistas")
+        unhovered Hide("texto_botao")   
 
 ################################# TESTE DE PISTAS ##############################################
 image tela preta = Solid("#000")

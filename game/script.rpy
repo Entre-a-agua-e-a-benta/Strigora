@@ -28,6 +28,7 @@ define s = Character("Seren") ## CRIANÇA GEMEA FILHA DO BEBADO
 define m = Character("Margarida") ## COSTUREIRA
 define l = Character("Lázaro") ## LEPROSO
 define h = Character("Holga") ## HOLGA
+define b = Character("Bartolomeu") ## PADEIRO
 
 # The game starts here.
 
@@ -45,7 +46,7 @@ label start:
         def checar_interacao():
             global interacao
             if interacao == 0:
-                renpy.jump("noite")
+                renpy.jump("casapadre_noite")
 
         def alterar_interacao(valor: int):
             global interacao
@@ -187,7 +188,8 @@ label igreja:
 label padaria:
     play music "ambiencia_ext_geral.mp3"
     scene bg padaria int
-    call screen padariaINT
+    show screen padariaINT
+    call screen bartolomeu_parado
 
 label casajoanaext:
     play music "ambiencia_ext_geral.mp3"
@@ -218,6 +220,10 @@ transform leproso_right:
     ypos 0.3
     xpos 0.70
 transform holga_right:
+    zoom 0.3   
+    ypos 0.3
+    xpos 0.70
+transform bartolomeu_right:
     zoom 0.3   
     ypos 0.3
     xpos 0.70
@@ -348,6 +354,8 @@ label meconte_seren:
     menu:
         "Me conte mais sobre esses sonhos":
             jump sonhos_seren
+        "Como são esses sonhos?":
+            jump sonhos_seren
 
 label sonhos_seren:
     s "No começo, eu só via silhuetas. Um campo, uma árvore sozinha, uma sombra me seguindo de longe. Depois vieram os sussurros. E agora, agora… Agora eu vejo tudo…"
@@ -391,7 +399,7 @@ label dialogo_margarida:
     m "Veio aqui procurar um motivo para jogar a culpa em mim?"
     show screen padre
     p "Não, claro que não. Estou apenas investigando… "
-    p "Fale comigo…"
+    p "Por favor, fale comigo."
     jump escolhas_margarida
 
 label escolhas_margarida:
@@ -553,9 +561,23 @@ label dialogo_holga:
     h "eu sou holga"
     jump casaholgaext
 
-######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
-label noite:
+########################################### CENAS PADEIRO ###########################################################
+label dialogo_bartolomeu:
+    call hide_all_screens
+    show screen bartolomeuN
+    b "eu sou o padeiro"
+    jump padaria
 
+######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
+
+label casapadre_noite:
+    call hide_all_screens
+    play music "ambiencia_int_casas.wav"
+    scene bg casa padre int
+    call screen casaPadreNOITE 
+    return
+
+label noite:
     call screen pistas
 
 label vincent_pistas:

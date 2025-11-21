@@ -540,6 +540,28 @@ transform zoom_holga:
     on idle:
         linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
 
+transform zoom_bartolomeu:
+    zoom 0.14
+    on show:
+        pause 0.0
+    on hover:
+        linear 0.05 zoom 0.16  # Zooms to 110% over 0.05 seconds
+    on idle:
+        linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
+
+transform zoom_quadropistas:
+    zoom 2.0
+    on show:
+        pause 0.0
+    on hover:
+        linear 0.05 zoom 2.2  # Zooms to 110% over 0.05 seconds
+    on idle:
+        linear 0.1 zoom 2.0  # Returns to original size over 0.1 seconds
+
+transform quadropistas_posicao:
+    xalign 0.5
+    yalign 0.5
+
 transform dynamic_pos:
     xalign posicao_texto_x
     yalign posicao_texto_y
