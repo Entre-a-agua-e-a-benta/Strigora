@@ -65,7 +65,7 @@ label start:
             interacao = 3
             renpy.notify("interações restauradas")
             renpy.notify("passou o dia")
-            # jump casa do padre
+            renpy.jump("casapadre")
         
         # Progride o diálogo de um personagem específico, aumentando seu progresso em 1 e marcando que já conversou hoje.
         def progredir(personagem: str):

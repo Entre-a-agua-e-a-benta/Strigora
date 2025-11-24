@@ -2212,6 +2212,8 @@ screen pistas():
         hover "vincent"
 
         hotspot (0, 0, 1920, 1080) action Jump("vincent_pistas")
+    textbutton "Não acusar ninguém hoje":
+        action Function(passar_dia)
     
 screen vincent_pistas():
     tag pistas
@@ -2230,4 +2232,9 @@ screen vincent_pistas():
         xpos 1000
         ypos 500
         textbutton "Matar vincent":
-            action Jump("casapadre") alt "Casapadre"
+            action Function(passar_dia)
+    frame:
+        xpos 1300
+        ypos 500
+        textbutton "Voltar":
+            action Jump("noite") alt "Noite"
