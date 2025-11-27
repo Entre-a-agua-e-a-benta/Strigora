@@ -5,7 +5,7 @@ default name_side = "left"
 # Define dia incial
 default dia = 1
 # Define quantas interações pode ter
-default interacao = 3
+default interacao = 1
 
 ## Variaveis do diálogo com o Vincent
 default progressoVincent = 0
@@ -30,11 +30,15 @@ define l = Character("Lázaro") ## LEPROSO
 define h = Character("Holga") ## HOLGA
 define b = Character("Bartolomeu") ## PADEIRO
 
+
+
 # The game starts here.
 
 label start:
 
     show screen HUD
+
+    
 
     init python:
         ## Inicializa o dicionário de personagens
@@ -101,6 +105,15 @@ label start:
                 pistas_list[i] = pista
                 i += 1
             return pistas_list
+
+        def mostrar_personagem(personagem: str, emocao: str):
+            global name_side
+            renpy.notify("consegui")
+            if personagem == "padre":
+                name_side = "left"
+            else:
+                name_side = "right"
+            renpy.show_screen(personagem + emocao)
 
 #### $ adicionar_pista("Vincent", "Gosta de HOMENS") #### é assim que bota pista
 
@@ -275,6 +288,7 @@ label ontem_vincent:
     show screen vincentN
     v "Fiz o que faço toda noite. Fechei a estalagem tarde, como sempre. Tinha um bêbado vomitando na entrada e um quarto reservado pro padre…"
     v "Passei a vassoura, contei os barris, limpei as mesas. E quando a lenha terminou, fui buscar mais atrás do depósito. Voltei antes da meia-noite."
+    $ adicionar_pista("Vincent", "Gosta de HOMENS")
     v "Tranquei tudo por dentro. Ninguém entrou depois disso, nem mesmo meu irmão, que vive dizendo que a bebida chama por ele."
     $ checar_interacao()
     jump tavernaint
@@ -297,7 +311,8 @@ label default_vincent:
 label meconte_vincent:
     #diminui interação do jogador
     $ alterar_interacao(-1)
-    show screen vincentN
+    $ mostrar_personagem("vincent", "N")
+    #show screen vincentN
     v "Bom… Eu sou o Vincent, cuido da taverna e da estalagem… Ou o que sobrou dela, parece que a aldeia resolveu que o medo é desculpa para parar de beber."
     v "Mas desde que você chegou, tenho limpado o quarto duas vezes por dia, pelo menos um pouco de trabalho para manter a mente ocupada …. "
     v "Não gosto de falar do que não vi com meus próprios olhos. E, pra ser sincero, ultimamente, prefiro ver cada vez menos. Gente demais sussurrando. Portas que antes ficavam abertas agora estão fechadas…"

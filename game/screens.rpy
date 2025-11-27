@@ -2138,13 +2138,11 @@ image padeiro = "personagens/padeiro/padeiro.png"
 screen vincentN:
     tag personagem
     add "vincent" at vincent_right
-    python:
-        name_side = "right"
+    $ name_side = "right"
 screen padre:
     tag personagem
     add "padre" at padre_left
-    python:
-        name_side = "left"
+    $ name_side = "left"
 screen margaridaN:
     tag personagem
     add "margarida" at margarida_right
@@ -2227,12 +2225,15 @@ screen vincent_pistas():
             text pistas_list[2]
             text pistas_list[3]
             text pistas_list[4]
-       
+
     frame:
         xpos 1000
         ypos 500
         textbutton "Matar vincent":
-            action Function(passar_dia)
+            if pistas_list[0] == "":
+                action Notify("Não tenho provas para acusá-lo")
+            else:
+                action Function(passar_dia)
     frame:
         xpos 1300
         ypos 500
