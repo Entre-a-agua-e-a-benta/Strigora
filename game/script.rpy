@@ -30,8 +30,6 @@ define l = Character("Lázaro") ## LEPROSO
 define h = Character("Holga") ## HOLGA
 define b = Character("Bartolomeu") ## PADEIRO
 
-
-
 # The game starts here.
 
 label start:
@@ -44,8 +42,8 @@ label start:
         ## Inicializa o dicionário de personagens
         personagens_list = ["Bartolomeu", "Salvatore", "Holga", "Leproso", "Joana", "Margarida", "Agnes", "Bêbado", "Wiliam", "Vincent", "Seren"]
         for personagem in personagens_list:
-            personagens_dict[personagem] = [False, 0, list()]
-            # personagens_dict["nome do personagem"] = [já conversou hoje (bool), progresso (int), lista de pistas (começa vazia, vai adicionando)]
+            personagens_dict[personagem] = [False, 0, list(), True]
+            # personagens_dict["nome do personagem"] = [já conversou hoje (bool), progresso (int), lista de pistas (começa vazia, vai adicionando), vivo (bool)]
         
         def checar_interacao():
             global interacao
@@ -61,7 +59,7 @@ label start:
                 sinal = ""
             renpy.notify(sinal + str(valor) + " interação")
 
-        def passar_dia():
+        def passar_dia(matar_personagem=None):
             global dia, interacao, personagens_list, personagens_dict
             dia = dia + 1
             for personagem in personagens_list:
@@ -69,6 +67,9 @@ label start:
             interacao = 3
             renpy.notify("interações restauradas")
             renpy.notify("passou o dia")
+            if matar_personagem != None:
+                personagens_dict[matar_personagem][3] = False
+                renpy.notify("Matei " + matar_personagem)
             renpy.jump("casapadre")
         
         # Progride o diálogo de um personagem específico, aumentando seu progresso em 1 e marcando que já conversou hoje.
@@ -115,6 +116,8 @@ label start:
                 name_side = "right"
             renpy.show_screen(personagem + emocao)
 
+        
+
 #### $ adicionar_pista("Vincent", "Gosta de HOMENS") #### é assim que bota pista
 
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
@@ -126,15 +129,19 @@ label start:
 
 ## Cena externa da taverna
 label tavernaext:
+    call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg taverna ext
     call screen tavernaext
 
 ## Cena dentro da taverna
 label tavernaint:
+    call hide_all_screens
     scene bg taverna int
-    show screen tavernaint
-    call screen vincent_parado
+    python:
+        if personagens_dict["Vincent"][3] == True:
+            renpy.show_screen("vincent_parado")
+    call screen tavernaint
 
 ## Cena casa do bebado
 label casabebadoext:
@@ -144,12 +151,14 @@ label casabebadoext:
 
 ## Cena quarto do padre dentro da taverna
 label casapadre:
+    call hide_all_screens
     play music "ambiencia_int_casas.wav"
     scene bg casa padre int
     call screen casapadre
 
 ## Cena Casa Margarida Ext
 label casamargaridaext:
+    call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg casa curandeira ext
     show screen casaMargaridaEXT
@@ -157,18 +166,21 @@ label casamargaridaext:
 
 ## Cena Casa Leproso Ext
 label caminholeproso:
+    call hide_all_screens
     play music "ambiencia_ext_floresta.wav"
     scene bg casa leproso ext
     call screen casaLeprosoEXT
 
 ## Cena Caminho entre bebado e margarida   
 label caminhobebado_margarida:
+    call hide_all_screens
     play music "ambiencia_ext_floresta.wav"
     scene bg caminho curandeira
     call screen caminhobebado_margarida
 
 ## Cena Casa Leproso Int
 label casaleprosoint:
+    call hide_all_screens
     play music "ambiencia_int_casas.wav"
     scene bg leproso int
     show screen casaLeprosoINT
@@ -176,6 +188,7 @@ label casaleprosoint:
 
 ## Cena Casa Holga
 label casaholgaext:
+    call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg casa holga ext
     show screen casaHolgaEXT
@@ -183,33 +196,39 @@ label casaholgaext:
 
 ## Cena praca 2 que tem a escultura
 label praca2:
+    call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg praca2
     call screen praca2
 
 ## Cena praca 1 que tem igreja e padaria
 label praca1:
+    call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg praca1
     call screen praca1
 
 label igreja:
+    call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg igreja int
     call screen igrejaINT
 
 label padaria:
+    call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg padaria int
     show screen padariaINT
     call screen bartolomeu_parado
 
 label casajoanaext:
+    call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg costureira ext
     call screen casaJoanaEXT
 
 label plantacao:
+    call hide_all_screens
     play music "ambiencia_ext_floresta.wav"
     scene bg plantacao
     call screen plantacao
@@ -341,6 +360,7 @@ label esposa_vincent:
     menu:
         "E a criança? Onde ela está?":
             jump crianca_vincent
+label crianca_vincent:
     show screen vincentN
     v "A menina… Bom… Ela está viva, isso é mais do que posso dizer de muita gente…"
     v "Eu cuido dela, mas de um tempo para cá, ela parece doente, às vezes fala coisa dormindo e acorda com febre alta. Eu tento ser como um pai para ela, mas mesmo assim acho que às vezes não sou o suficiente."

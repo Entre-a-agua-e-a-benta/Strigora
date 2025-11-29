@@ -2138,11 +2138,9 @@ image padeiro = "personagens/padeiro/padeiro.png"
 screen vincentN:
     tag personagem
     add "vincent" at vincent_right
-    $ name_side = "right"
 screen padre:
     tag personagem
     add "padre" at padre_left
-    $ name_side = "left"
 screen margaridaN:
     tag personagem
     add "margarida" at margarida_right
@@ -2163,29 +2161,38 @@ label hide_all_screens:
     hide screen tavernaint
     hide screen casapadre
     hide screen casaMargaridaEXT
-    hide screen caminhobebado_margarida
-    hide screen padre
-    hide screen vincentN
-    hide screen margaridaN
-    hide screen vincent_parado
-    hide screen margarida_parada
-    hide screen texto_botao
-    hide screen pistas
-    hide screen vincent_pistas
-    hide screen leprosoN
-    hide screen leproso_parado
     hide screen casaLeprosoEXT
     hide screen casaLeprosoINT
-    hide screen holga_parada
+    hide screen caminhobebado_margarida
     hide screen casaHolgaEXT
     hide screen praca2
     hide screen praca1
     hide screen igrejaINT
-    hide screen padaria
+    hide screen padariaINT
     hide screen casaJoanaEXT
-    hide screen padeiroN
     hide screen plantacao
-    hide screen padeiro_parado
+
+    hide screen vincent_parado
+    hide screen margarida_parada
+    hide screen leproso_parado
+    hide screen holga_parada
+    hide screen bartolomeu_parado
+
+    hide screen padre
+    hide screen vincentN
+    hide screen margaridaN
+    hide screen leprosoN
+    hide screen holgaN
+    hide screen bartolomeuN
+
+
+    hide screen texto_botao
+    hide screen pistas
+    hide screen vincent_pistas
+
+    hide screen casaPadreNOITE
+    hide screen pistas
+    hide screen vincent_pistas
     return
 ######################################### NOITE ######################################################
 screen casaPadreNOITE():
@@ -2233,7 +2240,7 @@ screen vincent_pistas():
             if pistas_list[0] == "":
                 action Notify("Não tenho provas para acusá-lo")
             else:
-                action Function(passar_dia)
+                action Function(passar_dia, "Vincent")
     frame:
         xpos 1300
         ypos 500
