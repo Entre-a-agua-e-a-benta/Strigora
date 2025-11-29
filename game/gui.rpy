@@ -549,6 +549,15 @@ transform zoom_bartolomeu:
     on idle:
         linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
 
+transform zoom_bebado:
+    zoom 0.14
+    on show:
+        pause 0.0
+    on hover:
+        linear 0.05 zoom 0.16  # Zooms to 110% over 0.05 seconds
+    on idle:
+        linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
+        
 transform zoom_quadropistas:
     zoom 2.0
     on show:
@@ -565,3 +574,13 @@ transform quadropistas_posicao:
 transform dynamic_pos:
     xalign posicao_texto_x
     yalign posicao_texto_y
+
+########################################## tela da noite ##########################################
+transform zoom_telapistas:
+    zoom 0.25
+    on show:
+        pause 0.0
+    on hover:
+        linear 0.05 zoom 0.27  # Zooms to 110% over 0.05 seconds
+    on idle:
+        linear 0.1 zoom 0.25  # Returns to original size over 0.1 seconds

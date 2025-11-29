@@ -29,6 +29,7 @@ define m = Character("Margarida") ## COSTUREIRA
 define l = Character("Lázaro") ## LEPROSO
 define h = Character("Holga") ## HOLGA
 define b = Character("Bartolomeu") ## PADEIRO
+define be = Character("Bêbado")
 
 # The game starts here.
 
@@ -123,7 +124,7 @@ label start:
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
 
 
-
+    call screen pistas
 
 ######################################## LOCAIS PELO MAPA ##############################################################
 
@@ -147,6 +148,9 @@ label tavernaint:
 label casabebadoext:
     play music "ambiencia_ext_geral.mp3"
     scene bg casa bebado ext
+    python:
+        if personagens_dict["Bêbado"][3] == True:
+            renpy.show_screen("bebado_parado")
     call screen casabebado
 
 ## Cena quarto do padre dentro da taverna
@@ -259,6 +263,11 @@ transform bartolomeu_right:
     zoom 0.3   
     ypos 0.3
     xpos 0.70
+
+transform bebado_right:
+    zoom 0.5   
+    ypos 0.1
+    xpos 0.5
 
 ######################################## CENAS QUE OCORREM NA TAVERNA #######################################################
 
@@ -603,6 +612,16 @@ label dialogo_bartolomeu:
     b "eu sou o padeiro"
     jump padaria
 
+########################################### CENAS BEBADO ###############################################################
+label dialogo_bebado:
+    call hide_all_screens
+    show screen padre
+    p "salve fio"
+    show screen bebadoteste
+    be "eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo "
+    be "vo bate na mae"
+    jump casabebadoext
+    
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
 
 label casapadre_noite:

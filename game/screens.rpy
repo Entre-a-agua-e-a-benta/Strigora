@@ -2113,6 +2113,22 @@ screen bartolomeu_parado:
         hovered Show("texto_botao",
             displayText = "Falar com o padeiro")
         unhovered Hide("texto_botao")
+
+screen bebado_parado:
+    tag personagem
+    imagebutton:
+        xanchor 0.5
+        yanchor 0.5
+        xpos 900
+        ypos 700
+        idle "personagens/bebado/bebado.png"
+        hover "personagens/bebado/bebado.png"
+        at zoom_bebado
+        action [Hide("texto_botao"), Jump("dialogo_bebado")]
+
+        hovered Show("texto_botao",
+            displayText = "Falar com o bebado")
+        unhovered Hide("texto_botao")
 ############################################################# Hud ################################################
 screen HUD():
     frame:
@@ -2135,6 +2151,7 @@ image padre = "personagens/padre/padre.png"
 image holga = "personagens/holga/holga.png"
 image padeiro = "personagens/padeiro/padeiro.png"
 
+image bebado = "personagens/bebado/bebado bravo sem fundo.png"
 screen vincentN:
     tag personagem
     add "vincent" at vincent_right
@@ -2153,6 +2170,9 @@ screen holgaN:
 screen bartolomeuN:
     tag personagem
     add "padeiro" at bartolomeu_right
+screen bebadoteste:
+    tag personagem
+    add "bebado" at bebado_right
 
 ############################################################### Esconde as telas ######################################################
 label hide_all_screens:
@@ -2212,11 +2232,33 @@ image tela preta = Solid("#000")
 screen pistas():
     tag pistas
     add "tela preta"
-    imagemap:
-        idle "vincent"
-        hover "vincent"
+    imagebutton:
+        xalign 0.15
+        yalign 0.2
+        idle "vincent tela"
+        hover "vincent tela"
 
-        hotspot (0, 0, 1920, 1080) action Jump("vincent_pistas")
+        at zoom_telapistas
+        action [Hide("texto_botao"), Jump("vincent_pistas")]
+
+        hovered Show("texto_botao",
+            displayText = "Ver pistas do Vincent")
+        unhovered Hide("texto_botao") 
+
+    imagebutton:
+        xalign 0.3
+        yalign 0.2
+        idle "margarida tela"
+        hover "margarida tela"
+
+        at zoom_telapistas
+        action [Hide("texto_botao"), Jump("margarida_pistas")]
+
+        hovered Show("texto_botao",
+            displayText = "Ver pistas da Margarida")
+        unhovered Hide("texto_botao") 
+    
+
     textbutton "Não acusar ninguém hoje":
         action Function(passar_dia)
     
@@ -2246,3 +2288,30 @@ screen vincent_pistas():
         ypos 500
         textbutton "Voltar":
             action Jump("noite") alt "Noite"
+
+screen margarida_pistas():
+    tag pistas
+    add "tela preta"
+    frame:
+        xalign 0.5 yalign 0.5
+        vbox:
+            text "Pistas encontradas:"
+            text pistas_list[0]
+            text pistas_list[1]
+            text pistas_list[2]
+            text pistas_list[3]
+            text pistas_list[4]
+
+    frame:
+        xpos 1000
+        ypos 500
+        textbutton "Matar Margarida":
+            if pistas_list[0] == "":
+                action Notify("Não tenho provas para acusá-lá")
+            else:
+                action Function(passar_dia, "Margarida")
+    frame:
+        xpos 1300
+        ypos 500
+        textbutton "Voltar":
+            action Jump("noite") alt "Noite" 
