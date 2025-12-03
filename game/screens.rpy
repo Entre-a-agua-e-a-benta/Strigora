@@ -1759,13 +1759,13 @@ screen casaMargaridaEXT():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action [Hide("texto_botao"), Jump("caminholeproso")]
+        action [Hide("texto_botao"), Jump("caminhoLazaro")]
 
         hovered Show("texto_botao",
             displayText = "Casa do Lázaro")
         unhovered Hide("texto_botao")  
-## Tela da casa do leproso externa
-screen casaLeprosoEXT():
+## Tela da casa do Lázaro externa
+screen casaLazaroEXT():
     tag passos
     imagebutton:
         xpos 1250
@@ -1785,7 +1785,7 @@ screen casaLeprosoEXT():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action [Hide("texto_botao"), Jump("casaleprosoint")]
+        action [Hide("texto_botao"), Jump("casaLazaroint")]
 
         hovered Show("texto_botao",
             displayText = "Entrar na casa do Lázaro")
@@ -1802,8 +1802,8 @@ screen casaLeprosoEXT():
         hovered Show("texto_botao",
             displayText = "Casa da costureira")
         unhovered Hide("texto_botao")
-## Tela da casa do leproso interna
-screen casaLeprosoINT():
+## Tela da casa do Lázaro interna
+screen casaLazaroINT():
     tag passos
     imagebutton:
         xpos 1100
@@ -1811,12 +1811,12 @@ screen casaLeprosoINT():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action [Hide("texto_botao"), Jump("caminholeproso")]
+        action [Hide("texto_botao"), Jump("caminhoLazaro")]
 
         hovered Show("texto_botao",
             displayText = "Sair da casa")
         unhovered Hide("texto_botao")
-## Tela do caminho entre o leproso e a curandeira
+## Tela do caminho entre o Lázaro e a curandeira
 screen caminhobebado_margarida():
     tag passos
     imagebutton:
@@ -2010,7 +2010,7 @@ screen casaJoanaEXT():
         idle "botao_passos"
         hover "botao_passos"
         at zoom_botao
-        action [Hide("texto_botao"), Jump("caminholeproso")]
+        action [Hide("texto_botao"), Jump("caminhoLazaro")]
 
         hovered Show("texto_botao",
             displayText = "Casa do Lázaro")
@@ -2065,8 +2065,8 @@ screen margarida_parada:
             displayText = "Falar com a curandeira")
         unhovered Hide("texto_botao")
 
-## Botao leproso
-screen leproso_parado:
+## Botao Lázaro
+screen Lazaro_parado:
     tag personagem
     imagebutton:
         xanchor 0.5
@@ -2075,11 +2075,11 @@ screen leproso_parado:
         ypos 600
         idle "personagens/leproso/leproso.png"
         hover "personagens/leproso/leproso.png"
-        at zoom_leproso
-        action [Hide("texto_botao"), Jump("dialogo_leproso")]
+        at zoom_Lazaro
+        action [Hide("texto_botao"), Jump("dialogo_lazaro")]
 
         hovered Show("texto_botao",
-            displayText = "Falar com o leproso")
+            displayText = "Falar com o Lázaro")
         unhovered Hide("texto_botao")   
 
 screen holga_parada:
@@ -2144,7 +2144,7 @@ screen HUD():
 
 ######################################################### Falas de personagens ##############################################################
 
-image leproso = "personagens/leproso/leproso.png"
+image lazaro = "personagens/leproso/leproso.png"
 image vincent = "personagens/vincent/vincent.png"
 image margarida = "personagens/margarida/margarida.png" 
 image padre = "personagens/padre/padre.png"
@@ -2154,22 +2154,22 @@ image padeiro = "personagens/padeiro/padeiro.png"
 image bebado = "personagens/bebado/bebado bravo sem fundo.png"
 screen vincentN:
     tag personagem
-    add "vincent" at vincent_right
-screen padre:
+    add "vincent" at personagem_right
+screen padreN:
     tag personagem
     add "padre" at padre_left
 screen margaridaN:
     tag personagem
-    add "margarida" at margarida_right
-screen leprosoN:
+    add "margarida" at personagem_right
+screen lazaroN:
     tag personagem
-    add "leproso" at leproso_right
+    add "lazaro" at personagem_right
 screen holgaN:
     tag personagem
-    add "holga" at holga_right   
+    add "holga" at personagem_right   
 screen bartolomeuN:
     tag personagem
-    add "padeiro" at bartolomeu_right
+    add "padeiro" at personagem_right
 screen bebadoteste:
     tag personagem
     add "bebado" at bebado_right
@@ -2181,8 +2181,8 @@ label hide_all_screens:
     hide screen tavernaint
     hide screen casapadre
     hide screen casaMargaridaEXT
-    hide screen casaLeprosoEXT
-    hide screen casaLeprosoINT
+    hide screen casaLazaroEXT
+    hide screen casaLazaroINT
     hide screen caminhobebado_margarida
     hide screen casaHolgaEXT
     hide screen praca2
@@ -2194,14 +2194,14 @@ label hide_all_screens:
 
     hide screen vincent_parado
     hide screen margarida_parada
-    hide screen leproso_parado
+    hide screen lazaro_parado
     hide screen holga_parada
     hide screen bartolomeu_parado
 
     hide screen padre
     hide screen vincentN
     hide screen margaridaN
-    hide screen leprosoN
+    hide screen lazaroN
     hide screen holgaN
     hide screen bartolomeuN
 
@@ -2231,40 +2231,28 @@ image tela preta = Solid("#000")
 
 screen pistas():
     tag pistas
-    add "tela preta"
-    imagebutton:
-        xalign 0.15
-        yalign 0.2
-        idle "vincent tela"
-        hover "vincent tela"
+    imagemap:
+        ground "images/pistas_idle.jpg"
+        hover "images/pistas_hover.jpg"
+        hotspot (59, 189, 216, 282) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Vincent"), Jump("pistas")]
 
-        at zoom_telapistas
-        action [Hide("texto_botao"), Jump("vincent_pistas")]
+        hotspot (326, 188, 216, 285) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Margarida"), Jump("pistas")]
+        hotspot (596, 188, 212, 285) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Bartolomeu"), Jump("pistas")]
+        hotspot (864, 187, 214, 283) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Agnes"), Jump("pistas")]
+        hotspot (1131, 187, 219, 283) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Lázaro"), Jump("pistas")]
+        hotspot (193, 556, 214, 284) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Seren"), Jump("pistas")]
+        hotspot (461, 554, 213, 282) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Holga"), Jump("pistas")]
+        hotspot (728, 556, 215, 283) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Willian"), Jump("pistas")]
+        hotspot (995, 556, 218, 284) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Bêbado"), Jump("pistas")]
+        hotspot (1388, 206, 498, 668) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Bruxa"), Jump("pistas")]
 
-        hovered Show("texto_botao",
-            displayText = "Ver pistas do Vincent")
-        unhovered Hide("texto_botao") 
+        hotspot (572, 923, 770, 91) action Function(passar_dia)
 
-    imagebutton:
-        xalign 0.3
-        yalign 0.2
-        idle "margarida tela"
-        hover "margarida tela"
-
-        at zoom_telapistas
-        action [Hide("texto_botao"), Jump("margarida_pistas")]
-
-        hovered Show("texto_botao",
-            displayText = "Ver pistas da Margarida")
-        unhovered Hide("texto_botao") 
     
-
-    textbutton "Não acusar ninguém hoje":
-        action Function(passar_dia)
-    
-screen vincent_pistas():
+screen pistas_personagem(personagem):
     tag pistas
     add    "tela preta"
+    $ genero = "o" if personagens_dict[personagem].genero == 'M' else "a"
     frame:
         xpos 500 ypos 200
         vbox:
@@ -2274,44 +2262,17 @@ screen vincent_pistas():
             text pistas_list[2]
             text pistas_list[3]
             text pistas_list[4]
-
-    frame:
-        xpos 1000
-        ypos 500
-        textbutton "Matar vincent":
-            if pistas_list[0] == "":
-                action Notify("Não tenho provas para acusá-lo")
-            else:
-                action Function(passar_dia, "Vincent")
+    if personagem != "Bruxa":
+        frame:
+            xpos 1000
+            ypos 500
+            textbutton "Matar " + personagem:
+                if pistas_list[0] == "":
+                    action Notify("Não tenho provas para acusá-l" + genero)
+                else:
+                    action Function(passar_dia, personagem)
     frame:
         xpos 1300
         ypos 500
         textbutton "Voltar":
             action Jump("noite") alt "Noite"
-
-screen margarida_pistas():
-    tag pistas
-    add "tela preta"
-    frame:
-        xalign 0.5 yalign 0.5
-        vbox:
-            text "Pistas encontradas:"
-            text pistas_list[0]
-            text pistas_list[1]
-            text pistas_list[2]
-            text pistas_list[3]
-            text pistas_list[4]
-
-    frame:
-        xpos 1000
-        ypos 500
-        textbutton "Matar Margarida":
-            if pistas_list[0] == "":
-                action Notify("Não tenho provas para acusá-lá")
-            else:
-                action Function(passar_dia, "Margarida")
-    frame:
-        xpos 1300
-        ypos 500
-        textbutton "Voltar":
-            action Jump("noite") alt "Noite" 

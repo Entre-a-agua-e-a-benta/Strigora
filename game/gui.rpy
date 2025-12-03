@@ -522,7 +522,7 @@ transform zoom_margarida:
     on idle:
         linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
 
-transform zoom_leproso:
+transform zoom_lazaro:
     zoom 0.14
     on show:
         pause 0.0

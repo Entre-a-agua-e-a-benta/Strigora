@@ -5,19 +5,18 @@ default name_side = "left"
 # Define dia incial
 default dia = 1
 # Define quantas interações pode ter
-default interacao = 1
+default interacao = 3
 
+default pistasPersonagem = ""
 ## Variaveis do diálogo com o Vincent
 default progressoVincent = 0
 default progrediuVincent = False
 default ontemVincent = False
 default suspeitoVincent = False
 
-## Variaveis do diálogo com o Leproso
-default dor_leproso = False
-default afastou_leproso = False
-default progressoLeproso = 0
-default progrediuLeproso = False
+## Variaveis do diálogo com o Lázaro
+default dor_lazaro = False
+default afastou_lazaro = False
 
 ## Personagens
 define personagens_list = list()
@@ -26,7 +25,7 @@ define p = Character("Padre") ## O JOGADOR
 define v = Character("Vincent") ## DONO DA ESTALAGEM/TAVERNA
 define s = Character("Seren") ## CRIANÇA GEMEA FILHA DO BEBADO
 define m = Character("Margarida") ## COSTUREIRA
-define l = Character("Lázaro") ## LEPROSO
+define l = Character("Lázaro") ## Lázaro
 define h = Character("Holga") ## HOLGA
 define b = Character("Bartolomeu") ## PADEIRO
 define be = Character("Bêbado")
@@ -40,10 +39,20 @@ label start:
     
 
     init python:
+        class Personagem:
+            def __init__(self, nome, genero):
+                self.nome = nome
+                self.genero = genero
+                self.conversouHoje = False
+                self.progresso = 0
+                self.listaPistas = []
+                self.vivo = True
+        
         ## Inicializa o dicionário de personagens
-        personagens_list = ["Bartolomeu", "Salvatore", "Holga", "Leproso", "Joana", "Margarida", "Agnes", "Bêbado", "Wiliam", "Vincent", "Seren"]
+        personagens_list = [("Bartolomeu", 'M'), ("Salvatore", 'M'), ("Holga", 'F'), ("Lázaro", 'M'), ("Joana", 'F'), ("Margarida", 'F'), ("Agnes", 'F'), ("Bêbado", 'M'), ("Wiliam", 'M'), ("Vincent", 'M'), ("Seren", 'F'), ("Bruxa", 'F')]
         for personagem in personagens_list:
-            personagens_dict[personagem] = [False, 0, list(), True]
+            # personagens_dict[personagem] = [False, 0, list(), True]
+            personagens_dict[personagem[0]] = Personagem(personagem[0], personagem[1])
             # personagens_dict["nome do personagem"] = [já conversou hoje (bool), progresso (int), lista de pistas (começa vazia, vai adicionando), vivo (bool)]
         
         def checar_interacao():
@@ -64,22 +73,20 @@ label start:
             global dia, interacao, personagens_list, personagens_dict
             dia = dia + 1
             for personagem in personagens_list:
-                personagens_dict[personagem][0] = False
+                personagens_dict[personagem[0]].conversouHoje = False
             interacao = 3
             renpy.notify("interações restauradas")
             renpy.notify("passou o dia")
             if matar_personagem != None:
-                personagens_dict[matar_personagem][3] = False
+                personagens_dict[matar_personagem].vivo = False
                 renpy.notify("Matei " + matar_personagem)
             renpy.jump("casapadre")
         
         # Progride o diálogo de um personagem específico, aumentando seu progresso em 1 e marcando que já conversou hoje.
         def progredir(personagem: str):
             global personagens_dict
-            personagens_dict[personagem][0] = True
-            personagens_dict[personagem][1] += 1
-        def somar(a, b):
-            return a + b
+            personagens_dict[personagem].conversouHoje = True
+            personagens_dict[personagem].progresso += 1
 
         """
         Adiciona uma pista à lista de pistas de um personagem específico.
@@ -90,8 +97,9 @@ label start:
         """
         def adicionar_pista(personagem: str, pista: str):
             global personagens_dict
-            personagens_dict[personagem][2].append(pista)
-            renpy.notify("Pista adquirida: " + personagem + " " + pista[0].lower() + pista[1:])
+            if pista not in personagens_dict[personagem].listaPistas:
+                personagens_dict[personagem].listaPistas.append(pista)
+                renpy.notify("Pista adquirida: " + personagem + " " + pista[0].lower() + pista[1:])
  
         """
         Atualiza a lista de pistas para mostrar na tela de pistas de cada personagem.
@@ -103,7 +111,7 @@ label start:
         def atualizar_pistas(personagem: str)->list:
             pistas_list = ["", "", "", "", ""]
             i = 0
-            for pista in personagens_dict[personagem][2]:
+            for pista in personagens_dict[personagem].listaPistas:
                 pistas_list[i] = pista
                 i += 1
             return pistas_list
@@ -111,20 +119,15 @@ label start:
         def mostrar_personagem(personagem: str, emocao: str):
             global name_side
             renpy.notify("consegui")
-            if personagem == "padre":
-                name_side = "left"
-            else:
-                name_side = "right"
-            renpy.show_screen(personagem + emocao)
-
+            name_side = "left" if personagem == "Padre" else "right"
+            renpy.show_screen(personagem.lower() + emocao)
         
 
 #### $ adicionar_pista("Vincent", "Gosta de HOMENS") #### é assim que bota pista
 
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
 
-
-    call screen pistas
+jump noite
 
 ######################################## LOCAIS PELO MAPA ##############################################################
 
@@ -140,7 +143,7 @@ label tavernaint:
     call hide_all_screens
     scene bg taverna int
     python:
-        if personagens_dict["Vincent"][3] == True:
+        if personagens_dict["Vincent"].vivo:
             renpy.show_screen("vincent_parado")
     call screen tavernaint
 
@@ -149,7 +152,7 @@ label casabebadoext:
     play music "ambiencia_ext_geral.mp3"
     scene bg casa bebado ext
     python:
-        if personagens_dict["Bêbado"][3] == True:
+        if personagens_dict["Bêbado"].vivo:
             renpy.show_screen("bebado_parado")
     call screen casabebado
 
@@ -168,12 +171,12 @@ label casamargaridaext:
     show screen casaMargaridaEXT
     call screen margarida_parada
 
-## Cena Casa Leproso Ext
-label caminholeproso:
+## Cena Casa Lázaro Ext
+label caminhoLazaro:
     call hide_all_screens
     play music "ambiencia_ext_floresta.wav"
-    scene bg casa leproso ext
-    call screen casaLeprosoEXT
+    scene bg casa Lazaro ext
+    call screen casaLazaroEXT
 
 ## Cena Caminho entre bebado e margarida   
 label caminhobebado_margarida:
@@ -182,13 +185,13 @@ label caminhobebado_margarida:
     scene bg caminho curandeira
     call screen caminhobebado_margarida
 
-## Cena Casa Leproso Int
-label casaleprosoint:
+## Cena Casa Lázaro Int
+label casaLazaroint:
     call hide_all_screens
     play music "ambiencia_int_casas.wav"
-    scene bg leproso int
-    show screen casaLeprosoINT
-    call screen leproso_parado
+    scene bg Lazaro int
+    show screen casaLazaroINT
+    call screen Lazaro_parado
 
 ## Cena Casa Holga
 label casaholgaext:
@@ -243,26 +246,10 @@ transform padre_left:
     zoom 0.3
     ypos 0.3
     xpos -0.05
-transform vincent_right:
+transform personagem_right:
     zoom 0.3
     ypos 0.3
-    xpos 0.63
-transform margarida_right:
-    zoom 0.3
-    ypos 0.3
-    xpos 0.70
-transform leproso_right:
-    zoom 0.3
-    ypos 0.3
-    xpos 0.70
-transform holga_right:
-    zoom 0.3   
-    ypos 0.3
-    xpos 0.70
-transform bartolomeu_right:
-    zoom 0.3   
-    ypos 0.3
-    xpos 0.70
+    xpos 0.7
 
 transform bebado_right:
     zoom 0.5   
@@ -274,21 +261,21 @@ transform bebado_right:
 ## Dialogo com o Vincent ao clicar no personagem
 label dialogo_vincent:
     call hide_all_screens
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     p "Buongiorno… Agradeço a hospitalidade, dizem que é perigoso ficar andando de noite por aí… Então me sinto agradecido por ter onde dormir…"
     p "Agora…"
     jump escolhas_vincent
     
 label escolhas_vincent:
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     menu:
-        "Me conte sobre você" if personagens_dict["Vincent"][0] == False and personagens_dict["Vincent"][1] == 0:
+        "Me conte sobre você" if personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 0:
             $ progredir("Vincent")
             jump meconte_vincent
-        "O que aconteceu com a esposa do seu irmão?" if personagens_dict["Vincent"][0] == False and personagens_dict["Vincent"][1] == 1 and dia >= 2:
+        "O que aconteceu com a esposa do seu irmão?" if personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 1 and dia >= 2:
             $ progredir("Vincent")
             jump esposa_vincent
-        "Posso falar com a criança?" if personagens_dict["Vincent"][0] == False and personagens_dict["Vincent"][1] == 2 and dia >= 3:
+        "Posso falar com a criança?" if personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 2 and dia >= 3:
             $ progredir("Vincent")
             jump crianca_dialogo
 
@@ -311,9 +298,8 @@ label escolhas_vincent:
             jump tavernaint
 
 label ontem_vincent:
-    $ ontemvincent = True
     $ alterar_interacao(-1)
-    show screen vincentN
+    $ mostrar_personagem("Vincent", 'N')
     v "Fiz o que faço toda noite. Fechei a estalagem tarde, como sempre. Tinha um bêbado vomitando na entrada e um quarto reservado pro padre…"
     v "Passei a vassoura, contei os barris, limpei as mesas. E quando a lenha terminou, fui buscar mais atrás do depósito. Voltei antes da meia-noite."
     $ adicionar_pista("Vincent", "Gosta de HOMENS")
@@ -322,9 +308,8 @@ label ontem_vincent:
     jump tavernaint
 
 label suspeito_vincent:
-    $ habitantevincent = True  
     $ alterar_interacao(-1) 
-    show screen vincentN
+    $ mostrar_personagem("Vincent", 'N')
     v "Estranhos? Aqui todos andam com o pescoço encolhido, como galinha no fio da faca."
     v "Mas se quer saber… Há alguém que me parece estranho, não sei o nome dele, mas ele mora quase fora da aldeia, isolado com razão. Alguém com o corpo ferido daquele jeito, com certeza boa coisa não fez e agora Deus o castiga pelos seus pecados."
     v "Não o deixo entrar aqui, mas não é pela doença. É por tudo o resto. Por esse silêncio dele que pesa, pelas coisas que diz sem dizer nada. Tem gente que traz má sorte sem precisar levantar a mão."
@@ -332,7 +317,7 @@ label suspeito_vincent:
     jump tavernaint
 
 label default_vincent:
-    show screen vincentN
+    $ mostrar_personagem("Vincent", 'N')
     v "De novo com essa pergunta..."
     jump tavernaint
 
@@ -340,18 +325,18 @@ label meconte_vincent:
     #diminui interação do jogador
     $ alterar_interacao(-1)
     $ mostrar_personagem("vincent", "N")
-    #show screen vincentN
+    #$ mostrar_personagem("Vincent", 'N')
     v "Bom… Eu sou o Vincent, cuido da taverna e da estalagem… Ou o que sobrou dela, parece que a aldeia resolveu que o medo é desculpa para parar de beber."
     v "Mas desde que você chegou, tenho limpado o quarto duas vezes por dia, pelo menos um pouco de trabalho para manter a mente ocupada …. "
     v "Não gosto de falar do que não vi com meus próprios olhos. E, pra ser sincero, ultimamente, prefiro ver cada vez menos. Gente demais sussurrando. Portas que antes ficavam abertas agora estão fechadas…"
     v "Mas minha porta… essa fica aberta. Sempre tem quem precise esquecer o que viu. Meu irmão aparece por aqui às vezes… Mas nunca fica muito tempo e nem fala muito."
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     menu:
         "Quem é seu irmão?":
             jump irmao_vincent
 
 label irmao_vincent:
-    show screen vincentN
+    $ mostrar_personagem("Vincent", 'N')
     v "Ah, com certeza você vai vê- lo por aí… Ele está sempre pelos cantos da aldeia. Ele vem aqui, bebe sem pagar, mas não tenho coragem de cobrar."
     v "Depois que a mulher dele se foi, sobrou pouco dele também."
     #v "Eu sou mt mt gay"
@@ -361,23 +346,23 @@ label irmao_vincent:
 
 label esposa_vincent:
     $ alterar_interacao(-1)
-    show screen vincentN
+    $ mostrar_personagem("Vincent", 'N')
     v "Ela estava grávida…Foi um parto difícil, apenas ela e a parteira dentro do quarto…"
     v "Infelizmente ela não resistiu, mas deu a luz a uma garotinha… Isso faz 10 anos, e desde então ele vive nesse estado… Conspiracionando e dizendo que há culpados pela morte da esposa."
 
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     menu:
         "E a criança? Onde ela está?":
             jump crianca_vincent
 label crianca_vincent:
-    show screen vincentN
+    $ mostrar_personagem("Vincent", 'N')
     v "A menina… Bom… Ela está viva, isso é mais do que posso dizer de muita gente…"
     v "Eu cuido dela, mas de um tempo para cá, ela parece doente, às vezes fala coisa dormindo e acorda com febre alta. Eu tento ser como um pai para ela, mas mesmo assim acho que às vezes não sou o suficiente."
     $ checar_interacao()
     jump tavernaint
 
 label crianca_dialogo:
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     p "Buongiorno, pequena. Deus lhe abençoe, eu gostaria de conversar um pouco com você."
     menu:
         "Me conte sobre você.":
@@ -394,7 +379,7 @@ label meconte_seren:
     s "Entendo o jeito que meu pai me olha, quando pensa que não estou vendo. Como se fosse difícil me enxergar… como se visse outra pessoa em mim… Acho que ele nunca me perdoou por isso, nem eu me perdoei…"
     s "Ao menos ele bebe pra esquecer, mas eu lembro por nós dois. Lembro mesmo do que nunca vi… Ainda bem que meu tio me dá pão, me dá coberta, e até me deixa ficar atrás do balcão quando chove."
     s "Ele nunca disse que me ama, mas também nunca me culpou. E isso já é mais do que o suficiente… Mas quando a noite chega… tudo muda… Não é todo sonho que dói. Só os que parecem verdade."
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     menu:
         "Me conte mais sobre esses sonhos":
             jump sonhos_seren
@@ -407,7 +392,7 @@ label sonhos_seren:
     s "E o que mais me assusta: há uma voz dentro de mim. Mas ela não fala comigo. Ela me usa… Mas o pior é quando vejo ele… o menino com voz de mulher… Ele fala, mas a boca não mexe… Ele parece viver numa tristeza que me queima..."
     s "Quando acordo, a pele está quente como se eu tivesse corrido por horas. A febre queima atrás dos olhos, e minha garganta parece de vidro."
     s "O tio diz que é só vento, ou comida estragada. Mas toda vez que eu sonho, algo na aldeia amanhece errado.Eu queria contar, gritar... Dizer o que vejo…Mas quem vai acreditar numa menina que até o próprio pai não quis segurar no colo?"
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     menu:
         "Com o que você sonhou ontem?":
             jump sonhoontem_seren
@@ -436,18 +421,18 @@ label habitante_seren:
 ######################################## CENAS QUE OCORREM NA CASA DA MARGARIDA #######################################################
 label dialogo_margarida:
     call hide_all_screens
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     p "Buongiorno…"
-    show screen margaridaN
+    $ mostrar_personagem("Margarida", 'N')
     m "A benção, padre."
     m "Veio aqui procurar um motivo para jogar a culpa em mim?"
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     p "Não, claro que não. Estou apenas investigando… "
     p "Por favor, fale comigo."
     jump escolhas_margarida
 
 label escolhas_margarida:
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     menu:
         "Me conte sobre você":
             jump meconte_margarida
@@ -459,7 +444,7 @@ label escolhas_margarida:
             jump casamargaridaext
 
 label meconte_margarida:
-    show screen margaridaN
+    $ mostrar_personagem("Margarida", 'N')
     $ alterar_interacao(-1)
     m "Falar pra quê? Já sei o que pensa… Sei o que todos pensam… Vêem uma mulher sozinha, que mexe com coisas que não entendem, e já querem arrastar pra fogueira…"
     m "Chamam-me de contadora de histórias, como se fosse só isso que faço. Talvez seja mesmo… As palavras me obedecem mais do que as pessoas. Conto o que o povo quer ouvir, e escondo o que não estão prontos pra saber."
@@ -471,7 +456,7 @@ label meconte_margarida:
     jump casamargaridaext
 
 label ontem_margarida:
-    show screen margaridaN
+    $ mostrar_personagem("Margarida", 'N')
     $ alterar_interacao(-1)
     m "O que eu fiz? O mesmo que faço quando o céu fica quieto demais."
     m "Acendi o fogo, deixei a chaleira cantar... e fiquei escutando… Alguns dormem pra esquecer, eu fico acordada pra lembrar e vigiar. Às vezes, o que a gente precisa ouvir só aparece no silêncio entre um estalo da madeira e outro…"
@@ -479,7 +464,7 @@ label ontem_margarida:
     jump casamargaridaext
 
 label historia_margarida:
-    show screen margaridaN
+    $ mostrar_personagem("Margarida", 'N')
     $ alterar_interacao(-1)
     m "Já ouviu a história da corça de três olhos? Não? Então sente e escute, ou vá embora de vez…"
     m "Dizem que, certa vez, uma mulher andava sozinha pela mata, cheia de dor e raiva do mundo. Chorava tanto que as árvores taparam os ouvidos. Foi quando encontrou um ninho, entre galhos partidos, com um choro que não era de ave nem de fera…"
@@ -491,112 +476,112 @@ label historia_margarida:
     $ checar_interacao()
     jump casamargaridaext
 
-######################################## CENAS QUE OCORREM NA CASA DO LEPROSO #######################################################
-label dialogo_leproso:
+######################################## CENAS QUE OCORREM NA CASA DO Lázaro #######################################################
+label dialogo_lazaro:
     call hide_all_screens
-    show screen leprosoN
+    $ mostrar_personagem("Padre", 'N')
     p "Buongiorno…"
     p "Não sei a notícia chegou aqui, mas eu estou encarregado de achar o culpado pelas coisas que vem acontecendo na região, pensei que mesmo doente você talvez tivesse alguma informação para contribuir, ou algo no mínimo interessante a dizer."
-    jump escolhas_leproso
+    jump escolhas_lazaro
 
-label escolhas_leproso:
-    show screen padre
+label escolhas_lazaro:
+    $ mostrar_personagem("Padre", 'N')
     menu:
-        "Me conte sobre você" if personagens_dict["Leproso"][0] == False and personagens_dict["Leproso"][1] == 0:
-            $ progredir("Leproso")
-            jump meconte_leproso
-        "O que o Salvatore fez?" if personagens_dict["Leproso"][0] == False and personagens_dict["Leproso"][1] == 1 and dia >= 2:
-            $ progredir("Leproso")
-            jump salvatorefez_leproso
+        "Me conte sobre você" if personagens_dict["Lázaro"].conversouHoje == False and personagens_dict["Lázaro"].progresso == 0:
+            $ progredir("Lázaro")
+            jump meconte_lazaro
+        "O que o Salvatore fez?" if personagens_dict["Lázaro"].conversouHoje == False and personagens_dict["Lázaro"].progresso == 1 and dia >= 2:
+            $ progredir("Lázaro")
+            jump salvatorefez_lazaro
 
         "Há quanto tempo está doente?":
-            jump doenca_leproso
+            jump doenca_lazaro
         "O que você fez ontem a noite?":
-            jump ontem_leproso
+            jump ontem_lazaro
 
         "Não perguntar nada":
                 jump tavernaint
 
-label meconte_leproso:
-    show screen leprosoN
+label meconte_lazaro:
+    $ mostrar_personagem("Lázaro", 'N')
     $ alterar_interacao(-1)
     l "Pode chegar mais perto…"
     l "Dizem que a bruxa me amaldiçoou, eles tem medo de mim. Sussurram isso quando pensam que não ouço. Mas meus ouvidos ainda funcionam."
     l "O povo da aldeia acredita que esta carne apodrecida, estas mãos imóveis e este rosto que já não reconheço no reflexo da água... são obra de feitiçaria. São muitos boatos que circulam sobre eu ter ficado assim."
     l "Alguns dizem que cruzei o caminho da costureira e não lhe dei a devida reverência. Que tomei algo que era dela."
     l "Ou que fui tolo o bastante para recusar um favor da contadora de histórias, aquela que anda com ervas estranhas pendendo do cinto e olhos que nunca piscam."
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     menu:
         "O que você acha disso?":
-            jump acredita_leproso
+            jump acredita_lazaro
         "E o que você acredita?":
-            jump acredita_leproso
+            jump acredita_lazaro
 
-label acredita_leproso:
-    show screen leprosoN
+label acredita_lazaro:
+    $ mostrar_personagem("Lázaro", 'N')
     l "Eu sei que a verdade é outra. Não fui amaldiçoado por uma mulher, fui esquecido por Deus…"
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     menu:
         "Dizer que foi esquecido por Deus é fácil quando o mundo inteiro vira o rosto. Mas será que foi Deus quem se afastou de você… ou foi você quem se escondeu afastou e se escondeu dele?":
-            jump afastou_leproso
+            jump afastou_lazaro
 
         "Às vezes, eu também me pergunto se Ele nos ouve... ou se apenas observa. Mas me diga… quando foi a última vez que sentiu algo que não fosse dor?":
-            jump dor_leproso
+            jump dor_lazaro
            
-label afastou_leproso:
-    $ afastou_leproso = True
-    show screen leprosoN
+label afastou_lazaro:
+    $ afastou_lazaro = True
+    $ mostrar_personagem("Lázaro", 'N')
     l "Procurei, sim. Por anos. Rezei até a garganta secar. E tudo o que ouvi foi o som da minha pele caindo."
     l "Se Deus está me testando... então por que ninguém mais sangra como eu?"
-    if dor_leproso == False:
-        show screen padre
+    if dor_lazaro == False:
+        $ mostrar_personagem("Padre", 'N')
         menu:
             "Às vezes, eu também me pergunto se Ele nos ouve... ou se apenas observa. Mas me diga… quando foi a última vez que sentiu algo que não fosse dor?":
-                jump dor_leproso
+                jump dor_lazaro
     else:
-        jump salvatorevinda_leproso
+        jump salvatorevinda_lazaro
 
-label dor_leproso:
-    $ dor_leproso = True
-    show screen leprosoN
+label dor_lazaro:
+    $ dor_lazaro = True
+    $ mostrar_personagem("Lázaro", 'N')
     l "Senti algo... Uma vez. Quando o Salvatore veio aqui com olhos de choro e mãos trêmulas. Mas não era piedade, era medo."
     l "Medo de que eu soubesse o que ele fez, ou de que eu ainda lembrasse…"
-    if afastou_leproso == False:
-        show screen padre
+    if afastou_lazaro == False:
+        $ mostrar_personagem("Padre", 'N')
         menu:
             "Dizer que foi esquecido por Deus é fácil quando o mundo inteiro vira o rosto. Mas será que foi Deus quem se afastou de você… ou foi você quem se escondeu afastou e se escondeu dele?":
-                jump afastou_leproso
+                jump afastou_lazaro
     else:
-        jump salvatorevinda_leproso
+        jump salvatorevinda_lazaro
 
-label salvatorefez_leproso:
-    show screen leprosoN
+label salvatorefez_lazaro:
+    $ mostrar_personagem("Lázaro", 'N')
     $ alterar_interacao(-1)
     l "Aquela moça…"
     l "Aquelas crianças nascidas…"
     menu:
         "Crianças? Que crianças?":
-            jump criancas_leproso
-label criancas_leproso:
-    show screen leprosoN
+            jump criancas_lazaro
+label criancas_lazaro:
+    $ mostrar_personagem("Lázaro", 'N')
     l "Não posso… Meu corpo dói ainda mais ao se lembrar disso…"
     l "Me deixe em paz"
     $ checar_interacao ()
-    jump casaleprosoint
+    jump casaLazaroint
 
-label salvatorevinda_leproso:
-    show screen padre
+label salvatorevinda_lazaro:
+    $ mostrar_personagem("Padre", 'N')
     menu:
         "O que você sentiu?":
-            jump sentiu_leproso
+            jump sentiu_lazaro
 
-label sentiu_leproso:
-    show screen leprosoN
+label sentiu_lazaro:
+    $ mostrar_personagem("Lázaro", 'N')
     l "Um calor estranho… Não fisico, mas emocional."
     l "Pela primeira vez em muito tempo, alguém olhou pra mim como uma pessoa que sabia de algo e não só como um doente."
     l "Mas esse sentimento veio com confusão, medo e culpa. Como se eu soubesse de mais e estivesse mascarando isso com febre e dor…"
     $ checar_interacao ()
-    jump casaleprosoint
+    jump casaLazaroint
 
 ############################################ CENAS HOLGA ###########################################################
 label dialogo_holga:
@@ -615,7 +600,7 @@ label dialogo_bartolomeu:
 ########################################### CENAS BEBADO ###############################################################
 label dialogo_bebado:
     call hide_all_screens
-    show screen padre
+    $ mostrar_personagem("Padre", 'N')
     p "salve fio"
     show screen bebadoteste
     be "eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo "
@@ -634,10 +619,8 @@ label casapadre_noite:
 label noite:
     call screen pistas
 
-label vincent_pistas:
-    $ pistas_list = atualizar_pistas("Vincent")
+######################################### PISTAS ##################################################
+label pistas:
+    $ pistas_list = atualizar_pistas(pistasPersonagem)
     call hide_all_screens
-    call screen vincent_pistas
-    return
-
-
+    call screen pistas_personagem(pistasPersonagem)
