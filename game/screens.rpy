@@ -2255,17 +2255,17 @@ screen pistas():
     imagemap:
         ground "images/pistas_idle.jpg"
         hover "images/pistas_hover.jpg"
-        hotspot (59, 189, 216, 282) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Vincent"), Jump("pistas")]
+        hotspot (59, 189, 216, 282) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Vincent"), Jump("pistas")]
 
-        hotspot (326, 188, 216, 285) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Margarida"), Jump("pistas")]
-        hotspot (596, 188, 212, 285) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Bartolomeu"), Jump("pistas")]
-        hotspot (864, 187, 214, 283) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Agnes"), Jump("pistas")]
-        hotspot (1131, 187, 219, 283) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Lázaro"), Jump("pistas")]
-        hotspot (193, 556, 214, 284) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Seren"), Jump("pistas")]
-        hotspot (461, 554, 213, 282) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Holga"), Jump("pistas")]
-        hotspot (728, 556, 215, 283) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "William"), Jump("pistas")]
-        hotspot (995, 556, 218, 284) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Bêbado"), Jump("pistas")]
-        hotspot (1388, 206, 498, 668) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Bruxa"), Jump("pistas")]
+        hotspot (326, 188, 216, 285) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Margarida"), Jump("pistas")]
+        hotspot (596, 188, 212, 285) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Bartolomeu"), Jump("pistas")]
+        hotspot (864, 187, 214, 283) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Agnes"), Jump("pistas")]
+        hotspot (1131, 187, 219, 283) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Lázaro"), Jump("pistas")]
+        hotspot (193, 556, 214, 284) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Seren"), Jump("pistas")]
+        hotspot (461, 554, 213, 282) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Holga"), Jump("pistas")]
+        hotspot (728, 556, 215, 283) action [Hide("texto_botao"), SetVariable("infoPersonagem", "William"), Jump("pistas")]
+        hotspot (995, 556, 218, 284) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Bêbado"), Jump("pistas")]
+        hotspot (1388, 206, 498, 668) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Bruxa"), Jump("pistas")]
 
         hotspot (572, 923, 770, 91) action Function(passar_dia)
 
@@ -2275,11 +2275,11 @@ screen pistas_personagem(personagem):
     add    "tela preta"
     $ genero = "o" if personagens_dict[personagem].genero == 'M' else "a"
     frame:
-        xysize(900,950)
+        xysize(900,450)
         xpos 0.5
         ypos 50
         vbox:
-            text "Pistas encontradas:"
+            text "Informações encontradas:"
             text pistas_list[0]
             text pistas_list[1]
             text pistas_list[2]
@@ -2316,3 +2316,17 @@ screen pistas_personagem(personagem):
                 else:
                     action Function(passar_dia, personagem)
 
+    
+    frame:
+        xysize(900,450)
+        xpos 0.5
+        ypos 550
+        vbox:
+            text "Disse sobre alguém:"
+            text falas_list[0]
+            text falas_list[1]
+            text falas_list[2]
+            text falas_list[3]
+            text falas_list[4]
+            text falas_list[5]
+            text falas_list[6]

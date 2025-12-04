@@ -7,7 +7,7 @@ default dia = 1
 # Define quantas interações pode ter
 default interacao = 3
 
-default pistasPersonagem = ""
+default infoPersonagem = ""
 ## Variaveis do diálogo com o Vincent
 default progressoVincent = 0
 default progrediuVincent = False
@@ -41,6 +41,7 @@ label start:
     show screen HUD
 
     init python:
+        from unidecode import unidecode
         class Personagem:
             def __init__(self, nome, genero):
                 self.nome = nome
@@ -48,9 +49,10 @@ label start:
                 self.conversouHoje = False
                 self.progresso = 0
                 self.listaPistas = []
+                self.listaFalas = []
                 self.vivo = True
                 self.descricao = ""
-                self.retrato = f"personagens/3x4/{nome.lower()} retrato.png"
+                self.retrato = f"personagens/3x4/{unidecode(nome.lower())} retrato.png"
                 self.pergunta0 = False
                 self.pergunta1 = False
                 self.pergunta2 = False
@@ -63,7 +65,7 @@ label start:
             # personagens_dict["nome do personagem"] = [já conversou hoje (bool), progresso (int), lista de pistas (começa vazia, vai adicionando), vivo (bool)]
         personagens_dict["Bartolomeu"].descricao = "Gay"
         personagens_dict["Salvatore"].descricao = "bebado"
-        personagens_dict["Bêbado"].descricao = "Irmão do dono da estalagem\taverna (Vincent) e pai de uma menina de 10 anos"
+        personagens_dict["Bêbado"].descricao = "Irmão do dono da estalagem taverna (Vincent) e pai de uma menina de 10 anos"
 
         def checar_interacao():
             global interacao
@@ -125,6 +127,20 @@ label start:
                 pistas_list[i] = pista
                 i += 1
             return pistas_list
+
+        def adicionar_fala(personagem: str, fala: str):
+            global personagens_dict
+            if fala not in personagens_dict[personagem].listaFalas:
+                personagens_dict[personagem].listaFalas.append(fala)
+                renpy.notify("Pista sobre ?: " + fala)
+        
+        def atualizar_falas(personagem: str)->list:
+            falas_list = ["", "", "", "", "", "", ""]
+            i = 0
+            for fala in personagens_dict[personagem].listaFalas:
+                falas_list[i] = fala
+                i += 1
+            return falas_list
 
         def mostrar_personagem(personagem: str, emocao: str):
             global name_side
@@ -613,7 +629,10 @@ label dialogo_bebado:
     $ mostrar_personagem("Bebado", 'N')
     $ alterar_interacao(-1)
     be "Ela fala coisas no sono… Não aguentei cuidar dela por muito tempo..."
-    $ checar_interacao ()
+    $ adicionar_fala("Bêbado", "Ela fala coisas no sono… Não aguentei cuidar dela por muito tempo...")
+    be "eu odeio gente"
+    $ adicionar_pista("Bêbado", "Odeia gente")
+    $ checar_interacao()
     jump casabebadoext
     
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
@@ -630,6 +649,8 @@ label noite:
 
 ######################################### PISTAS ##################################################
 label pistas:
-    $ pistas_list = atualizar_pistas(pistasPersonagem)
+    $ pistas_list = atualizar_pistas(infoPersonagem)
+    $ falas_list = atualizar_falas(infoPersonagem)
     call hide_all_screens
-    call screen pistas_personagem(pistasPersonagem)
+    call screen pistas_personagem(infoPersonagem)
+    
