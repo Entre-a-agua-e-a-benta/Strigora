@@ -2041,7 +2041,7 @@ screen vincent_parado:
         ypos 0.33
         idle "personagens/vincent/vincent.png"
         hover "personagens/vincent/vincent.png"
-        at zoom_vincent
+        at zoom_adultos
         action [Hide("texto_botao"), Jump("dialogo_vincent")]
 
         hovered Show("texto_botao",
@@ -2058,7 +2058,7 @@ screen margarida_parada:
         ypos 800
         idle "personagens/margarida/margarida.png"
         hover "personagens/margarida/margarida.png"
-        at zoom_margarida
+        at zoom_adultos
         action [Hide("texto_botao"), Jump("dialogo_margarida")]
 
         hovered Show("texto_botao",
@@ -2075,7 +2075,7 @@ screen lazaro_parado:
         ypos 600
         idle "personagens/leproso/leproso.png"
         hover "personagens/leproso/leproso.png"
-        at zoom_lazaro
+        at zoom_adultos
         action [Hide("texto_botao"), Jump("dialogo_lazaro")]
 
         hovered Show("texto_botao",
@@ -2091,7 +2091,7 @@ screen holga_parada:
         ypos 700
         idle "personagens/holga/holga.png"
         hover "personagens/holga/holga.png"
-        at zoom_holga
+        at zoom_adultos
         action [Hide("texto_botao"), Jump("dialogo_holga")]
 
         hovered Show("texto_botao",
@@ -2107,7 +2107,7 @@ screen bartolomeu_parado:
         ypos 700
         idle "personagens/padeiro/padeiro.png"
         hover "personagens/padeiro/padeiro.png"
-        at zoom_bartolomeu
+        at zoom_adultos
         action [Hide("texto_botao"), Jump("dialogo_bartolomeu")]
 
         hovered Show("texto_botao",
@@ -2123,12 +2123,30 @@ screen bebado_parado:
         ypos 700
         idle "personagens/bebado/bebado.png"
         hover "personagens/bebado/bebado.png"
-        at zoom_bebado
+        at zoom_adultos
         action [Hide("texto_botao"), Jump("dialogo_bebado")]
 
         hovered Show("texto_botao",
-            displayText = "Falar com o bebado")
+            displayText = "Falar com o bêbado")
         unhovered Hide("texto_botao")
+
+screen seren_parada:
+    tag Personagem
+    imagebutton:
+        xanchor 0.5
+        yanchor 0.5
+        xpos 900
+        ypos 700
+        idle "personagens/seren/seren.png"
+        hover "personagens/seren/seren.png"
+        at zoom_criancas
+        action [Hide("texto_botao"), Jump("dialogo_seren")]
+
+        hovered Show("texto_botao",
+            displayText = "Falar com a Seren")
+        unhovered Hide("texto_botao")
+
+
 ############################################################# Hud ################################################
 screen HUD():
     frame:
@@ -2144,35 +2162,35 @@ screen HUD():
 
 ######################################################### Falas de personagens ##############################################################
 
-image lazaro = "personagens/leproso/leproso.png"
-image vincent = "personagens/vincent/vincent.png"
-image margarida = "personagens/margarida/margarida.png" 
-image padre = "personagens/padre/padre.png"
-image holga = "personagens/holga/holga.png"
-image padeiro = "personagens/padeiro/padeiro.png"
+image lazaroN = "personagens/leproso/leproso.png"
+image vincentN = "personagens/vincent/vincent.png"
+image margaridaN = "personagens/margarida/margarida.png" 
+image padreN = "personagens/padre/padre.png"
+image holgaN = "personagens/holga/holga.png"
+image padeiroN = "personagens/padeiro/padeiro neutro.png"
+image bebadoN = "personagens/bebado/bebado neutro.png"
 
-image bebado = "personagens/bebado/bebado bravo sem fundo.png"
 screen vincentN:
     tag personagem
-    add "vincent" at personagem_right
+    add "vincentN" at personagem_right
 screen padreN:
     tag personagem
-    add "padre" at padre_left
+    add "padreN" at padre_left
 screen margaridaN:
     tag personagem
-    add "margarida" at personagem_right
+    add "margaridaN" at personagem_right
 screen lazaroN:
     tag personagem
-    add "lazaro" at personagem_right
+    add "lazaroN" at personagem_right
 screen holgaN:
     tag personagem
-    add "holga" at personagem_right   
+    add "holgaN" at personagem_right   
 screen bartolomeuN:
     tag personagem
-    add "padeiro" at personagem_right
-screen bebadoteste:
+    add "padeiroN" at personagem_right
+screen bebadoN:
     tag personagem
-    add "bebado" at bebado_right
+    add "bebadoN" at bebado_right
 
 ############################################################### Esconde as telas ######################################################
 label hide_all_screens:
@@ -2198,6 +2216,7 @@ label hide_all_screens:
     hide screen holga_parada
     hide screen bartolomeu_parado
     hide screen bebado_parado
+    hide screen seren_parada
 
     hide screen padre
     hide screen vincentN

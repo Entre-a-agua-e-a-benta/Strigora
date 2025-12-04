@@ -49,6 +49,9 @@ label start:
                 self.vivo = True
                 self.descricao = ""
                 self.retrato = f"personagens/3x4/{nome.lower()} retrato.png"
+                self.pergunta0 = False
+                self.pergunta1 = False
+                self.pergunta2 = False
         
         ## Inicializa o dicionário de personagens
         personagens_list = [("Bartolomeu", 'M'), ("Salvatore", 'M'), ("Holga", 'F'), ("Lázaro", 'M'), ("Joana", 'F'), ("Margarida", 'F'), ("Agnes", 'F'), ("Bêbado", 'M'), ("William", 'M'), ("Vincent", 'M'), ("Seren", 'F'), ("Bruxa", 'F')]
@@ -149,7 +152,10 @@ label tavernaint:
     python:
         if personagens_dict["Vincent"].vivo:
             renpy.show_screen("vincent_parado")
+        if personagens_dict["Seren"].vivo and personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 2 and dia >= 3:
+            renpy.show_screen("seren_parada")
     call screen tavernaint
+
 
 ## Cena casa do bebado
 label casabebadoext:
@@ -280,20 +286,14 @@ label escolhas_vincent:
         "O que aconteceu com a esposa do seu irmão?" if personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 1 and dia >= 2:
             $ progredir("Vincent")
             jump esposa_vincent
-        "Posso falar com a criança?" if personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 2 and dia >= 3:
-            $ progredir("Vincent")
-            jump crianca_dialogo
 
-        "Onde e o que você fez ontem a noite?":
-            if ontemVincent == False:
-                jump ontem_vincent
-            else:
-                jump default_vincent
-        "Algum habitante te parece estranho?":
-            if suspeitoVincent == False:
-                jump suspeito_vincent
-            else:
-                jump default_vincen
+        "Onde e o que você fez ontem a noite?" if personagens_dict["Vincent"].pergunta1 == False:
+            $ personagens_dict["Vincent"].pergunta1 = True
+            jump ontem_vincent
+
+        "Algum habitante te parece estranho?" if personagens_dict["Vincent"].pergunta2 == False:
+            $ personagens_dict["Vincent"].pergunta2 = True
+            jump suspeito_vincent
         
         "Passar dia":
             $ passar_dia()
@@ -323,7 +323,7 @@ label suspeito_vincent:
 
 label default_vincent:
     $ mostrar_personagem("Vincent", 'N')
-    v "De novo com essa pergunta..."
+    v "Não estou num bom dia hoje..."
     jump tavernaint
 
 label meconte_vincent:
@@ -366,15 +366,18 @@ label crianca_vincent:
     $ checar_interacao()
     jump tavernaint
 
-label crianca_dialogo:
+label dialogo_seren:
+    call hide_all_screens
     $ mostrar_personagem("Padre", 'N')
     p "Buongiorno, pequena. Deus lhe abençoe, eu gostaria de conversar um pouco com você."
     menu:
         "Me conte sobre você.":
             jump meconte_seren
-        "Onde e o que você fez ontem a noite?":
+        "Onde e o que você fez ontem a noite?" if personagens_dict["Seren"].pergunta1 == False:
+            $ personagens_dict["Vincent"].pergunta1 = True
             jump ontem_seren
-        "Algum habitante te parece estranho?":
+        "Algum habitante te parece estranho?" if personagens_dict["Seren"].pergunta2 == False:
+            $ personagens_dict["Seren"].pergunta2 = True
             jump habitante_seren
     return
 
@@ -390,7 +393,6 @@ label meconte_seren:
             jump sonhos_seren
         "Como são esses sonhos?":
             jump sonhos_seren
-
 label sonhos_seren:
     s "No começo, eu só via silhuetas. Um campo, uma árvore sozinha, uma sombra me seguindo de longe. Depois vieram os sussurros. E agora, agora… Agora eu vejo tudo…"
     s "No sonho, ando pelas ruas da aldeia com passos que não são meus… As mãos... as mãos que estendo são pequenas, como as minhas. Mas elas brilham. Como brasa acesa no escuro. E quando tocam algo, tudo escurece..."
@@ -439,11 +441,14 @@ label dialogo_margarida:
 label escolhas_margarida:
     $ mostrar_personagem("Padre", 'N')
     menu:
-        "Me conte sobre você":
+        "Me conte sobre você" if personagens_dict["Margarida"].pergunta0 == False:
+            $ personagens_dict["Margarida"].pergunta0 = True
             jump meconte_margarida
-        "Onde e o que você fez ontem a noite?":
+        "Onde e o que você fez ontem a noite?" if personagens_dict["Margarida"].pergunta1 == False:
+            $ personagens_dict["Margarida"].pergunta1 = True
             jump ontem_margarida
-        "Me conte uma história":
+        "Me conte uma história" if personagens_dict["Margarida"].pergunta2 == False:
+            $ personagens_dict["Margarida"].pergunta2 = True
             jump historia_margarida
         "Não perguntar nada":
             jump casamargaridaext
@@ -499,9 +504,11 @@ label escolhas_lazaro:
             $ progredir("Lázaro")
             jump salvatorefez_lazaro
 
-        "Há quanto tempo está doente?":
+        "Há quanto tempo está doente?" if personagens_dict["Lázaro"].pergunta1 == False:
+            $ personagens_dict["Lázaro"].pergunta1 = True
             jump doenca_lazaro
-        "O que você fez ontem a noite?":
+        "O que você fez ontem a noite?" if personagens_dict["Lázaro"].pergunta2 == False:
+            $ personagens_dict["Lázaro"].pergunta2 = True
             jump ontem_lazaro
 
         "Não perguntar nada":
@@ -521,7 +528,6 @@ label meconte_lazaro:
             jump acredita_lazaro
         "E o que você acredita?":
             jump acredita_lazaro
-
 label acredita_lazaro:
     $ mostrar_personagem("Lázaro", 'N')
     l "Eu sei que a verdade é outra. Não fui amaldiçoado por uma mulher, fui esquecido por Deus…"
@@ -531,8 +537,7 @@ label acredita_lazaro:
             jump afastou_lazaro
 
         "Às vezes, eu também me pergunto se Ele nos ouve... ou se apenas observa. Mas me diga… quando foi a última vez que sentiu algo que não fosse dor?":
-            jump dor_lazaro
-           
+            jump dor_lazaro       
 label afastou_lazaro:
     $ afastou_lazaro = True
     $ mostrar_personagem("Lázaro", 'N')
@@ -545,7 +550,6 @@ label afastou_lazaro:
                 jump dor_lazaro
     else:
         jump salvatorevinda_lazaro
-
 label dor_lazaro:
     $ dor_lazaro = True
     $ mostrar_personagem("Lázaro", 'N')
@@ -558,6 +562,18 @@ label dor_lazaro:
                 jump afastou_lazaro
     else:
         jump salvatorevinda_lazaro
+label salvatorevinda_lazaro:
+    $ mostrar_personagem("Padre", 'N')
+    menu:
+        "O que você sentiu?":
+            jump sentiu_lazaro
+label sentiu_lazaro:
+    $ mostrar_personagem("Lázaro", 'N')
+    l "Um calor estranho… Não fisico, mas emocional."
+    l "Pela primeira vez em muito tempo, alguém olhou pra mim como uma pessoa que sabia de algo e não só como um doente."
+    l "Mas esse sentimento veio com confusão, medo e culpa. Como se eu soubesse de mais e estivesse mascarando isso com febre e dor…"
+    $ checar_interacao ()
+    jump casaLazaroint
 
 label salvatorefez_lazaro:
     $ mostrar_personagem("Lázaro", 'N')
@@ -571,20 +587,6 @@ label criancas_lazaro:
     $ mostrar_personagem("Lázaro", 'N')
     l "Não posso… Meu corpo dói ainda mais ao se lembrar disso…"
     l "Me deixe em paz"
-    $ checar_interacao ()
-    jump casaLazaroint
-
-label salvatorevinda_lazaro:
-    $ mostrar_personagem("Padre", 'N')
-    menu:
-        "O que você sentiu?":
-            jump sentiu_lazaro
-
-label sentiu_lazaro:
-    $ mostrar_personagem("Lázaro", 'N')
-    l "Um calor estranho… Não fisico, mas emocional."
-    l "Pela primeira vez em muito tempo, alguém olhou pra mim como uma pessoa que sabia de algo e não só como um doente."
-    l "Mas esse sentimento veio com confusão, medo e culpa. Como se eu soubesse de mais e estivesse mascarando isso com febre e dor…"
     $ checar_interacao ()
     jump casaLazaroint
 
@@ -605,11 +607,10 @@ label dialogo_bartolomeu:
 ########################################### CENAS BEBADO ###############################################################
 label dialogo_bebado:
     call hide_all_screens
-    $ mostrar_personagem("Padre", 'N')
-    p "salve fio"
-    show screen bebadoteste
-    be "eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo eu to mt bebedo "
-    be "vo bate na mae"
+    $ mostrar_personagem("Bebado", 'N')
+    $ alterar_interacao(-1)
+    be "Ela fala coisas no sono… Não aguentei cuidar dela por muito tempo..."
+    $ checar_interacao ()
     jump casabebadoext
     
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################

@@ -504,7 +504,7 @@ transform zoom_botao:
     on idle:
         linear 0.1 zoom 1  # Returns to original size over 0.1 seconds
 
-transform zoom_vincent:
+transform zoom_adultos:
     zoom 0.14
     on show:
         pause 0.0
@@ -513,50 +513,14 @@ transform zoom_vincent:
     on idle:
         linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
 
-transform zoom_margarida:
-    zoom 0.14
+transform zoom_criancas:
+    zoom 0.12
     on show:
         pause 0.0
     on hover:
-        linear 0.05 zoom 0.16  # Zooms to 110% over 0.05 seconds
+        linear 0.05 zoom 0.14  # Zooms to 110% over 0.05 seconds
     on idle:
-        linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
-
-transform zoom_lazaro:
-    zoom 0.14
-    on show:
-        pause 0.0
-    on hover:
-        linear 0.05 zoom 0.16  # Zooms to 110% over 0.05 seconds
-    on idle:
-        linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds   
-
-transform zoom_holga:
-    zoom 0.14
-    on show:
-        pause 0.0
-    on hover:
-        linear 0.05 zoom 0.16  # Zooms to 110% over 0.05 seconds
-    on idle:
-        linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
-
-transform zoom_bartolomeu:
-    zoom 0.14
-    on show:
-        pause 0.0
-    on hover:
-        linear 0.05 zoom 0.16  # Zooms to 110% over 0.05 seconds
-    on idle:
-        linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
-
-transform zoom_bebado:
-    zoom 0.14
-    on show:
-        pause 0.0
-    on hover:
-        linear 0.05 zoom 0.16  # Zooms to 110% over 0.05 seconds
-    on idle:
-        linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
+        linear 0.1 zoom 0.12  # Returns to original size over 0.1 second
         
 transform zoom_quadropistas:
     zoom 2.0
