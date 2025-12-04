@@ -2066,7 +2066,7 @@ screen margarida_parada:
         unhovered Hide("texto_botao")
 
 ## Botao Lázaro
-screen Lazaro_parado:
+screen lazaro_parado:
     tag personagem
     imagebutton:
         xanchor 0.5
@@ -2075,7 +2075,7 @@ screen Lazaro_parado:
         ypos 600
         idle "personagens/leproso/leproso.png"
         hover "personagens/leproso/leproso.png"
-        at zoom_Lazaro
+        at zoom_lazaro
         action [Hide("texto_botao"), Jump("dialogo_lazaro")]
 
         hovered Show("texto_botao",
@@ -2197,6 +2197,7 @@ label hide_all_screens:
     hide screen lazaro_parado
     hide screen holga_parada
     hide screen bartolomeu_parado
+    hide screen bebado_parado
 
     hide screen padre
     hide screen vincentN
@@ -2242,7 +2243,7 @@ screen pistas():
         hotspot (1131, 187, 219, 283) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Lázaro"), Jump("pistas")]
         hotspot (193, 556, 214, 284) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Seren"), Jump("pistas")]
         hotspot (461, 554, 213, 282) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Holga"), Jump("pistas")]
-        hotspot (728, 556, 215, 283) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Willian"), Jump("pistas")]
+        hotspot (728, 556, 215, 283) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "William"), Jump("pistas")]
         hotspot (995, 556, 218, 284) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Bêbado"), Jump("pistas")]
         hotspot (1388, 206, 498, 668) action [Hide("texto_botao"), SetVariable("pistasPersonagem", "Bruxa"), Jump("pistas")]
 
@@ -2254,7 +2255,9 @@ screen pistas_personagem(personagem):
     add    "tela preta"
     $ genero = "o" if personagens_dict[personagem].genero == 'M' else "a"
     frame:
-        xpos 500 ypos 200
+        xysize(900,950)
+        xpos 0.5
+        ypos 50
         vbox:
             text "Pistas encontradas:"
             text pistas_list[0]
@@ -2262,17 +2265,34 @@ screen pistas_personagem(personagem):
             text pistas_list[2]
             text pistas_list[3]
             text pistas_list[4]
+
+    add personagens_dict[personagem].retrato at zoom_retrato
+
+    text personagens_dict[personagem].nome:
+        size 100
+        xpos 310
+        ypos 130
+
+    frame: 
+        xysize(800, 500)
+        xpos 70
+        ypos 400
+        vbox:
+            text "Descrição do personagem:"
+            text personagens_dict[personagem].descricao
+
+    frame:
+        xpos 150
+        ypos 930
+        textbutton "Voltar":
+            action Jump("noite") alt "Noite"
     if personagem != "Bruxa":
         frame:
-            xpos 1000
-            ypos 500
+            xpos 400
+            ypos 930
             textbutton "Matar " + personagem:
                 if pistas_list[0] == "":
                     action Notify("Não tenho provas para acusá-l" + genero)
                 else:
                     action Function(passar_dia, personagem)
-    frame:
-        xpos 1300
-        ypos 500
-        textbutton "Voltar":
-            action Jump("noite") alt "Noite"
+

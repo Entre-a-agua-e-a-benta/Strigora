@@ -47,14 +47,18 @@ label start:
                 self.progresso = 0
                 self.listaPistas = []
                 self.vivo = True
+                self.descricao = ""
+                self.retrato = f"personagens/3x4/{nome.lower()} retrato.png"
         
         ## Inicializa o dicionário de personagens
-        personagens_list = [("Bartolomeu", 'M'), ("Salvatore", 'M'), ("Holga", 'F'), ("Lázaro", 'M'), ("Joana", 'F'), ("Margarida", 'F'), ("Agnes", 'F'), ("Bêbado", 'M'), ("Wiliam", 'M'), ("Vincent", 'M'), ("Seren", 'F'), ("Bruxa", 'F')]
+        personagens_list = [("Bartolomeu", 'M'), ("Salvatore", 'M'), ("Holga", 'F'), ("Lázaro", 'M'), ("Joana", 'F'), ("Margarida", 'F'), ("Agnes", 'F'), ("Bêbado", 'M'), ("William", 'M'), ("Vincent", 'M'), ("Seren", 'F'), ("Bruxa", 'F')]
         for personagem in personagens_list:
             # personagens_dict[personagem] = [False, 0, list(), True]
             personagens_dict[personagem[0]] = Personagem(personagem[0], personagem[1])
             # personagens_dict["nome do personagem"] = [já conversou hoje (bool), progresso (int), lista de pistas (começa vazia, vai adicionando), vivo (bool)]
-        
+        personagens_dict["Bartolomeu"].descricao = "Gay"
+        personagens_dict["Salvatore"].descricao = "bebado"
+
         def checar_interacao():
             global interacao
             if interacao == 0:
@@ -127,7 +131,7 @@ label start:
 
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
 
-jump noite
+##jump noite
 
 ######################################## LOCAIS PELO MAPA ##############################################################
 
@@ -149,6 +153,7 @@ label tavernaint:
 
 ## Cena casa do bebado
 label casabebadoext:
+    call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg casa bebado ext
     python:
@@ -175,7 +180,7 @@ label casamargaridaext:
 label caminhoLazaro:
     call hide_all_screens
     play music "ambiencia_ext_floresta.wav"
-    scene bg casa Lazaro ext
+    scene bg casa leproso ext
     call screen casaLazaroEXT
 
 ## Cena Caminho entre bebado e margarida   
@@ -189,9 +194,9 @@ label caminhobebado_margarida:
 label casaLazaroint:
     call hide_all_screens
     play music "ambiencia_int_casas.wav"
-    scene bg Lazaro int
+    scene bg leproso int
     show screen casaLazaroINT
-    call screen Lazaro_parado
+    call screen lazaro_parado
 
 ## Cena Casa Holga
 label casaholgaext:

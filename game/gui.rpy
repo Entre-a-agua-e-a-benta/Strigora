@@ -567,6 +567,14 @@ transform zoom_quadropistas:
     on idle:
         linear 0.1 zoom 2.0  # Returns to original size over 0.1 seconds
 
+transform zoom_retrato:
+    xpos 70
+    ypos 50
+    zoom 0.3
+    on show:
+        pause 0.0
+        linear 0.05 zoom 0.3  # Zooms to 110% over 0.05 seconds
+
 transform quadropistas_posicao:
     xalign 0.5
     yalign 0.5
