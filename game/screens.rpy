@@ -2224,6 +2224,7 @@ label hide_all_screens:
     hide screen lazaroN
     hide screen holgaN
     hide screen bartolomeuN
+    hide screen bebadoN
 
 
     hide screen texto_botao

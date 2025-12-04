@@ -24,19 +24,21 @@ define personagens_dict = dict()
 define p = Character("Padre") ## O JOGADOR
 define v = Character("Vincent") ## DONO DA ESTALAGEM/TAVERNA
 define s = Character("Seren") ## CRIANÇA GEMEA FILHA DO BEBADO
-define m = Character("Margarida") ## COSTUREIRA
+define m = Character("Margarida") ## Curandeira
 define l = Character("Lázaro") ## Lázaro
 define h = Character("Holga") ## HOLGA
 define b = Character("Bartolomeu") ## PADEIRO
 define be = Character("Bêbado")
+define ss = Character("Salvatore")
+define j = Character("Joana") ## Costureira
+define a = Character("Agnes") ## Criança pedinte
+define w = Character("William") ## Criança William
 
 # The game starts here.
 
 label start:
 
     show screen HUD
-
-    
 
     init python:
         class Personagem:
@@ -61,6 +63,7 @@ label start:
             # personagens_dict["nome do personagem"] = [já conversou hoje (bool), progresso (int), lista de pistas (começa vazia, vai adicionando), vivo (bool)]
         personagens_dict["Bartolomeu"].descricao = "Gay"
         personagens_dict["Salvatore"].descricao = "bebado"
+        personagens_dict["Bêbado"].descricao = "Irmão do dono da estalagem\taverna (Vincent) e pai de uma menina de 10 anos"
 
         def checar_interacao():
             global interacao
