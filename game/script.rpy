@@ -5,7 +5,7 @@ default name_side = "left"
 # Define dia incial
 default dia = 1
 # Define quantas interações pode ter
-default interacao = 3
+default interacao = 1
 
 default infoPersonagem = ""
 ## Variaveis do diálogo com o Vincent
@@ -52,6 +52,7 @@ label start:
                 self.listaFalas = []
                 self.vivo = True
                 self.descricao = ""
+                self.imagem = f"personagens/{unidecode(nome.lower())}/{unidecode(nome.lower())}.png"
                 self.retrato = f"personagens/3x4/{unidecode(nome.lower())} retrato.png"
                 self.pergunta0 = False
                 self.pergunta1 = False
@@ -144,16 +145,16 @@ label start:
 
         def mostrar_personagem(personagem: str, emocao: str):
             global name_side
-            renpy.notify("consegui")
             name_side = "left" if personagem == "Padre" else "right"
             renpy.show_screen(personagem.lower() + emocao)
+
+        def mostrar_botao(posicao: tuple, texto: str, jumpTo: str):
+            renpy.show_screen("botao_passos", posicao, texto, jumpTo)
         
 
 #### $ adicionar_pista("Vincent", "Gosta de HOMENS") #### é assim que bota pista
 
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
-
-##jump noite
 
 ######################################## LOCAIS PELO MAPA ##############################################################
 
@@ -168,11 +169,6 @@ label tavernaext:
 label tavernaint:
     call hide_all_screens
     scene bg taverna int
-    python:
-        if personagens_dict["Vincent"].vivo:
-            renpy.show_screen("vincent_parado")
-        if personagens_dict["Seren"].vivo and personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 2 and dia >= 3:
-            renpy.show_screen("seren_parada")
     call screen tavernaint
 
 
@@ -531,7 +527,7 @@ label escolhas_lazaro:
             jump ontem_lazaro
 
         "Não perguntar nada":
-                jump tavernaint
+                jump casaLazaroint
 
 label meconte_lazaro:
     $ mostrar_personagem("Lázaro", 'N')

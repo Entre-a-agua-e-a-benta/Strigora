@@ -1636,6 +1636,12 @@ image botao_passos = "botoes/botao passos.jpg"
 #Tela da taverna ext
 screen tavernaext:
     tag passos
+    use botao("botao_passos", 1, (750, 750), "Entrar na Estalagem", "tavernaint")
+    use botao("botao_passos", 1, (100, 500), "Casa do bêbado", "casabebadoext")
+    use botao("botao_passos", 1, (1500, 1000), "Casa da Holga", "casaholgaext")
+        
+""" screen tavernaext:
+    tag passos
     #botao para a taverna
     imagebutton:
         xpos 750
@@ -1671,11 +1677,19 @@ screen tavernaext:
         
         hovered Show("texto_botao",
             displayText = "Casa da Holga")
-        unhovered Hide("texto_botao")
+        unhovered Hide("texto_botao") """
 
 
 ## Taverna interna
 screen tavernaint():
+    use botao("botao_passos", 1, (1800, 600), "Sair da estalagem", "tavernaext")
+    use botao("botao_passos", 1, (100, 400), "Entrar no quarto", "casapadre")
+    if personagens_dict["Vincent"].vivo:
+        use botao(personagens_dict["Vincent"].imagem, 0.14, (1250, 100), "Falar com o dono", "dialogo_vincent")
+    if personagens_dict["Seren"].vivo and personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 2 and dia >= 3:
+        use botao(personagens_dict["Seren"].imagem, 0.3, (900, 500), "Falar com a Seren", "dialogo_seren")
+
+""" screen tavernaint():
     tag passos
     imagebutton:
         xpos 1800
@@ -1698,7 +1712,7 @@ screen tavernaint():
 
         hovered Show("texto_botao",
             displayText = "Entrar no quarto")
-        unhovered Hide("texto_botao")
+        unhovered Hide("texto_botao") """
 ###Tela da casa do bebado ext
 screen casabebado():
     tag passos
@@ -2031,23 +2045,6 @@ screen plantacao():
         unhovered Hide("texto_botao")
 ############################################################# BOTÕES DE PERSONAGENS ##############################################################
 
-#Botão Vincent
-screen vincent_parado:
-    tag personagem
-    imagebutton:
-        xanchor 0.5
-        yanchor 0.5
-        xpos 0.68
-        ypos 0.33
-        idle "personagens/vincent/vincent.png"
-        hover "personagens/vincent/vincent.png"
-        at zoom_adultos
-        action [Hide("texto_botao"), Jump("dialogo_vincent")]
-
-        hovered Show("texto_botao",
-            displayText = "Falar com o dono")
-        unhovered Hide("texto_botao")
-
 ##Botao Margarida
 screen margarida_parada:
     tag personagem
@@ -2129,24 +2126,6 @@ screen bebado_parado:
         hovered Show("texto_botao",
             displayText = "Falar com o bêbado")
         unhovered Hide("texto_botao")
-
-screen seren_parada:
-    tag Personagem
-    imagebutton:
-        xanchor 0.5
-        yanchor 0.5
-        xpos 900
-        ypos 700
-        idle "personagens/seren/seren.png"
-        hover "personagens/seren/seren.png"
-        at zoom_criancas
-        action [Hide("texto_botao"), Jump("dialogo_seren")]
-
-        hovered Show("texto_botao",
-            displayText = "Falar com a Seren")
-        unhovered Hide("texto_botao")
-
-
 ############################################################# Hud ################################################
 screen HUD():
     frame:
@@ -2234,6 +2213,8 @@ label hide_all_screens:
     hide screen casaPadreNOITE
     hide screen pistas
     hide screen vincent_pistas
+
+    hide screen botao
     return
 ######################################### NOITE ######################################################
 screen casaPadreNOITE():
@@ -2249,6 +2230,32 @@ screen casaPadreNOITE():
 
 ################################# TESTE DE PISTAS ##############################################
 image tela preta = Solid("#000")
+
+screen botao(imagem, zoomBase, posicao, texto, jumpTo):
+    tag passos
+    vbox:
+        xanchor 0.5
+        yanchor 0.0
+        xpos posicao[0]
+        ypos posicao[1]
+
+        default displayText = ""
+        imagebutton:
+            xalign 0.5
+            idle imagem
+            hover imagem
+            at transform:
+                zoom zoomBase
+                on hover:
+                    linear 0.05 zoom 1.1*zoomBase  # Zooms to 110% over 0.05 seconds
+                on idle:
+                    linear 0.1 zoom zoomBase  # Returns to original size over 0.1 seconds
+            action [SetLocalVariable("displayText", ""), Jump(jumpTo)]
+
+            hovered SetLocalVariable("displayText", texto)
+            unhovered SetLocalVariable("displayText", "")
+        
+        text displayText xalign 0.5 outlines [ ( 3, "#000005", 0, 0) ]
 
 screen pistas():
     tag pistas
