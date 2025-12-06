@@ -177,9 +177,6 @@ label casabebadoext:
     call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg casa bebado ext
-    python:
-        if personagens_dict["Bêbado"].vivo:
-            renpy.show_screen("bebado_parado")
     call screen casabebado
 
 ## Cena quarto do padre dentro da taverna
@@ -194,8 +191,7 @@ label casamargaridaext:
     call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg casa curandeira ext
-    show screen casaMargaridaEXT
-    call screen margarida_parada
+    call screen casaMargaridaEXT
 
 ## Cena Casa Lázaro Ext
 label caminhoLazaro:
@@ -216,16 +212,14 @@ label casaLazaroint:
     call hide_all_screens
     play music "ambiencia_int_casas.wav"
     scene bg leproso int
-    show screen casaLazaroINT
-    call screen lazaro_parado
+    call screen casaLazaroINT
 
 ## Cena Casa Holga
 label casaholgaext:
     call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg casa holga ext
-    show screen casaHolgaEXT
-    call screen holga_parada
+    call screen casaHolgaEXT
 
 ## Cena praca 2 que tem a escultura
 label praca2:
@@ -251,8 +245,7 @@ label padaria:
     call hide_all_screens
     play music "ambiencia_ext_geral.mp3"
     scene bg padaria int
-    show screen padariaINT
-    call screen bartolomeu_parado
+    call screen padariaINT
 
 label casajoanaext:
     call hide_all_screens
@@ -265,7 +258,6 @@ label plantacao:
     play music "ambiencia_ext_floresta.wav"
     scene bg plantacao
     call screen plantacao
-
 
 ############# Arruma posição dos personagens dentro do dialogo ###############################
 transform padre_left:

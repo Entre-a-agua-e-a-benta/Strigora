@@ -498,38 +498,6 @@ init python:
 ################################################################################
 
 #zoom no botao quando ele estiver selecionado
-transform zoom_botao:
-    on hover:
-        linear 0.05 zoom 1.1  # Zooms to 110% over 0.05 seconds
-    on idle:
-        linear 0.1 zoom 1  # Returns to original size over 0.1 seconds
-
-transform zoom_adultos:
-    zoom 0.14
-    on show:
-        pause 0.0
-    on hover:
-        linear 0.05 zoom 0.16  # Zooms to 110% over 0.05 seconds
-    on idle:
-        linear 0.1 zoom 0.14  # Returns to original size over 0.1 seconds
-
-transform zoom_criancas:
-    zoom 0.12
-    on show:
-        pause 0.0
-    on hover:
-        linear 0.05 zoom 0.14  # Zooms to 110% over 0.05 seconds
-    on idle:
-        linear 0.1 zoom 0.12  # Returns to original size over 0.1 second
-        
-transform zoom_quadropistas:
-    zoom 2.0
-    on show:
-        pause 0.0
-    on hover:
-        linear 0.05 zoom 2.2  # Zooms to 110% over 0.05 seconds
-    on idle:
-        linear 0.1 zoom 2.0  # Returns to original size over 0.1 seconds
 
 transform zoom_retrato:
     xpos 70
@@ -538,10 +506,6 @@ transform zoom_retrato:
     on show:
         pause 0.0
         linear 0.05 zoom 0.3  # Zooms to 110% over 0.05 seconds
-
-transform quadropistas_posicao:
-    xalign 0.5
-    yalign 0.5
 
 transform dynamic_pos:
     xalign posicao_texto_x

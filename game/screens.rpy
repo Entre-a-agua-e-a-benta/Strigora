@@ -1636,496 +1636,132 @@ image botao_passos = "botoes/botao passos.jpg"
 #Tela da taverna ext
 screen tavernaext:
     tag passos
-    use botao("botao_passos", 1, (750, 750), "Entrar na Estalagem", "tavernaint")
+    use botao("botao_passos", 1, (750, 750), "Entrar no albergo", "tavernaint")
     use botao("botao_passos", 1, (100, 500), "Casa do bêbado", "casabebadoext")
     use botao("botao_passos", 1, (1500, 1000), "Casa da Holga", "casaholgaext")
-        
-""" screen tavernaext:
-    tag passos
-    #botao para a taverna
-    imagebutton:
-        xpos 750
-        ypos 750
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("tavernaint")]
-        ## Faz com que apareça o texto indicando que caminho o botao irá levar
-        hovered Show("texto_botao",
-            displayText = "Entrar na estalagem", x=650, y=700)
-        unhovered Hide("texto_botao")
-    #botao para casa do bebado
-    imagebutton:
-        xpos 100
-        ypos 500
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("casabebadoext")]
-
-        hovered Show("texto_botao",
-            displayText = "Casa do bêbado")
-        unhovered Hide("texto_botao")
-    
-    imagebutton:
-        xpos 1700
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("casaholgaext")]
-        
-        hovered Show("texto_botao",
-            displayText = "Casa da Holga")
-        unhovered Hide("texto_botao") """
-
 
 ## Taverna interna
 screen tavernaint():
-    use botao("botao_passos", 1, (1800, 600), "Sair da estalagem", "tavernaext")
+    use botao("botao_passos", 1, (1800, 600), "Sair do albergo", "tavernaext")
     use botao("botao_passos", 1, (100, 400), "Entrar no quarto", "casapadre")
     if personagens_dict["Vincent"].vivo:
         use botao(personagens_dict["Vincent"].imagem, 0.14, (1250, 100), "Falar com o dono", "dialogo_vincent")
     if personagens_dict["Seren"].vivo and personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 2 and dia >= 3:
         use botao(personagens_dict["Seren"].imagem, 0.3, (900, 500), "Falar com a Seren", "dialogo_seren")
 
-""" screen tavernaint():
-    tag passos
-    imagebutton:
-        xpos 1800
-        ypos 600
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("tavernaext")]
 
-        hovered Show("texto_botao",
-            displayText = "Sair da estalagem")
-        unhovered Hide("texto_botao")
-    imagebutton:
-        xpos 100
-        ypos 400
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("casapadre")]
-
-        hovered Show("texto_botao",
-            displayText = "Entrar no quarto")
-        unhovered Hide("texto_botao") """
 ###Tela da casa do bebado ext
 screen casabebado():
     tag passos
-    imagebutton:
-        xpos 1700
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("tavernaext")]
+    use botao("botao_passos", 1, (1700, 900), "Albergo", "tavernaext")
+    use botao("botao_passos", 1, (100, 900), "Casa do Salvatore", "caminhobebado_margarida")
+    if personagens_dict["Bêbado"].vivo:
+        use botao(personagens_dict["Bêbado"].imagem, 0.14, (900, 700), "Falar com o bêbado", "dialogo_bebado")
 
-        hovered Show("texto_botao",
-            displayText = "Estalagem")
-        unhovered Hide("texto_botao")
-    imagebutton:
-        xpos 100
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("caminhobebado_margarida")]
 
-        hovered Show("texto_botao",
-            displayText = "Viale")
-        unhovered Hide("texto_botao")
 ## Tela da casa do padre interna
 screen casapadre():
     tag passos
-    imagebutton:
-        xpos 1700
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("tavernaint")]
+    use botao("botao_passos", 1, (1700, 900), "Sair do quarto", "tavernaint")
 
-        hovered Show("texto_botao",
-            displayText = "Estalagem")
-        unhovered Hide("texto_botao")
 ## Tela da casa da curandeira externa
 screen casaMargaridaEXT():
     tag passos
-    imagebutton:
-        xpos 1300
-        ypos 1000
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("caminhobebado_margarida")]
+    use botao("botao_passos", 1, (1300, 1000), "Viale", "caminhobebado_margarida")
+    use botao("botao_passos", 1, (90, 900), "Ponte", "caminhoLazaro")
+    if personagens_dict["Margarida"].vivo:
+        use botao(personagens_dict["Margarida"].imagem, 0.14, (1000, 800), "Falar com a curandeira", "dialogo_margarida")
 
-        hovered Show("texto_botao",
-            displayText = "Viale")
-        unhovered Hide("texto_botao")
-
-    imagebutton:
-        xpos 90
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("caminhoLazaro")]
-
-        hovered Show("texto_botao",
-            displayText = "Casa do Lázaro")
-        unhovered Hide("texto_botao")  
 ## Tela da casa do Lázaro externa
 screen casaLazaroEXT():
     tag passos
-    imagebutton:
-        xpos 1250
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("casamargaridaext")]
+    use botao("botao_passos", 1, (1250, 900), "Casa da curandeira", "casamargardaext")
+    use botao("botao_passos", 1, (1000, 300), "Entrar na casa do Lázaro", "casaLazaroint")
+    use botao("botao_passos", 1, (600, 900), "Casa da costureira", "casajoanaext")
 
-        hovered Show("texto_botao",
-            displayText = "Casa da curandeira")
-        unhovered Hide("texto_botao")
-    
-    imagebutton:
-        xpos 1000
-        ypos 300
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("casaLazaroint")]
-
-        hovered Show("texto_botao",
-            displayText = "Entrar na casa do Lázaro")
-        unhovered Hide("texto_botao")
-
-    imagebutton:
-        xpos 600
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("casajoanaext")]
-
-        hovered Show("texto_botao",
-            displayText = "Casa da costureira")
-        unhovered Hide("texto_botao")
 ## Tela da casa do Lázaro interna
 screen casaLazaroINT():
     tag passos
-    imagebutton:
-        xpos 1100
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("caminhoLazaro")]
+    use botao("botao_passos", 1, (1100, 900), "Sair da casa", "caminhoLazaro")
+    if personagens_dict["Lázaro"].vivo:
+        use botao(personagens_dict["Lázaro"].imagem, 0.14, (500, 500), "Falar com o Lázaro", "dialogo_lazaro")  
 
-        hovered Show("texto_botao",
-            displayText = "Sair da casa")
-        unhovered Hide("texto_botao")
 ## Tela do caminho entre o Lázaro e a curandeira
 screen caminhobebado_margarida():
     tag passos
-    imagebutton:
-        xpos 1600
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("casabebadoext")]
+    use botao("botao_passos", 1, (1600, 900), "Casa do bêbado", "casabebadoext")
+    use botao("botao_passos", 1, (90, 900), "Albergo", "tavernaext")
+    use botao("botao_passos", 1, (1000, 300), "Casa da curandeira", "casamargaridaext")
 
-        hovered Show("texto_botao",
-            displayText = "Casa do bêbado")
-        unhovered Hide("texto_botao")
-
-    imagebutton:
-        xpos 90
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("tavernaext")]
-
-        hovered Show("texto_botao",
-            displayText = "Estalagem")
-        unhovered Hide("texto_botao")
-    
-    imagebutton:
-        xpos 1000
-        ypos 300
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("casamargaridaext")]
-
-        hovered Show("texto_botao",
-            displayText = "Casa da curandeira")
-        unhovered Hide("texto_botao")
 ## Holga
 screen casaHolgaEXT():
     tag passos
-    imagebutton:
-        xpos 100
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("tavernaext")]
-        
-        hovered Show("texto_botao",
-            displayText = "Taverna")
-        unhovered Hide("texto_botao")
-    imagebutton:
-        xpos 1700
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("praca2")]
+    use botao("botao_passos", 1, (100, 900), "Albergo", "tavernaext")
+    use botao("botao_passos", 1, (1700, 900), "Monumento", "praca2")
+    if personagens_dict["Holga"].vivo:
+        use botao(personagens_dict["Holga"].imagem, 0.14, (900, 700), "Falar com a Holga", "dialogo_holga") 
 
-        hovered Show("texto_botao",
-            displayText = "Scultura")
-        unhovered Hide("texto_botao")
 ## Praca 2
 screen praca2():
     tag passos
-    imagebutton:
-        xpos 400
-        ypos 500
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("casaholgaext")]
-
-        hovered Show("texto_botao",
-            displayText = "Casa da Holga")
-        unhovered Hide("texto_botao")
-    imagebutton:
-        xpos 600
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("praca1")]
-
-        hovered Show("texto_botao",
-            displayText = "Piazza")
-        unhovered Hide("texto_botao")
+    use botao("botao_passos", 1, (400, 500), "Casa da Holga", "casaholgaext")
+    use botao("botao_passos", 1, (600, 900), "Piazza", "praca1")
 
 screen praca1():
     tag passos
-    imagebutton:
-        xpos 1000
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("praca2")]
-
-        hovered Show("texto_botao",
-            displayText = "Scultura")
-        unhovered Hide("texto_botao")
-    imagebutton:
-        xpos 450
-        ypos 650
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("igreja")]
-
-        hovered Show("texto_botao",
-            displayText = "Entrar na igreja")
-        unhovered Hide("texto_botao")
-    imagebutton:
-        xpos 1200
-        ypos 600
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("padaria")]
-
-        hovered Show("texto_botao",
-            displayText = "Entrar na padaria")
-        unhovered Hide("texto_botao")
-    imagebutton:
-        xpos 1600
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("casajoanaext")]
-
-        hovered Show("texto_botao",
-            displayText = "Casa da costureira")
-        unhovered Hide("texto_botao")
+    use botao("botao_passos", 1, (1000, 900), "Monumento", "praca2")
+    use botao("botao_passos", 1, (450, 650),   "Entrar na igreja", "igreja")
+    use botao("botao_passos", 1, (1200, 600), "Entrar na padaria", "padaria")
+    use botao("botao_passos", 1, (1600, 900), "Casa da costureira", "casajoanaext")
 
 screen igrejaINT():
     tag passos
-    imagebutton:
-        xpos 900
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("praca1")]
-
-        hovered Show("texto_botao",
-            displayText = "Piazza")
-        unhovered Hide("texto_botao")
+    use botao("botao_passos", 1, (900, 900), "Piazza", "praca1")
 
 screen padariaINT():
     tag passos
-    imagebutton:
-        xpos 300
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("praca1")]
-
-        hovered Show("texto_botao",
-            displayText = "Piazza")
-        unhovered Hide("texto_botao")
+    use botao("botao_passos", 1, (300, 900), "Piazza", "praca1")
+    if personagens_dict["Bartolomeu"].vivo:
+        use botao(personagens_dict["Bartolomeu"].imagem, 0.30, (1400, 300), "Falar com o padeiro", "dialogo_bartolomeu")
 
 screen casaJoanaEXT():
     tag passos
-    imagebutton:
-        xpos 200
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("praca1")]
-
-        hovered Show("texto_botao",
-            displayText = "Piazza")
-        unhovered Hide("texto_botao")
-    imagebutton:
-        xpos 250
-        ypos 400
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("plantacao")]
-
-        hovered Show("texto_botao",
-            displayText = "Campo")
-        unhovered Hide("texto_botao")
-    imagebutton:
-        xpos 1600
-        ypos 900
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("caminhoLazaro")]
-
-        hovered Show("texto_botao",
-            displayText = "Casa do Lázaro")
-        unhovered Hide("texto_botao")
+    use botao("botao_passos", 1, (200, 900), "Piazza", "praca1")
+    use botao("botao_passos", 1, (250, 400), "Campagna", "plantacao")
+    use botao("botao_passos", 1, (1600, 900), "Ponte", "caminhoLazaro")
 
 screen plantacao():
     tag passos
-    imagebutton:
-        xpos 1600
-        ypos 1000
-        idle "botao_passos"
-        hover "botao_passos"
-        at zoom_botao
-        action [Hide("texto_botao"), Jump("casajoanaext")]
+    use botao("botao_passos", 1, (1600, 1000), "Casa da costureira", "casajoanaext")
 
-        hovered Show("texto_botao",
-            displayText = "Casa da costureira")
-        unhovered Hide("texto_botao")
-############################################################# BOTÕES DE PERSONAGENS ##############################################################
+############################################################# FUNÇÂO BOTÂO ##############################################################
 
-##Botao Margarida
-screen margarida_parada:
-    tag personagem
-    imagebutton:
+screen botao(imagem, zoomBase, posicao, texto, jumpTo):
+    tag passos
+    vbox:
         xanchor 0.5
-        yanchor 0.5
-        xpos 1000
-        ypos 800
-        idle "personagens/margarida/margarida.png"
-        hover "personagens/margarida/margarida.png"
-        at zoom_adultos
-        action [Hide("texto_botao"), Jump("dialogo_margarida")]
+        yanchor 0.0
+        xpos posicao[0]
+        ypos posicao[1]
 
-        hovered Show("texto_botao",
-            displayText = "Falar com a curandeira")
-        unhovered Hide("texto_botao")
+        default displayText = ""
+        imagebutton:
+            xalign 0.5
+            idle imagem
+            hover imagem
+            at transform:
+                zoom zoomBase
+                on hover:
+                    linear 0.05 zoom 1.1*zoomBase  # Zooms to 110% over 0.05 seconds
+                on idle:
+                    linear 0.1 zoom zoomBase  # Returns to original size over 0.1 seconds
+            action [SetLocalVariable("displayText", ""), Jump(jumpTo)]
 
-## Botao Lázaro
-screen lazaro_parado:
-    tag personagem
-    imagebutton:
-        xanchor 0.5
-        yanchor 0.5
-        xpos 500
-        ypos 600
-        idle "personagens/leproso/leproso.png"
-        hover "personagens/leproso/leproso.png"
-        at zoom_adultos
-        action [Hide("texto_botao"), Jump("dialogo_lazaro")]
+            hovered SetLocalVariable("displayText", texto)
+            unhovered SetLocalVariable("displayText", "")
+        
+        text displayText xalign 0.5 outlines [ ( 3, "#000005", 0, 0) ]
 
-        hovered Show("texto_botao",
-            displayText = "Falar com o Lázaro")
-        unhovered Hide("texto_botao")   
-
-screen holga_parada:
-    tag personagem
-    imagebutton:
-        xanchor 0.5
-        yanchor 0.5
-        xpos 900
-        ypos 700
-        idle "personagens/holga/holga.png"
-        hover "personagens/holga/holga.png"
-        at zoom_adultos
-        action [Hide("texto_botao"), Jump("dialogo_holga")]
-
-        hovered Show("texto_botao",
-            displayText = "Falar com a Holga")
-        unhovered Hide("texto_botao")
-
-screen bartolomeu_parado:
-    tag personagem
-    imagebutton:
-        xanchor 0.5
-        yanchor 0.5
-        xpos 900
-        ypos 700
-        idle "personagens/padeiro/padeiro.png"
-        hover "personagens/padeiro/padeiro.png"
-        at zoom_adultos
-        action [Hide("texto_botao"), Jump("dialogo_bartolomeu")]
-
-        hovered Show("texto_botao",
-            displayText = "Falar com o padeiro")
-        unhovered Hide("texto_botao")
-
-screen bebado_parado:
-    tag personagem
-    imagebutton:
-        xanchor 0.5
-        yanchor 0.5
-        xpos 900
-        ypos 700
-        idle "personagens/bebado/bebado.png"
-        hover "personagens/bebado/bebado.png"
-        at zoom_adultos
-        action [Hide("texto_botao"), Jump("dialogo_bebado")]
-
-        hovered Show("texto_botao",
-            displayText = "Falar com o bêbado")
-        unhovered Hide("texto_botao")
 ############################################################# Hud ################################################
 screen HUD():
     frame:
@@ -2189,14 +1825,6 @@ label hide_all_screens:
     hide screen casaJoanaEXT
     hide screen plantacao
 
-    hide screen vincent_parado
-    hide screen margarida_parada
-    hide screen lazaro_parado
-    hide screen holga_parada
-    hide screen bartolomeu_parado
-    hide screen bebado_parado
-    hide screen seren_parada
-
     hide screen padre
     hide screen vincentN
     hide screen margaridaN
@@ -2216,46 +1844,13 @@ label hide_all_screens:
 
     hide screen botao
     return
+
 ######################################### NOITE ######################################################
 screen casaPadreNOITE():
-    imagebutton:
-        idle "botoes/quadro de pistas.jpg"
-        hover "botoes/quadro de pistas.jpg"
-        at zoom_quadropistas and quadropistas_posicao
-        action [Hide("texto_botao"), Jump("noite")]
+    use botao("mural de pistas", 1, (200, 900), "Ver quadro de pistas", "noite")  
 
-        hovered Show("texto_botao",
-            displayText = "Ver quadro de pistas")
-        unhovered Hide("texto_botao")   
-
-################################# TESTE DE PISTAS ##############################################
+################################# PISTAS ##############################################
 image tela preta = Solid("#000")
-
-screen botao(imagem, zoomBase, posicao, texto, jumpTo):
-    tag passos
-    vbox:
-        xanchor 0.5
-        yanchor 0.0
-        xpos posicao[0]
-        ypos posicao[1]
-
-        default displayText = ""
-        imagebutton:
-            xalign 0.5
-            idle imagem
-            hover imagem
-            at transform:
-                zoom zoomBase
-                on hover:
-                    linear 0.05 zoom 1.1*zoomBase  # Zooms to 110% over 0.05 seconds
-                on idle:
-                    linear 0.1 zoom zoomBase  # Returns to original size over 0.1 seconds
-            action [SetLocalVariable("displayText", ""), Jump(jumpTo)]
-
-            hovered SetLocalVariable("displayText", texto)
-            unhovered SetLocalVariable("displayText", "")
-        
-        text displayText xalign 0.5 outlines [ ( 3, "#000005", 0, 0) ]
 
 screen pistas():
     tag pistas
