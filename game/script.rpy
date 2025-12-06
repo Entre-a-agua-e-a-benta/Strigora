@@ -261,13 +261,14 @@ label plantacao:
 
 ############# Arruma posição dos personagens dentro do dialogo ###############################
 transform padre_left:
-    zoom 0.3
-    ypos 0.3
-    xpos -0.05
+    zoom 0.5
+    ypos 0.1
+    xanchor 0.5
+    xpos 350
 transform personagem_right:
-    zoom 0.3
-    ypos 0.3
-    xpos 0.7
+    zoom 0.5
+    ypos 0.1
+    xpos 0.5
 
 transform bebado_right:
     zoom 0.5   
