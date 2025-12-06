@@ -1777,12 +1777,12 @@ screen HUD():
 
 ######################################################### Falas de personagens ##############################################################
 
-image lazaroN = "personagens/leproso/leproso.png"
-image vincentN = "personagens/vincent/vincent.png"
-image margaridaN = "personagens/margarida/margarida.png" 
-image padreN = "personagens/padre/padre.png"
-image holgaN = "personagens/holga/holga.png"
-image padeiroN = "personagens/padeiro/padeiro neutro.png"
+image lazaroN = "personagens/lazaro/lazaro neutro.png"
+image vincentN = "personagens/vincent/vincent neutro.png"
+image margaridaN = "personagens/margarida/margarida neutra.png" 
+image padreN = "personagens/padre/padre neutro.png"
+image holgaN = "personagens/holga/holga neutra.png"
+image bartolomeuN = "personagens/bartolomeu/bartolomeu neutro.png"
 image bebadoN = "personagens/bebado/bebado neutro.png"
 
 screen vincentN:
@@ -1802,7 +1802,7 @@ screen holgaN:
     add "holgaN" at personagem_right   
 screen bartolomeuN:
     tag personagem
-    add "padeiroN" at personagem_right
+    add "bartolomeuN" at personagem_right
 screen bebadoN:
     tag personagem
     add "bebadoN" at bebado_right
@@ -1833,8 +1833,6 @@ label hide_all_screens:
     hide screen bartolomeuN
     hide screen bebadoN
 
-
-    hide screen texto_botao
     hide screen pistas
     hide screen vincent_pistas
 
@@ -1918,7 +1916,6 @@ screen pistas_personagem(personagem):
                 else:
                     action Function(passar_dia, personagem)
 
-    
     frame:
         xysize(900,450)
         xpos 0.5
