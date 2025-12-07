@@ -1637,45 +1637,45 @@ image botao_passos = "botoes/botao passos.jpg"
 screen tavernaext:
     tag passos
     use botao("botao_passos", 1, (750, 750), "Entrar no albergo", "tavernaint")
-    use botao("botao_passos", 1, (100, 500), "Casa do bêbado", "casabebadoext")
-    use botao("botao_passos", 1, (1500, 1000), "Casa da Holga", "casaholgaext")
+    use botao("botao_passos", 1, (150, 500), "Casa do bêbado", "casabebadoext")
+    use botao("botao_passos", 1, (1600, 950), "Casa da Holga", "casaholgaext")
 
 ## Taverna interna
 screen tavernaint():
     use botao("botao_passos", 1, (1800, 600), "Sair do albergo", "tavernaext")
-    use botao("botao_passos", 1, (100, 400), "Entrar no quarto", "casapadre")
+    use botao("botao_passos", 1, (150, 500), "Entrar no quarto", "casapadre")
     if personagens_dict["Vincent"].vivo:
-        use botao(personagens_dict["Vincent"].imagem, 0.14, (1250, 100), "Falar com o dono", "dialogo_vincent")
+        use botao(personagens_dict["Vincent"].imagem, 0.10, (1250, 100), "Falar com o dono", "dialogo_vincent")
     if personagens_dict["Seren"].vivo and personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 2 and dia >= 3:
-        use botao(personagens_dict["Seren"].imagem, 0.3, (900, 500), "Falar com a Seren", "dialogo_seren")
-
+        use botao(personagens_dict["Seren"].imagem, 0.3, (900, 500), "Falar com a garota", "dialogo_seren")
+    add "botoes/taverna balcao.png"
 
 ###Tela da casa do bebado ext
 screen casabebado():
     tag passos
     use botao("botao_passos", 1, (1700, 900), "Albergo", "tavernaext")
-    use botao("botao_passos", 1, (100, 900), "Casa do Salvatore", "caminhobebado_margarida")
+    use botao("botao_passos", 1, (170, 940), "Casa do Salvatore", "caminhobebado_margarida")
     if personagens_dict["Bêbado"].vivo:
-        use botao(personagens_dict["Bêbado"].imagem, 0.14, (900, 700), "Falar com o bêbado", "dialogo_bebado")
+        use botao(personagens_dict["Bêbado"].imagem, 0.14, (900, 350), "Falar com o bêbado", "dialogo_bebado")
 
 
 ## Tela da casa do padre interna
 screen casapadre():
     tag passos
-    use botao("botao_passos", 1, (1700, 900), "Sair do quarto", "tavernaint")
+    use botao("botao_passos", 1, (1200, 950), "Sair do quarto", "tavernaint")
 
 ## Tela da casa da curandeira externa
 screen casaMargaridaEXT():
     tag passos
-    use botao("botao_passos", 1, (1300, 1000), "Viale", "caminhobebado_margarida")
+    use botao("botao_passos", 1, (1300, 950), "Viale", "caminhobebado_margarida")
     use botao("botao_passos", 1, (90, 900), "Ponte", "caminhoLazaro")
     if personagens_dict["Margarida"].vivo:
-        use botao(personagens_dict["Margarida"].imagem, 0.14, (1000, 800), "Falar com a curandeira", "dialogo_margarida")
+        use botao(personagens_dict["Margarida"].imagem, 0.13, (1000, 500), "Falar com a curandeira", "dialogo_margarida")
 
 ## Tela da casa do Lázaro externa
 screen casaLazaroEXT():
     tag passos
-    use botao("botao_passos", 1, (1250, 900), "Casa da curandeira", "casamargardaext")
+    use botao("botao_passos", 1, (1250, 900), "Casa da curandeira", "casamargaridaext")
     use botao("botao_passos", 1, (1000, 300), "Entrar na casa do Lázaro", "casaLazaroint")
     use botao("botao_passos", 1, (600, 900), "Casa da costureira", "casajoanaext")
 
@@ -1684,7 +1684,7 @@ screen casaLazaroINT():
     tag passos
     use botao("botao_passos", 1, (1100, 900), "Sair da casa", "caminhoLazaro")
     if personagens_dict["Lázaro"].vivo:
-        use botao(personagens_dict["Lázaro"].imagem, 0.14, (500, 500), "Falar com o Lázaro", "dialogo_lazaro")  
+        use botao(personagens_dict["Lázaro"].imagem, 0.14, (500, 400), "Falar com o leproso", "dialogo_lazaro")  
 
 ## Tela do caminho entre o Lázaro e a curandeira
 screen caminhobebado_margarida():
@@ -1699,13 +1699,15 @@ screen casaHolgaEXT():
     use botao("botao_passos", 1, (100, 900), "Albergo", "tavernaext")
     use botao("botao_passos", 1, (1700, 900), "Monumento", "praca2")
     if personagens_dict["Holga"].vivo:
-        use botao(personagens_dict["Holga"].imagem, 0.14, (900, 700), "Falar com a Holga", "dialogo_holga") 
+        use botao(personagens_dict["Holga"].imagem, 0.13, (700, 450), "Falar com a Holga", "dialogo_holga") 
 
 ## Praca 2
 screen praca2():
     tag passos
     use botao("botao_passos", 1, (400, 500), "Casa da Holga", "casaholgaext")
     use botao("botao_passos", 1, (600, 900), "Piazza", "praca1")
+    if personagens_dict["Agnes"].vivo:
+        use botao(personagens_dict["Agnes"].imagem, 0.12, (900, 400), "Falar com a pedinte", "dialogo_agnes")
 
 screen praca1():
     tag passos
@@ -1727,12 +1729,14 @@ screen padariaINT():
 screen casaJoanaEXT():
     tag passos
     use botao("botao_passos", 1, (200, 900), "Piazza", "praca1")
-    use botao("botao_passos", 1, (250, 400), "Campagna", "plantacao")
+    use botao("botao_passos", 1, (350, 400), "Campagna", "plantacao")
     use botao("botao_passos", 1, (1600, 900), "Ponte", "caminhoLazaro")
+    if personagens_dict["Joana"].vivo:
+        use botao(personagens_dict["Joana"].imagem, 0.12, (900, 500), "Falar com a costureira", "dialogo_joana")
 
 screen plantacao():
     tag passos
-    use botao("botao_passos", 1, (1600, 1000), "Casa da costureira", "casajoanaext")
+    use botao("botao_passos", 1, (400, 970), "Casa da costureira", "casajoanaext")
 
 ############################################################# FUNÇÂO BOTÂO ##############################################################
 
@@ -1784,6 +1788,7 @@ image padreN = "personagens/padre/padre neutro.png"
 image holgaN = "personagens/holga/holga neutra.png"
 image bartolomeuN = "personagens/bartolomeu/bartolomeu neutro.png"
 image bebadoN = "personagens/bebado/bebado neutro.png"
+image agnesN = "personagens/agnes/agnes neutra.png"
 
 screen vincentN:
     tag personagem
@@ -1806,6 +1811,9 @@ screen bartolomeuN:
 screen bebadoN:
     tag personagem
     add "bebadoN" at bebado_right
+screen agnesN:
+    tag personagem
+    add "agnesN" at personagem_right
 
 ############################################################### Esconde as telas ######################################################
 label hide_all_screens:
@@ -1832,6 +1840,7 @@ label hide_all_screens:
     hide screen holgaN
     hide screen bartolomeuN
     hide screen bebadoN
+    hide screen agnesN
 
     hide screen pistas
     hide screen vincent_pistas

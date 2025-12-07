@@ -623,7 +623,14 @@ label dialogo_bebado:
     $ adicionar_pista("Bêbado", "Odeia gente")
     $ checar_interacao()
     jump casabebadoext
-    
+
+######################################### CENAS AGNES ###########################################################  
+label dialogo_agnes:
+    call hide_all_screens
+    $ mostrar_personagem("Agnes", 'N')
+    a "eu sou a agnes"
+    jump praca2
+
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
 
 label casapadre_noite:
