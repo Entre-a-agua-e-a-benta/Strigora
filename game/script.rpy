@@ -232,7 +232,6 @@ label tavernaint:
     scene bg taverna int
     call screen tavernaint
 
-
 ## Cena casa do bebado
 label casabebadoext:
     call hide_all_screens
@@ -331,11 +330,6 @@ transform personagem_right:
     ypos 0.1
     xpos 0.5
 
-transform bebado_right:
-    zoom 0.5   
-    ypos 0.1
-    xpos 0.5
-
 ######################################## CENAS QUE OCORREM NA TAVERNA #######################################################
 
 ## Dialogo com o Vincent ao clicar no personagem
@@ -399,7 +393,7 @@ label suspeito_vincent:
     $ mostrar_personagem("Vincent", 'R')
     v "Mas se quer saber… Há alguém que me parece estranho, não sei o nome dele, mas ele mora quase fora da aldeia, isolado com razão. Alguém com o corpo ferido daquele jeito, com certeza boa coisa não fez e agora Deus o castiga pelos seus pecados."
     v "Não o deixo entrar aqui, mas não é pela doença. É por tudo o resto. Por esse silêncio dele que pesa, pelas coisas que diz sem dizer nada. Tem gente que traz má sorte sem precisar levantar a mão."
-    $ adicionar_fala("Lázaro", " é acusado por Vincent pois: 'O homem que mora quase fora da aldeia tem o corpo ferido, com certeza não fez coisa boa e foi castigado por Deus. O silêncio dele pesa'.")
+    $ adicionar_fala("Lázaro", "é acusado por Vincent pois: \"O homem que mora quase fora da aldeia tem o corpo ferido, com certeza não fez coisa boa e foi castigado por Deus. O silêncio dele pesa\".")
     $ checar_interacao()
     jump tavernaint
 
@@ -462,7 +456,7 @@ label padre_vincent:
     v "Um dia sumiu... e quando encontraram, não era mais um homem. Era só um corpo... vazio."
     $ mostrar_personagem("Vincent", 'N')
     v "Você é diferente? Ou vai terminar igual?"
-    $ adicionar_fala("Vincent", "acusa o antigo padre de 'sumir e quando encontraram, não era mais um homem. Era só um corpo... vazio.'")
+    $ adicionar_fala("Vincent", "acusa o antigo padre de \"sumir e quando encontraram, não era mais um homem. Era só um corpo... vazio.\"")
     $ mostrar_personagem("Padre", 'R')
     menu:
         "Ficar em silêncio":
@@ -531,14 +525,14 @@ label incomoda_seren:
 label sonhos_seren:
     $ mostrar_personagem("Seren", 'N')
     s "No começo, eu só via silhuetas. Um campo, uma árvore sozinha, uma sombra me seguindo de longe. Depois vieram os sussurros. E agora, agora… Agora eu vejo tudo…"
-    $ adicionar_pista("Seren", "sonhava vendo silhuetas ou sombras a seguindo e agora 'vê tudo'.")
+    $ adicionar_pista("Seren", "sonhava vendo silhuetas ou sombras a seguindo e agora \"vê tudo\".")
     s "No sonho, ando pelas ruas da aldeia com passos que não são meus… As mãos... as mãos que estendo são pequenas, como as minhas. Mas elas brilham. Como brasa acesa no escuro. E quando tocam algo, tudo escurece..."
     $ adicionar_pista("Seren", "no sonho, anda pelas ruas da aldeia com passos que não são seus e mãos que brilham como brasa acesa no escuro.")
     $ mostrar_personagem("Seren", 'T')
     s "E o que mais me assusta: há uma voz dentro de mim. Mas ela não fala comigo. Ela me usa… "
     $ adicionar_pista("Seren", "no sonho, há uma voz dentro dela que não fala com ela, mas a usa.")
     s "Mas o pior é quando vejo ele… o menino com voz de mulher… Ele fala, mas a boca não mexe… Ele parece viver numa tristeza que me queima..."
-    $ adicionar_fala("Seren", "'Mas o pior é quando vejo ele… o menino com voz de mulher… Ele fala, mas a boca não mexe… Ele parece viver numa tristeza que me queima...'.")
+    $ adicionar_fala("Seren", "\"Mas o pior é quando vejo ele… o menino com voz de mulher… Ele fala, mas a boca não mexe… Ele parece viver numa tristeza que me queima...\".")
     s "Quando acordo, a pele está quente como se eu tivesse corrido por horas. A febre queima atrás dos olhos, e minha garganta parece de vidro."
     $ mostrar_personagem("Seren", 'N')
     s "O tio diz que é só vento, ou comida estragada."
@@ -554,7 +548,7 @@ label sonhos_seren:
 label sonhoontem_seren:
     $ mostrar_personagem("Seren", 'N')
     s "Ontem… ontem no sonho eu estava em frente ao espelho de uma casa grande, e o menino estava dentro do espelho me olhando de volta. Só que, por um instante, os olhos dele eram os meus…"
-    $ adicionar_fala("Seren", "'o menino estava dentro do espelho me olhando de volta. Só que, por um instante, os olhos dele eram os meus…'.")
+    $ adicionar_fala("Seren", "\"o menino estava dentro do espelho me olhando de volta. Só que, por um instante, os olhos dele eram os meus…\".")
     $ mostrar_personagem("Padre", 'N')
     menu:
         "Conte mais sobre esse menino do sonho":
@@ -562,9 +556,9 @@ label sonhoontem_seren:
 label menino_seren:
     $ mostrar_personagem("Seren", 'N')
     s "Ele parece triste… Sempre me olha de um jeito estranho, como se me conhecesse"
-    $ adicionar_fala("Seren", "o menino do sonho 'Sempre me olha de um jeito estranho, como se me conhecesse'.")
+    $ adicionar_fala("Seren", "o menino do sonho \"Sempre me olha de um jeito estranho, como se me conhecesse\".")
     s "Uma vez eu vi meu rosto no lugar do dele. Mas eu sei que não era eu… Eu estava olhando pra mim, mas eu era outra pessoa. Não sei explicar…"
-    $ adicionar_fala("Seren", "'Uma vez eu vi meu rosto no lugar do' menino do sonho 'Mas eu sei que não era eu… Eu estava olhando pra mim, mas eu era outra pessoa.'.")
+    $ adicionar_fala("Seren", "\"Uma vez eu vi meu rosto no lugar do\" menino do sonho \"Mas eu sei que não era eu… Eu estava olhando pra mim, mas eu era outra pessoa.\".")
     $ checar_interacao()
     jump tavernaint
 
@@ -585,9 +579,9 @@ label habitante_seren:
     s "Tem a dona Margarida... Não que ela seja má, eu acho. Mas ela olha pras pessoas como se lesse o que tem dentro."
     $ adiconar_pista("Margarida", "olha pras pessoas como se lesse o que tem dentro.")
     $ mostrar_personagem("Seren", 'R')
-    s "Um dia ela olhou pra mim, encostou a mão na minha testa e disse: “Nem todo espelho mostra só o que é de fora”. Eu não entendi, mas me deu um arrepio."
-    $ adiconar_pista("Margarida", "disse 'Nem todo espelho mostra só o que é de fora' para Seren.")
-    $ adicionar_pista("Seren", "escutou Margarida dizendo pra ela 'Nem todo espelho mostra só o que é de fora'.")
+    s "Um dia ela olhou pra mim, encostou a mão na minha testa e disse: \"Nem todo espelho mostra só o que é de fora\". Eu não entendi, mas me deu um arrepio."
+    $ adiconar_pista("Margarida", "disse \"Nem todo espelho mostra só o que é de fora\" para Seren.")
+    $ adicionar_pista("Seren", "escutou Margarida dizendo pra ela \"Nem todo espelho mostra só o que é de fora\".")
     jump tavernaint
 
 ######################################## CENAS QUE OCORREM NA CASA DA MARGARIDA #######################################################
@@ -627,7 +621,7 @@ label meconte_margarida:
     m "Uma mulher sozinha , que mexe com o que não entendem, e já afiam a corda, já juntam lenha…"
     m "Ignorantes…"
     m "Eles me chamam de contadora de histórias, como se eu fosse apenas isso. Eles não se lembram das pessoas que salvei. Já vi mais gente morrer do que você viu nascer. Sei quando a terra adoece, quando o vento muda de cheiro, quando a mão treme antes mesmo de tocar na porta."
-    $ adicionar_pista("Margarida", "fala que ela mesma 'sabe quando a terra adoece, quando o vento muda de cheiro, quando a mão treme antes mesmo de tocar na porta.'.")
+    $ adicionar_pista("Margarida", "fala que ela mesma \"sabe quando a terra adoece, quando o vento muda de cheiro, quando a mão treme antes mesmo de tocar na porta.\".")
     m "Mas não me olhe assim, eu não mexo com os mortos e nem falo com sombras. Só aprendi a ouvir o que ninguém mais quer escutar. A Natureza."
     $ mostrar_personagem("Padre", 'T')
     menu:
@@ -663,10 +657,10 @@ label historia_margarida:
     m "Mas um tinha os olhos fechados e sorria dormindo. O outro tinha os olhos abertos… e não piscava… A mulher, sozinha no mundo, mesmo sabendo que não era seu,  levou um deles nos braços."
     $ adicionar_fala("Margarida", "em sua história \"um tinha os olhos fechados e sorria o outro tinha olhos abertos e não piscava\" e a mulher \"levou um deles nos braços\".")
     m "Disse: \"é um sinal… O destino me escolheu.\"  Alimentou… deu nome… cobriu de orações. O outro bebê? … ficou. Nunca chorou. Nunca morreu. Só… ficou. Esperando."
-    $ adicionar_fala("Margarida", "em sua história a mulher alimentou nomeou e orou pelo bebê que levou, enquanto o outro 'nunca chorou. Nunca morreu. Só… ficou. Esperando.'.")
-    m "Um dia… a criança levada perguntou: “Quem é meu pai?”E ela respondeu: “Um homem… que não tem nome… e que não pode ser acordado.”."
-    m "Desde então… dizem… a corça de três olhos ronda a aldeia… procurando seu parente perdido.E a criança… ah… ela ainda vive entre nós… Só não sabe… quem… é."
-    $ adicionar_fala("Margarida", "desde sua história 'a corça de três olhos ronda a aldeia… procurando seu parente perdido. E a criança… ah… ela ainda vive entre nós… Só não sabe… quem… é.'")
+    $ adicionar_fala("Margarida", "em sua história a mulher alimentou nomeou e orou pelo bebê que levou, enquanto o outro \"nunca chorou. Nunca morreu. Só… ficou. Esperando.\".")
+    m "Um dia… a criança levada perguntou: \"Quem é meu pai?\" E ela respondeu: \"Um homem… que não tem nome… e que não pode ser acordado.\"."
+    m "Desde então… dizem… a corça de três olhos ronda a aldeia… procurando seu parente perdido. E a criança… ah… ela ainda vive entre nós… Só não sabe… quem… é."
+    $ adicionar_fala("Margarida", "desde sua história \"a corça de três olhos ronda a aldeia… procurando seu parente perdido. E a criança… ah… ela ainda vive entre nós… Só não sabe… quem… é.\"")
     $ checar_interacao()
     jump casamargaridaext
 
@@ -789,7 +783,7 @@ label doenca_lazaro:
     $ alterar_interacao(-1)
     l "Já nem conto mais... Parei depois do segundo ano."
     l "A doença chegou devagar... Primeiro nas mãos, depois no rosto... E agora parece que está afetando por dentro da minha cabeça."
-    l " Às vezes me pergunto... se ela veio de fora… Ou se sempre esteve aqui, esperando eu parar de fingir que não tinha nada..."
+    l "Às vezes me pergunto... se ela veio de fora… Ou se sempre esteve aqui, esperando eu parar de fingir que não tinha nada..."
     $ checar_interacao ()
     jump casaLazaroint
 
