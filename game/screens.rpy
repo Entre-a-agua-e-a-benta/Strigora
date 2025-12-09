@@ -1833,7 +1833,7 @@ label hide_all_screens:
     hide screen casaJoanaEXT
     hide screen plantacao
 
-    hide screen padre
+    hide screen padreN
     hide screen vincentN
     hide screen margaridaN
     hide screen lazaroN
@@ -1854,7 +1854,7 @@ label hide_all_screens:
 
 ######################################### NOITE ######################################################
 screen casaPadreNOITE():
-    use botao("mural de pistas", 1, (200, 900), "Ver quadro de pistas", "noite")  
+    use botao("mural de pistas", 0.99, (870, 270), "Ver quadro de pistas", "noite")  
 
 ################################# PISTAS ##############################################
 image tela preta = Solid("#000")
