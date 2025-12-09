@@ -938,6 +938,26 @@ label escolhas_agnes:
     a "holga holga hola holadfdsa"
     jump praca2
 
+######################################## CENAS JOANA ###########################################################
+label dialogo_joana:
+    call hide_all_screens
+    if personagens_dict["Joana"].conversavel:
+        if personagens_dict["Joana"].conhecido == False:
+            $ personagens_dict["Joana"].conhecido = True
+            $ mostrar_personagem("Padre", 'N')
+            p "Buongiorno…"
+            p "Não sei a notícia chegou aqui, mas eu estou encarregado de achar o culpado pelas coisas que vem acontecendo na região, pensei que, mesmo doente, você talvez tivesse alguma informação para contribuir... ou, qo menos, algo interessante a dizer."
+        jump escolhas_joana
+    else:
+        $ mostrar_personagem("Joana", 'T')
+        j "Não estou com vontade de conversar hoje..."
+        jump casajoanaext
+
+label escolhas_joana:
+    $ mostrar_personagem("Joana", 'N')
+    j "holga holga hola holadfdsa"
+    jump casajoanaext
+
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
 
 label casapadre_noite:
