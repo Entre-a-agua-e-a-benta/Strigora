@@ -1782,38 +1782,71 @@ screen HUD():
 ######################################################### Falas de personagens ##############################################################
 
 image lazaroN = "personagens/lazaro/lazaro neutro.png"
-image vincentN = "personagens/vincent/vincent neutro.png"
-image margaridaN = "personagens/margarida/margarida neutra.png" 
-image padreN = "personagens/padre/padre neutro.png"
-image holgaN = "personagens/holga/holga neutra.png"
-image bartolomeuN = "personagens/bartolomeu/bartolomeu neutro.png"
-image bebadoN = "personagens/bebado/bebado neutro.png"
-image agnesN = "personagens/agnes/agnes neutra.png"
+image lazaroF = "personagens/lazaro/lazaro felicidade.png"
+image lazaroR = "personagens/lazaro/lazaro raiva.png"
+image lazaroT = "personagens/lazaro/lazaro tristeza.png"
 
-screen vincentN:
+image vincentN = "personagens/vincent/vincent neutro.png"
+image vincentF = "personagens/vincent/vincent felicidade.png"
+image vincentR = "personagens/vincent/vincent raiva.png"
+image vincentT = "personagens/vincent/vincent tristeza.png"
+
+image margaridaN = "personagens/margarida/margarida neutra.png" 
+image margaridaF = "personagens/margarida/margarida felicidade.png" 
+image margaridaR = "personagens/margarida/margarida raiva.png" 
+image margaridaT = "personagens/margarida/margarida tristeza.png" 
+
+image padreN = "personagens/padre/padre neutro.png"
+image padreF = "personagens/padre/padre felicidade.png"
+image padreR = "personagens/padre/padre raiva.png"
+image padreT = "personagens/padre/padre tristeza.png"
+
+image holgaN = "personagens/holga/holga neutra.png"
+image holgaF = "personagens/holga/holga felicidade.png"
+image holgaR = "personagens/holga/holga raiva.png"
+image holgaT = "personagens/holga/holga tristeza.png"
+
+image bartolomeuN = "personagens/bartolomeu/bartolomeu neutro.png"
+image bartolomeuF = "personagens/bartolomeu/bartolomeu felicidade.png"
+image bartolomeuR = "personagens/bartolomeu/bartolomeu raiva.png"
+image bartolomeuT = "personagens/bartolomeu/bartolomeu tristeza.png"
+
+image bebadoN = "personagens/bebado/bebado neutro.png"
+image bebadoF = "personagens/bebado/bebado felicidade.png"
+image bebadoR = "personagens/bebado/bebado raiva.png"
+image bebadoT = "personagens/bebado/bebado tristeza.png"
+
+image agnesN = "personagens/agnes/agnes neutra.png"
+image agnesF = "personagens/agnes/agnes felicidade.png"
+image agnesR = "personagens/agnes/agnes raiva.png"
+image agnesT = "personagens/agnes/agnes tristeza.png"
+
+image joanaN = "personagens/joana/joana neutra.png"
+image joanaF = "personagens/joana/joana felicidade.png"
+image joanaR = "personagens/joana/joana raiva.png"
+image joanaT = "personagens/joana/joana tristeza.png"
+
+image salvatoreN = "personagens/salvatore/salvatore neutro.png"
+image salvatoreF = "personagens/salvatore/salvatore felicidade.png"
+image salvatoreR = "personagens/salvatore/salvatore raiva.png"
+image salvatoreT = "personagens/salvatore/salvatore tristeza.png"
+
+image serenN = "personagens/seren/seren neutra.png"
+image serenF = "personagens/seren/seren felicidade.png"
+image serenR = "personagens/seren/seren raiva.png"
+image serenT = "personagens/seren/seren tristeza.png"
+
+image williamN = "personagens/william/william neutro.png"
+image williamF = "personagens/william/william felicidade.png"
+image williamR = "personagens/william/william raiva.png"
+image williamT = "personagens/william/william tristeza.png"
+
+screen personagemEmocao(nome, emocao):
     tag personagem
-    add "vincentN" at personagem_right
-screen padreN:
-    tag personagem
-    add "padreN" at padre_left
-screen margaridaN:
-    tag personagem
-    add "margaridaN" at personagem_right
-screen lazaroN:
-    tag personagem
-    add "lazaroN" at personagem_right
-screen holgaN:
-    tag personagem
-    add "holgaN" at personagem_right   
-screen bartolomeuN:
-    tag personagem
-    add "bartolomeuN" at personagem_right
-screen bebadoN:
-    tag personagem
-    add "bebadoN" at bebado_right
-screen agnesN:
-    tag personagem
-    add "agnesN" at personagem_right
+    if nome != "padre":
+        add nome+emocao at personagem_right
+    else:
+        add nome+emocao at padre_left
 
 ############################################################### Esconde as telas ######################################################
 label hide_all_screens:
@@ -1833,14 +1866,7 @@ label hide_all_screens:
     hide screen casaJoanaEXT
     hide screen plantacao
 
-    hide screen padreN
-    hide screen vincentN
-    hide screen margaridaN
-    hide screen lazaroN
-    hide screen holgaN
-    hide screen bartolomeuN
-    hide screen bebadoN
-    hide screen agnesN
+    hide screen personagemEmocao
 
     hide screen pistas
     hide screen vincent_pistas
@@ -1862,26 +1888,20 @@ image tela preta = Solid("#000")
 screen pistas():
     tag pistas
     imagemap:
+        
         ground "images/pistas_idle.jpg"
         hover "images/pistas_hover.jpg"
-        hotspot (59, 189, 216, 282) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Vincent"), Jump("pistas")]
-
-        hotspot (326, 188, 216, 285) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Margarida"), Jump("pistas")]
-        hotspot (596, 188, 212, 285) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Bartolomeu"), Jump("pistas")]
-        hotspot (864, 187, 214, 283) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Agnes"), Jump("pistas")]
-        hotspot (1131, 187, 219, 283) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Lázaro"), Jump("pistas")]
-        hotspot (193, 556, 214, 284) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Seren"), Jump("pistas")]
-        hotspot (461, 554, 213, 282) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Holga"), Jump("pistas")]
-        hotspot (728, 556, 215, 283) action [Hide("texto_botao"), SetVariable("infoPersonagem", "William"), Jump("pistas")]
-        hotspot (995, 556, 218, 284) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Bêbado"), Jump("pistas")]
-        hotspot (1388, 206, 498, 668) action [Hide("texto_botao"), SetVariable("infoPersonagem", "Bruxa"), Jump("pistas")]
-
+        for personagemData in personagens_list:
+            $ personagem = personagens_dict[personagemData[0]]
+            if personagem.conhecido:
+                hotspot personagem.hotspot action [Hide("texto_botao"), SetVariable("infoPersonagem", personagem.nome), Jump("pistas")]
+            else:
+                hotspot personagem.hotspot action [Notify("Ainda não conheço este personagem...")]
         hotspot (572, 923, 770, 91) action Function(passar_dia)
-
     
 screen pistas_personagem(personagem):
     tag pistas
-    add    "tela preta"
+    add "tela preta"
     $ genero = "o" if personagens_dict[personagem].genero == 'M' else "a"
     frame:
         xysize(900,450)
