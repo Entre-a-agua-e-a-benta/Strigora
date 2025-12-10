@@ -1929,6 +1929,7 @@ screen casaPadreNOITE():
 
 ################################# PISTAS ##############################################
 image tela preta = Solid("#000")
+image tela branca = Solid("#FFFFFF")
 
 screen pistas():
     tag pistas

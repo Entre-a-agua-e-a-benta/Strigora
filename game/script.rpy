@@ -17,7 +17,7 @@ default afastou_lazaro = False
 ## Personagens
 define personagens_list = list()
 define personagens_dict = dict()
-define p = Character("Padre") ## O JOGADOR
+define p = Character("Padre", what_italic=True) ## O JOGADOR
 define v = Character("Vincent") ## DONO DA ESTALAGEM/TAVERNA
 define s = Character("Seren") ## CRIANÇA GEMEA FILHA DO BEBADO
 define m = Character("Margarida") ## Curandeira
@@ -30,7 +30,10 @@ define j = Character("Joana") ## Costureira
 define a = Character("Agnes") ## Criança pedinte
 define w = Character("William") ## Criança William
 
-define dev = Character("Quem programou esse jogo", color="#a88ab4")
+define dev = Character("Strigora", color="#a88ab4")
+
+define m = Character("Mensageiro", color="#FFFFFF")
+define hdc = Character("Homem da carta", color="#FFFFFF")
 
 # The game starts here.
 
@@ -229,14 +232,20 @@ label start:
 
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
 
-jump noite 
 label primeiracena:
 
-
-
-
+    scene tela branca
     dev "Este jogo ainda é uma demo, algumas funcionalidades ou conversas podem estar comprometidas. Aproveite a jornada dentro do possível nesse momento."
-
+    dev "A cena do chamado para a vila, posteriormente será uma custcene que está em desenvolvimento."
+    dev "Agradeço a paciência e espero te ver uma próxima vez, quando o jogo Strigora estiver completo."
+    scene tela preta
+    m "É uma aldeia… Está doente… Estão exigindo que eu te entregasse em mãos."
+    hdc "Padre"
+    hdc "Chamo-o aqui não por fé, mas por ordem. O que está acontecendo não são coincidências."
+    hdc "á mais de um mês, este lugar está sob um mau agouro… A certeza reside em mim: há feitiçaria, há um mau agouro por trás dessa ruína. Foi por isso que te chamei, Padre, não por fé, mas por ordem."
+    hdc "Eu exijo que encontre esta bruxa."
+    hdc "Não desejo preces; traga-me a verdade. E assegure-se de que sua busca seja feita com cautela, antes que o pânico tome conta de tudo."
+    p "Que Deus me guie... e que eu encontre este mal antes que ele engula o que resta dessa aldeia."
 
 
     $ personagens_dict["Salvatore"].conhecido = True
