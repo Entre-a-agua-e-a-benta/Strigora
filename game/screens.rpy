@@ -1699,15 +1699,15 @@ screen casaHolgaEXT():
     use botao("botao_passos", 1, (100, 900), "Albergo", "tavernaext")
     use botao("botao_passos", 1, (1700, 900), "Monumento", "praca2")
     if personagens_dict["Holga"].vivo:
-        use botao(personagens_dict["Holga"].imagem, 0.13, (700, 450), "Falar com a Holga", "dialogo_holga") 
+        use botao(personagens_dict["Holga"].imagem, 0.5, (700, 420), "Falar com a a irmã da vítma mais recente", "dialogo_holga") 
 
 ## Praca 2
 screen praca2():
     tag passos
     use botao("botao_passos", 1, (400, 500), "Casa da Holga", "casaholgaext")
-    use botao("botao_passos", 1, (600, 900), "Piazza", "praca1")
+    use botao("botao_passos", 1, (500, 900), "Piazza", "praca1")
     if personagens_dict["Agnes"].vivo:
-        use botao(personagens_dict["Agnes"].imagem, 0.12, (900, 400), "Falar com a pedinte", "dialogo_agnes")
+        use botao(personagens_dict["Agnes"].imagem, 0.55, (900, 400), "Falar com a pedinte", "dialogo_agnes")
 
 screen praca1():
     tag passos
@@ -1732,7 +1732,7 @@ screen casaJoanaEXT():
     use botao("botao_passos", 1, (350, 400), "Campagna", "plantacao")
     use botao("botao_passos", 1, (1600, 900), "Ponte", "caminhoLazaro")
     if personagens_dict["Joana"].vivo:
-        use botao(personagens_dict["Joana"].imagem, 0.12, (900, 500), "Falar com a costureira", "dialogo_joana")
+        use botao(personagens_dict["Joana"].imagem, 0.11, (600, 470), "Falar com a costureira", "dialogo_joana")
 
 screen plantacao():
     tag passos
@@ -1772,12 +1772,13 @@ screen HUD():
         background None
         xpos 25
         ypos 25
-        text str(interacao) size 40 color "#050505"
+        text (str(interacao) + " interação(ões) restante(s) hoje") size 40 color "#FFFFFF" outlines [ ( 3, "#000005", 0, 0) ]
     frame:
         background None
-        xpos 1100
+        xpos 1300
         ypos 20
-        text str(dia) size 40 color "#050505"
+
+        text ("Você está no dia " + str(dia) + " de 7 dias") size 40 color "#FFFFFF" outlines [ ( 3, "#000005", 0, 0) ]
 
 ######################################################### Falas de personagens ##############################################################
 
@@ -1822,7 +1823,6 @@ image agnesR = "personagens/agnes/agnes raiva.png"
 image agnesT = "personagens/agnes/agnes tristeza.png"
 
 image joanaN = "personagens/joana/joana neutra.png"
-image joanaF = "personagens/joana/joana felicidade.png"
 image joanaR = "personagens/joana/joana raiva.png"
 image joanaT = "personagens/joana/joana tristeza.png"
 
