@@ -1639,6 +1639,7 @@ screen tavernaext:
     use botao("botao_passos", 1, (750, 750), "Entrar no albergo", "tavernaint")
     use botao("botao_passos", 1, (150, 500), "Casa do bêbado", "casabebadoext")
     use botao("botao_passos", 1, (1600, 950), "Casa da Holga", "casaholgaext")
+    use botao("fodase", 0.15, (1000, 500), " ", "tavernaint")
 
 ## Taverna interna
 screen tavernaint():
@@ -1646,9 +1647,15 @@ screen tavernaint():
     use botao("botao_passos", 1, (150, 500), "Entrar no quarto", "casapadre")
     if personagens_dict["Vincent"].vivo:
         use botao(personagens_dict["Vincent"].imagem, 0.10, (1250, 100), "Falar com o dono", "dialogo_vincent")
-    if personagens_dict["Seren"].vivo and personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 2 and dia >= 3:
+    if personagens_dict["Seren"].vivo and personagens_dict["Vincent"].progresso >= 2:
         use botao(personagens_dict["Seren"].imagem, 0.3, (900, 500), "Falar com a garota", "dialogo_seren")
     add "botoes/taverna balcao.png"
+
+screen casaSalvatoreINT():
+    tag passos
+    use botao("botao_passos", 1, (150, 500), "Sair da casa", "caminhobebado_margarida")
+    if personagens_dict["William"].vivo and personagens_dict["Salvatore"].progresso >= 2:
+        use botao(personagens_dict["William"].imagem, 0.3, (900, 500), "Falar com o menino", "dialogo_william")
 
 ###Tela da casa do bebado ext
 screen casabebado():
@@ -1658,7 +1665,6 @@ screen casabebado():
     if personagens_dict["Bêbado"].vivo:
         use botao(personagens_dict["Bêbado"].imagem, 0.14, (900, 350), "Falar com o bêbado", "dialogo_bebado")
 
-
 ## Tela da casa do padre interna
 screen casapadre():
     tag passos
@@ -1667,7 +1673,7 @@ screen casapadre():
 ## Tela da casa da curandeira externa
 screen casaMargaridaEXT():
     tag passos
-    use botao("botao_passos", 1, (1300, 950), "Viale", "caminhobebado_margarida")
+    use botao("botao_passos", 1, (1300, 950), "Casa do senhor", "caminhobebado_margarida")
     use botao("botao_passos", 1, (90, 900), "Ponte", "caminhoLazaro")
     if personagens_dict["Margarida"].vivo:
         use botao(personagens_dict["Margarida"].imagem, 0.13, (1000, 500), "Falar com a curandeira", "dialogo_margarida")
@@ -1692,8 +1698,9 @@ screen caminhobebado_margarida():
     use botao("botao_passos", 1, (1600, 900), "Casa do bêbado", "casabebadoext")
     use botao("botao_passos", 1, (90, 900), "Albergo", "tavernaext")
     use botao("botao_passos", 1, (1000, 300), "Casa da curandeira", "casamargaridaext")
+    use botao("botao_passos", 1, (300, 300), "Casa do senhor", "casasalvatoreint")
     if personagens_dict["Salvatore"].vivo:
-        use botao(personagens_dict["Salvatore"].imagem, 0.30, (700, 420), "Falar com o senhor da vila", "dialogo_salvatore")
+        use botao(personagens_dict["Salvatore"].imagem, 0.12, (700, 320), "Falar com o senhor da vila", "dialogo_salvatore")
 
 ## Holga
 screen casaHolgaEXT():
@@ -1867,6 +1874,7 @@ label hide_all_screens:
     hide screen padariaINT
     hide screen casaJoanaEXT
     hide screen plantacao
+    hide screen casaSalvatoreINT
 
     hide screen personagemEmocao
 
@@ -1903,7 +1911,7 @@ screen pistas():
     
 screen pistas_personagem(personagem):
     tag pistas
-    add "tela preta"
+    add "fundo pistas.png"
     $ genero = "o" if personagens_dict[personagem].genero == 'M' else "a"
     frame:
         xysize(900,450)

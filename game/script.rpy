@@ -56,12 +56,12 @@ label start:
                 self.listaPerguntas = [False, False, False]
         
         ## Inicializa o dicionário de personagens
-        personagens_list = [("Bartolomeu", 'M', (596, 188, 212, 285)),
+        personagens_list = [("Bartolomeu", 'M', (42, 192, 204, 263)),
                             ("Salvatore", 'M', (0,0,0,0)),
                             ("Holga", 'F', (461, 554, 213, 282)),
                             ("Lázaro", 'M', (1131, 187, 219, 283)),
                             ("Joana", 'F', (0, 0, 0, 0)),
-                            ("Margarida", 'F', (326, 188, 216, 285)),
+                            ("Margarida", 'F', (302, 190, 191, 273)),
                             ("Agnes", 'F', (864, 187, 214, 283)),
                             ("Bêbado", 'M', (995, 556, 218, 284)),
                             ("William", 'M', (728, 556, 215, 283)),
@@ -71,11 +71,14 @@ label start:
         for personagem in personagens_list:
             personagens_dict[personagem[0]] = Personagem(personagem[0], personagem[1], personagem[2])
         personagens_dict["Bruxa"].conhecido = True
-        personagens_dict["Bartolomeu"].descricao = "Gay"
-        personagens_dict["Salvatore"].descricao = "bebado"
-        personagens_dict["Bêbado"].descricao = "Irmão do dono da estalagem taverna (Vincent) e pai de uma menina de 10 anos"
+        personagens_dict["Bartolomeu"].descricao = "Padeiro da vila."
+        personagens_dict["Salvatore"].descricao = "É conhecido como o senhor da vila."
+        personagens_dict["Holga"].descricao = "Irmã da vítima mais recente da bruxa."
+        personagens_dict["Bêbado"].descricao = "Irmão do dono da estalagem taverna (Vincent) e pai de uma menina de 10 anos. Vive bêbado pela vila."
+        
 
-        def checar_interacao():
+
+        def checar_interacao()
             global interacao
             if interacao == 0:
                 renpy.jump("casapadre_noite")
@@ -119,8 +122,8 @@ label start:
                 chanceEventos = (30, 50, 20)
             renpy.notify(f"chance atual de evento: {chanceEventos[0]}/{chanceEventos[1]}/{chanceEventos[2]}") # DEBUG, APAGAR!!!
 
-            #evento = (randint(1, 100), randint(1, 4)) # (1~100, 1~4)
-            evento = (10, 1) # manipulando evento pra testes
+            evento = (randint(1, 100), randint(1, 4)) # (1~100, 1~4)
+            # evento = (10, 1) # manipulando evento pra testes
             if evento[0] <= chanceEventos[0]:  # Evento Ruim
                 if evento[1] == 1: # Impossibilitar falar com personagem aleatório
                     personagem = personagens_dict[personagens_list[randint(0, len(personagens_list)-1)][0]]
@@ -134,16 +137,12 @@ label start:
                 elif evento[1] == 3: # Animais adoecem (chance maior de evento ruim na próxima noite)
                     renpy.notify("Os animais adoeceram... (chance maior de evento ruim na próxima noite)")
                     modificadorEvento = -1
-                elif evento[1] == 4: # Paranoia: o padre é obrigado a acusar alguém na próxima noite -> mudar
-                    renpy.notify("Você está tomado pela paranoia... (será obrigado a acusar alguém na próxima noite)")
             elif evento[0] <= chanceEventos[0] + chanceEventos[1]:  # Evento Neutro
-                if evento[1] == 1: # Noite tranquila
-                    renpy.notify("Noite tranquila")
-                elif evento[1] == 2: # Momento de paz temporária
+                if evento[1] == 1: # Momento de paz temporária
                     renpy.notify("Momento de paz temporária")
-                elif evento[1] == 3: # A Bruxa permanece inativa
+                elif evento[1] == 2: # A Bruxa permanece inativa
                     renpy.notify("A Bruxa permanece inativa")
-                elif evento[1] == 4: # O padre entra em conflito interno
+                elif evento[1] == 3: # O padre entra em conflito interno
                     renpy.notify("O padre entra em conflito interno")
             elif evento[0] > 100 - chanceEventos[2]:
                 if evento[1] == 1:
@@ -155,8 +154,6 @@ label start:
                 elif evento[1] == 3: # Janta comunitária (+ chance de evento bom)
                     renpy.notify("Janta comunitária (+ chance de evento bom na próxima noite)")
                     modificadorEvento = 1
-                elif evento[1] == 4: # Ajuda os moradores (abstenção sem punição na próxima noite) -> mudar
-                    renpy.notify("Você ajudou os moradores (abstenção sem punição na próxima noite)")
         
         # Progride o diálogo de um personagem específico, aumentando seu progresso em 1 e marcando que já conversou hoje.
         def progredir(personagem: str):
@@ -226,19 +223,20 @@ label start:
 
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
 
-
+#jump tavernaext
 
 label primeiracena:
     $ personagens_dict["Salvatore"].conhecido = True
     $ tocar_musica("ambiencia_ext_geral.mp3")
     scene bg caminho curandeira
-    $ mostrar_personagem("Salvatore", 'N')
+    $ mostrar_personagem("Salvatore", 'F')
     ss "Buongiorno padre."
     ss "Agradeço por ter aceitado o meu chamado."
+    $ mostrar_personagem("Salvatore", 'N')
     ss "O povo da vila se refere a mim como \“Senhor”\, por respeito… ou medo. Tanto faz."
-    ss "Sou o homem mais velho desta terra que ainda caminha com firmeza. Sempre tentei manter tudo sob controle…como deve ser."
-    ss "Por isso lhe chamei. Não por fé, mas por ordem. Se há uma bruxa entre nós…é seu dever encontrá-la."
-    ss "Eu não quero rezas, palavras bonitas. Quero respostas… e, finalmente, silêncio."
+    ss "Sou o homem mais velho desta terra que ainda caminha com firmeza. Sempre tentei manter tudo sob controle, como deve ser."
+    ss "Por isso lhe chamei. Não por fé, mas por ordem. Se há uma bruxa entre nós… é seu dever encontrá-la."
+    ss "Eu não quero rezas ou  palavras bonitas. Quero respostas. E, finalmente, silêncio."
     $ mostrar_personagem("Salvatore", 'R')
     ss "Quando o povo começa a berrar antes da hora, ninguém ouve quem realmente deveria ser escutado."
     $ mostrar_personagem("Salvatore", 'N')
@@ -353,6 +351,12 @@ label plantacao:
     $ tocar_musica("ambiencia_ext_floresta.wav")
     scene bg plantacao
     call screen plantacao
+
+label casasalvatoreint:
+    call hide_all_screens
+    $ tocar_musica("ambiencia_int_casas.mp3")
+    scene tela preta
+    call screen casaSalvatoreINT
 
 ############# Arruma posição dos personagens dentro do dialogo ###############################
 transform padre_left:
@@ -934,7 +938,7 @@ label escolhas_holga:
             jump casaholgaext
 
 label irma_holga:
-    $ checar_interacao(-1)
+    $ alterar_interacao(-1)
     $ mostrar_personagem("Holga", 'T')
     h "Edla…"
     h "Ela era bela.  A filha que todos diziam ter sido tocada pela luz de Deus."
@@ -1158,7 +1162,6 @@ label ontem_bartolomeu:
         $ alterar_interacao(-1)
         jump ontem7_bartolomeu
 
-
 ##################### dia 1 de o que voce fez ontem ###############################
 label ontem1_bartolomeu:
     $ mostrar_personagem("Bartolomeu", 'N')
@@ -1356,8 +1359,10 @@ label dialogo_agnes:
         if personagens_dict["Agnes"].conhecido == False:
             $ personagens_dict["Agnes"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
-            p "Buongiorno…"
-            p "Não sei a notícia chegou aqui, mas eu estou encarregado de achar o culpado pelas coisas que vem acontecendo na região, pensei que, mesmo doente, você talvez tivesse alguma informação para contribuir... ou, qo menos, algo interessante a dizer."
+            p "Buongiorno, pequena criança."
+            p "Alguém da sua idade não deveria estar abandonada nesse estado…"
+            p "Eu vou tentar achar abrigo para você, eu prometo."
+            p "Mas agora, queria te fazer algumas perguntas..."
         jump escolhas_agnes
     else:
         $ mostrar_personagem("Agnes", 'T')
@@ -1365,8 +1370,14 @@ label dialogo_agnes:
         jump praca2
 
 label escolhas_agnes:
+    $ mostrar_personagem("Padre", 'N')
+    menu: 
+        "Me conte sobre você":
+            jump meconte_agnes
+
+label meconte_agnes:
     $ mostrar_personagem("Agnes", 'N')
-    a "holga holga hola holadfdsa"
+    a "Ainda estou em desenvolvimento, volte depois"
     jump praca2
 
 ######################################## CENAS JOANA ###########################################################
@@ -1520,15 +1531,229 @@ label dialogo_salvatore:
 label escolhas_salvatore:
     $ mostrar_personagem("Padre", 'N')
     menu:
-        "Pode me contar um pouco mais sobre o que está acontecendo aqui?":
+        "Pode me contar um pouco mais sobre o que está acontecendo aqui?" if personagens_dict["Salvatore"].listaPerguntas[0] == False: 
+            $ personagens_dict["Salvatore"].listaPerguntas[0] = True
             jump acontecendo_salvatore
+        "Tem algo a dizer sobre o último caso?" if personagens_dict["Salvatore"].conversouHoje == False and personagens_dict["Salvatore"].progresso == 0:
+            $ progredir("Salvatore")
+            jump algomais_salvatore
+        "Me conte mais sobre o seu filho" if personagens_dict["Salvatore"].conversouHoje == False and personagens_dict["Salvatore"].progresso == 1:
+            $ progredir("Salvatore") ##Desbloqueia falar com o william
+            jump filho_salvatore
+
+        "O que você fez ontem a noite?" if personagens_dict["Salvatore"].listaPerguntas[1] == False: 
+            $ personagens_dict["Salvatore"].listaPerguntas[1] = True
+            jump ontem_salvatore
+
+        "Você encontrou algo suspeito nesses últimos dias?" if personagens_dict["Salvatore"].conversouHoje == False and personagens_dict["Salvatore"].progresso == 2:
+            $ progredir("Salvatore")
+            jump suspeito_salvatore
+
+        "Não perguntar nada":
+            jump caminhobebado_margarida
 
 label acontecendo_salvatore:
     $ alterar_interacao(-1)
-    $ mostrar_personagem("Salvatore", 'N')
+    $ mostrar_personagem("Salvatore", 'R')
     ss "Está tudo errado... já faz mais de um mês que isso começou."
-    return
+    ss "Cada manhã... uma maldição nova."
+    ss "Primeiro foi o carneiro morto, com suas estranhas espalhadas na praça…"
+    ss "Depois as sementes."
+    ss "Elas brotavam e simplesmente apodreciam no mesmo dia."
+    ss "As minhas plantações ficaram inúteis. Eu já não sabia o que fazer..."
+    $ mostrar_personagem("Salvatore", 'T')
+    ss "Então vieram as mortes… o ferreiro e depois o antigo padre... Ver aquela igreja vazia é…"
+    ss "Doloroso"
+    $ mostrar_personagem("Padre", 'N')
+    menu: 
+        "Como os aldeões estão lidando com isso?":
+            jump lidando_salvatore
+label lidando_salvatore:
+    $ mostrar_personagem("Salvatore", 'N')
+    ss "O povo teme o que está na noite, e o que vão encontrar ao amanhecer."
+    ss "Certamente que quem não está dentro de sua casa quando chega a noite, deve ser no mínimo suspeito ou culpado pelo que anda acontecendo."
+    $ adicionar_fala("Salvatore", '\"Certamente que quem não está dentro de sua casa quando chega a noite, deve ser no mínimo suspeito ou culpado.\"')
+    ss "Eles rezam…"
+    ss "Rezam não por salvação, mas por esquecimento."
+    ss "É melhor não lembrar do que se vê por essas noites."
+    $ checar_interacao()
+    jump caminhobebado_margarida
 
+label algomais_salvatore:
+    $ alterar_interacao(-1)
+    $ mostrar_personagem("Salvatore", 'T')
+    ss "Edla…"
+    ss "Ela foi a pior com certeza."
+    ss "Ela estava comigo, tão radiante e cheia de alegria… E no outro dia... nada."
+    ss "Só encontrei pedaços da roupa dela, manchadas de sangue e sujeira largadas na floresta. Nem um corpo para enterrar… como se o próprio mundo tivesse arrancado ela de mim."
+    $ mostrar_personagem("Salvatore", 'R')
+    ss "Maledizione!"
+    ss "Tem uma bruxa padre! Um mal maior! Deus está nos punindo! Um mal agouro!"
+    ss "Porca miséria."
+    $ mostrar_personagem("Padre", 'N')
+    menu:
+        "Por que ela era importante?":
+            jump importante_salvatore
+        "Vocês tinham alguma relação?":
+            jump importante_salvatore
+label importante_salvatore:
+    $ mostrar_personagem("Salvatore", 'T')
+    ss "Afeto…"
+    ss "Eu pretendia me casar com ela no fim da colheita, ela moraria comigo e com meu filho."
+    ss "Seríamos uma família de verdade..."
+    $ checar_interacao()
+    jump caminhobebado_margarida
+
+label filho_salvatore:
+    $ mostrar_personagem("Salvatore", 'T')
+    $ alterar_interacao(-1)
+    ss "Meu pobre William tem só dez anos, mas já tem olhos que perguntam demais..."
+    $ mostrar_personagem("Salvatore", 'F')
+    ss "Dizem que se parece comigo."
+    $ mostrar_personagem("Salvatore", 'T')
+    ss "Pobre garoto. Não tem mãe, não como deveria."
+    ss "Não comento muito sobre ele com os de fora, e nem deixo que saia muito."
+    ss "Crianças precisam ser protegidas, escondidas até que saibam o peso de seu próprio nome."
+    $ adicionar_fala("Salvatore", '\"Crianças precisam ser protegidas e escondidas até que saibam o peso do seu próprio nome.\"' )
+    $ mostrar_personagem("Salvatore", 'F')
+    ss "E não me arrependo sobre isso. Um dia, ele vai me agradecer quando for velho."
+    $ mostrar_personagem("Padre", 'N')
+    menu:
+        "O que aconteceu com a mãe do seu filho, senhor?":
+            jump nao_salvatore
+label nao_salvatore:
+    $ mostrar_personagem("Salvatore", 'R')
+    ss "Acho que isso não é da sua conta."
+    ss "E não quero falar sobre isso!"
+    $ adicionar_pista("Salvatore", 'Foi agressivo quando perguntei sobre a mãe de seu filho.')
+    $ mostrar_personagem("Padre", 'N')
+    menu: 
+        "Posso falar com o seu filho?":
+            jump falarfilho_salvatore
+label falarfilho_salvatore:
+    $ mostrar_personagem("Salvatore", 'N')
+    ss "Entre na minha casa amanhã e poderá falar com o garoto, padre."
+    ss "Preciso conversar com ele antes disso."
+    ss "O garoto não está acostumado a conversar com pessoas, como eu já lhe disse."
+    $ checar_interacao()
+    jump caminhobebado_margarida
+
+label ontem_salvatore:
+    $ mostrar_personagem("Salvatore", 'R')
+    $ alterar_interacao(-1) 
+    ss "Sei que quer a maior quantidade de informações possíveis. Mas não existe motivo para elevar esse tom suspeito comigo."
+    $ mostrar_personagem("Salvatore", 'N')
+    ss "Fiquei sozinho… como sempre. Rotina comum." 
+    ss "Caminhei até o velho galpão dos grãos, faço isso quando o sono não me encontra."
+    $ mostrar_personagem("Salvatore", 'T')
+    ss "Levei vinho… o mesmo que Edla gostava. Bebi em silêncio, ouvindo o vento passando pelas tábuas pobres. Li uma carta antiga e... é isso."
+    $ mostrar_personagem("Padre", 'N')
+    menu:
+        "Uma carta antiga?":
+            jump carta_salvatore
+        "O que seria essa carta?":
+            jump carta_salvatore
+label carta_salvatore:
+    $ mostrar_personagem("Salvatore", 'T')
+    ss "A última de Edla…"
+    ss "Me faz lembrar de sua voz."
+    $ mostrar_personagem("Salvatore", 'T')
+    ss "Agora pare de voltar neste maldito assunto."
+    $ checar_interacao()
+    jump caminhobebado_margarida
+
+label suspeito_salvatore:
+    $ mostrar_personagem("Salvatore", 'N')
+    $ alterar_interacao(-1) 
+    ss "Hmph… talvez."
+    ss "Há marcas perto do celeiro. Pegadas pequenas… mas profundas."
+    ss "Como se algo leve… arrastasse peso atrás de si."
+    ss "Os homens dizem que é só um animal."
+    ss "Animais não abrem portas, Padre."
+    $ adicionar_fala("Salvatore", '\"Há pegadas pequenas e profundas perto do celeiro, homens dizem que é so um animal, mas animais não abrem portas.\"')
+    $ mostrar_personagem("Padre", 'N')
+    menu:
+        "Seu filho notou algo estranho?":
+            jump suspeitofilho_salvatore   
+label suspeitofilho_salvatore:
+    $ mostrar_personagem("Salvatore", 'R')
+    ss "Ele não deveria notar nada."
+    $ adicionar_pista("Salvatore", 'Não gosta que falem do filho dele.')
+    ss "Mas… ontem ele disse ter ouvido “batidas” na janela. Três vezes. Sempre três."
+    ss "Se descobrir quem está assustando meu garoto… te juro… vai se arrepender."
+    $ checar_interacao()
+    jump caminhobebado_margarida
+
+label dialogo_william:
+    call hide_all_screens
+    if personagens_dict["William"].conversavel:
+        if personagens_dict["William"].conhecido == False:
+            $ mostrar_personagem("Padre", 'N')
+            p "Buongiorno bambino."
+            p "Posso fazer algumas perguntas sobre a situação da vila?"
+            $ mostrar_personagem("William", 'N')
+            w "P-pode sim."
+        jump escolhas_william
+    else:
+        $ mostrar_personagem("William", 'T')
+        j "Não estou com vontade de conversar hoje..."
+        jump caminhobebado_margarida
+
+label escolhas_william:
+    $ mostrar_personagem("Padre", 'N')
+    menu: 
+        "Me conte sobre você.":
+            jump meconte_william
+
+        "Viu algo estranho nesses últimos dias?":
+            jump estranho_william
+
+        "Não perguntar nada.":
+            jump casasalvatoreint
+    
+
+label meconte_william:
+    $ mostrar_personagem("William", 'N')
+    $ alterar_interacao(-1)
+    w "Olá, eu sou o Wi… William."
+    w "Só William."
+    w "Tenho dez anos. Meu pai cuida da aldeia toda, mas ele diz que eu tenho que ficar em casa, porque ainda não entendo o que é certo."
+    w "Ele nunca me deixa sair…"
+    w "Papai  diz que tem gente ruim lá fora. Gente que fala demais, que inventa coisas, que olha onde não deve…"
+    w "Ele diz que é melhor eu ficar quieto, que criança que escuta demais acaba ouvindo o que não devia…"
+    $ mostrar_personagem("Padre", 'N')
+    menu:
+        "Você tem algum amigo na vila?":
+            jump amigo_william
+label amigo_william:
+    $ mostrar_personagem("William", 'N')
+    w "Não… mas às vezes eu falo com os bichos."
+    w "Tem um corvo que aparece na janela toda semana."
+    w "Ele não fala nada… mas fica me olhando."
+    $ adicionar_pista("William", 'Recebe a visita de um corvo toda semana que fica observando-o.')
+    w "Gosto mais dele do que das pessoas…"
+    $ checar_interacao()
+    jump casasalvatoreint
+
+label estranho_william:
+    $ mostrar_personagem("William", 'N')
+    $ alterar_interacao(-1)
+    w "Estranho…?"
+    w "Eu acho que sim."
+    w "Outro dia, eu acordei antes do sol. Estava muito escuro, mas eu ouvi vozes lá embaixo, na sala. Fui espiar da escada, mas não consegui ver direito, só umas sombras paradas…"
+    w "Parecia que cochichavam, mas quando cheguei mais perto, ficou tudo quieto, como se nunca tivessem estado ali."
+    w "Eu não devia ter descido, mas eu tropecei num balde… Era aquele balde de tinta que meu pai usa pra arrumar… meu cabelo."
+    w "Espalhou tudo pelo chão. Papai ficou bravo. Mandou eu subir correndo, disse que eu não podia ver quem estava ali. No outro dia, eu vi umas pegadas pretas perto da porta. Devem ter sido minhas… mas às vezes acho que não."
+    $ mostrar_personagem("Padre", 'N')
+    menu:
+        "Porque um balde de tinta?":
+            jump tinta_william
+label tinta_william:
+    $ mostrar_personagem("William", 'N')
+    W "Papai não gosta que eu fale sobre isso… "
+    $ adicionar_pista("William", 'Seu pai usa algum tipo de tinta para arrumar seu cabelo.')
+    $ checar_interacao()
+    jump casasalvatoreint
 
 
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
