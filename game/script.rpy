@@ -30,6 +30,8 @@ define j = Character("Joana") ## Costureira
 define a = Character("Agnes") ## Criança pedinte
 define w = Character("William") ## Criança William
 
+define dev = Character("Quem programou esse jogo", color="#a88ab4")
+
 # The game starts here.
 
 label start:
@@ -39,10 +41,13 @@ label start:
         from random import randint
 
         class Personagem:
-            def __init__(self, nome = "Fulano", genero = 'M', hotspot = (0, 0, 0, 0)):
+            def __init__(self, nome = "Fulano", genero = 'M', fileira = (0, 0), ordem = 0):
                 self.nome = nome
                 self.genero = genero
-                self.hotspot = hotspot
+
+                distancia = 1280*0.14 # largura * zoom
+                self.posicao = (fileira[0] + (175+75)*(ordem-1), fileira[1])
+
                 self.conversouHoje = False
                 self.progresso = 0
                 self.listaPistas = []
@@ -56,29 +61,30 @@ label start:
                 self.listaPerguntas = [False, False, False]
         
         ## Inicializa o dicionário de personagens
-        personagens_list = [("Bartolomeu", 'M', (42, 192, 204, 263)),
-                            ("Salvatore", 'M', (0,0,0,0)),
-                            ("Holga", 'F', (461, 554, 213, 282)),
-                            ("Lázaro", 'M', (1131, 187, 219, 283)),
-                            ("Joana", 'F', (0, 0, 0, 0)),
-                            ("Margarida", 'F', (302, 190, 191, 273)),
-                            ("Agnes", 'F', (864, 187, 214, 283)),
-                            ("Bêbado", 'M', (995, 556, 218, 284)),
-                            ("William", 'M', (728, 556, 215, 283)),
-                            ("Vincent", 'M', (59, 189, 216, 282)),
-                            ("Seren", 'F', (193, 556, 214, 284)),
-                            ("Bruxa", 'F', (1388, 206, 498, 668))]
+        primeira_fileira = (150, 450)
+        segunda_fileira = (300, 815)
+        personagens_list = [("Bartolomeu", 'M', primeira_fileira, 3),
+                            ("Salvatore", 'M', primeira_fileira, 6),
+                            ("Holga", 'F', segunda_fileira, 1),
+                            ("Lázaro", 'M', primeira_fileira, 5),
+                            ("Joana", 'F', segunda_fileira, 2),
+                            ("Margarida", 'F', primeira_fileira, 2),
+                            ("Agnes", 'F', primeira_fileira, 4),
+                            ("Bêbado", 'M', segunda_fileira, 5),
+                            ("William", 'M', segunda_fileira, 4),
+                            ("Vincent", 'M', primeira_fileira, 1),
+                            ("Seren", 'F', segunda_fileira, 3),
+                            ("Bruxa", 'F', (0, 0), 1)]
         for personagem in personagens_list:
-            personagens_dict[personagem[0]] = Personagem(personagem[0], personagem[1], personagem[2])
+            personagens_dict[personagem[0]] = Personagem(personagem[0], personagem[1], personagem[2], personagem[3])
         personagens_dict["Bruxa"].conhecido = True
+        personagens_dict["Bruxa"].posicao = (1720, 760)
         personagens_dict["Bartolomeu"].descricao = "Padeiro da vila."
         personagens_dict["Salvatore"].descricao = "É conhecido como o senhor da vila."
         personagens_dict["Holga"].descricao = "Irmã da vítima mais recente da bruxa."
         personagens_dict["Bêbado"].descricao = "Irmão do dono da estalagem taverna (Vincent) e pai de uma menina de 10 anos. Vive bêbado pela vila."
         
-
-
-        def checar_interacao()
+        def checar_interacao():
             global interacao
             if interacao == 0:
                 renpy.jump("casapadre_noite")
@@ -102,7 +108,7 @@ label start:
             if matar_personagem != None:
                 personagens_dict[matar_personagem].vivo = False
                 renpy.notify("Matei " + matar_personagem)
-                if matar_personagem == "Vincent": # mudar aqui pra quem for a bruxa
+                if matar_personagem == "Personagem que é a bruxa": # mudar aqui pra quem for a bruxa
                     renpy.jump("dialogo_bruxa")
                 if mortos >= 2: # Agora matou a 3a pessoa
                     renpy.jump("expulso")
@@ -223,9 +229,16 @@ label start:
 
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
 
-#jump tavernaext
-
+jump noite 
 label primeiracena:
+
+
+
+
+    dev "Este jogo ainda é uma demo, algumas funcionalidades ou conversas podem estar comprometidas. Aproveite a jornada dentro do possível nesse momento."
+
+
+
     $ personagens_dict["Salvatore"].conhecido = True
     $ tocar_musica("ambiencia_ext_geral.mp3")
     scene bg caminho curandeira
@@ -355,7 +368,7 @@ label plantacao:
 label casasalvatoreint:
     call hide_all_screens
     $ tocar_musica("ambiencia_int_casas.mp3")
-    scene tela preta
+    scene bg casa salvatore
     call screen casaSalvatoreINT
 
 ############# Arruma posição dos personagens dentro do dialogo ###############################
@@ -390,11 +403,6 @@ label dialogo_vincent:
 label escolhas_vincent:
     $ mostrar_personagem("Padre", 'N')
     menu:
-        "adicionar pistas":
-            $ adicionar_pista("Bêbado", 'A')
-            $ adicionar_pista("Margarida", 'B')
-            $ adicionar_pista("Bartolomeu", 'C')
-            jump tavernaint
         "Me conte sobre você" if personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 0:
             $ progredir("Vincent")
             jump meconte_vincent
@@ -414,9 +422,9 @@ label escolhas_vincent:
             $ personagens_dict["Vincent"].listaPerguntas[2] = True
             jump suspeito_vincent
         
-        "Passar dia":
-            $ passar_dia()
-            jump noite
+        # "Passar dia":
+        #     $ passar_dia()
+        #     jump noite
 
         "Não perguntar nada":
             jump tavernaint
@@ -1376,8 +1384,7 @@ label escolhas_agnes:
             jump meconte_agnes
 
 label meconte_agnes:
-    $ mostrar_personagem("Agnes", 'N')
-    a "Ainda estou em desenvolvimento, volte depois"
+    dev "O jogo ainda está em desenvolvimento! Jogue outro dia para conhecer mais da Agnes!"
     jump praca2
 
 ######################################## CENAS JOANA ###########################################################
@@ -1783,11 +1790,11 @@ label pistas:
     call screen pistas_personagem(infoPersonagem)
     
 label dialogo_bruxa: # Matou a Bruxa
-    p "ultra mega spoiler"
+    dev "No momento não é para essa funcionalidade estar funcionando, se você está vendo isso é um bug"
     return
 
 label expulso: # Matou 3 pessoas inocentes
-    p "fui expulso sob sob"
+    dev "Que pena! O padre foi expulso da vila por matar inocentes demais"
     return
 
 label final: # Passou do 7o dia sem matar a Bruxa e sem matar 3 pessoas inocentes
@@ -1796,6 +1803,7 @@ label final: # Passou do 7o dia sem matar a Bruxa e sem matar 3 pessoas inocente
         for personagem in personagens_list:
             if personagens_dict[personagem[0]].vivo == False:
                 mortos = mortos + 1
-        renpy.notify(f"{mortos} mortos")
-        renpy.pause()
+        renpy.say(dev, f"Nesta campanha ocorreram {mortos} mortes pelas mãos do padre")
+        renpy.say (dev, "Você não descobriu quem é a bruxa e todos os aldeões morreram.")
+        renpy.say(dev, "Jogue novamente quando o jogo estiver finalizado para uma experiência completa.")
     return
