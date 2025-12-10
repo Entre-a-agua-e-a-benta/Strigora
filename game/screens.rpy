@@ -1686,12 +1686,14 @@ screen casaLazaroINT():
     if personagens_dict["Lázaro"].vivo:
         use botao(personagens_dict["Lázaro"].imagem, 0.14, (500, 400), "Falar com o leproso", "dialogo_lazaro")  
 
-## Tela do caminho entre o Lázaro e a curandeira
+## Tela da frente da casa do salvatore
 screen caminhobebado_margarida():
     tag passos
     use botao("botao_passos", 1, (1600, 900), "Casa do bêbado", "casabebadoext")
     use botao("botao_passos", 1, (90, 900), "Albergo", "tavernaext")
     use botao("botao_passos", 1, (1000, 300), "Casa da curandeira", "casamargaridaext")
+    if personagens_dict["Salvatore"].vivo:
+        use botao(personagens_dict["Salvatore"].imagem, 0.30, (700, 420), "Falar com o senhor da vila", "dialogo_salvatore")
 
 ## Holga
 screen casaHolgaEXT():

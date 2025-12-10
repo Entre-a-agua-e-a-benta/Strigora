@@ -34,8 +34,6 @@ define w = Character("William") ## Criança William
 
 label start:
 
-    show screen HUD
-
     init python:
         from unidecode import unidecode
         from random import randint
@@ -229,6 +227,29 @@ label start:
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
 
 
+
+label primeiracena:
+    $ personagens_dict["Salvatore"].conhecido = True
+    $ tocar_musica("ambiencia_ext_geral.mp3")
+    scene bg caminho curandeira
+    $ mostrar_personagem("Salvatore", 'N')
+    ss "Buongiorno padre."
+    ss "Agradeço por ter aceitado o meu chamado."
+    ss "O povo da vila se refere a mim como \“Senhor”\, por respeito… ou medo. Tanto faz."
+    ss "Sou o homem mais velho desta terra que ainda caminha com firmeza. Sempre tentei manter tudo sob controle…como deve ser."
+    ss "Por isso lhe chamei. Não por fé, mas por ordem. Se há uma bruxa entre nós…é seu dever encontrá-la."
+    ss "Eu não quero rezas, palavras bonitas. Quero respostas… e, finalmente, silêncio."
+    $ mostrar_personagem("Salvatore", 'R')
+    ss "Quando o povo começa a berrar antes da hora, ninguém ouve quem realmente deveria ser escutado."
+    $ mostrar_personagem("Salvatore", 'N')
+    ss "Ouça padre"
+    $ mostrar_personagem("Salvatore", 'T')
+    ss "Eldra, a vítma mais recente, era irmã de Holga, uma mulher jovem que mora nos entornos da Piazza."
+    ss "Nós éramos... bem próximos."
+    ss "Na noite de sua morte, ouvi sua voz distorcida me falando que em sete dias a bruxa matará a todos nós."
+    ss "Por favor, faça algo antes que seja tarde."
+    show screen HUD
+    jump caminhobebado_margarida
 
 
 ######################################## LOCAIS PELO MAPA ##############################################################
@@ -960,7 +981,7 @@ label caso_holga:
     h "Quando ela sorria, ninguém via que eu também estava ali, logo atrás, carregando a cesta, limpando a sujeira, suportando o silêncio."
     h "Agora, com ela morta, eu sou a lembrança viva do que sobrou."
     h "E todos, curiosamente, querem me ouvir."
-    $ mostrar_personagem("Padre", 'N'):
+    $ mostrar_personagem("Padre", 'N')
     menu:
         "Eu te entendo… se precisar de algo ou descobrir mais alguma coisa, não tenha medo de falar comigo.":
             $ mostrar_personagem("Holga", 'F')
@@ -1010,9 +1031,6 @@ label viubruxa_holga:
     h "O mal sempre ataca quem não pode se defender, mas o real monstro é a força que está por trás dessa brasa acesa."
     $ checar_interacao()
     jump casaholgaext
-
-
-
 
 ########################################### CENAS PADEIRO ###########################################################
 label dialogo_bartolomeu:
@@ -1486,6 +1504,31 @@ label bonecos_joana:
     j "Os guardo com muito carinho…as vezes até mesmo… acho que eles me respondem quando converso com eles…"
     $ checar_interacao()
     jump casajoanaext
+
+######################################## CENAS Salvatore ########################################
+label dialogo_salvatore:
+    call hide_all_screens
+    if personagens_dict["Salvatore"].conversavel:
+        if personagens_dict["Salvatore"].conhecido == False:
+            p "BUGADO"
+        jump escolhas_salvatore
+    else:
+        $ mostrar_personagem("Salvatore", 'T')
+        j "Não estou com vontade de conversar hoje..."
+        jump caminhobebado_margarida
+
+label escolhas_salvatore:
+    $ mostrar_personagem("Padre", 'N')
+    menu:
+        "Pode me contar um pouco mais sobre o que está acontecendo aqui?":
+            jump acontecendo_salvatore
+
+label acontecendo_salvatore:
+    $ alterar_interacao(-1)
+    $ mostrar_personagem("Salvatore", 'N')
+    ss "Está tudo errado... já faz mais de um mês que isso começou."
+    return
+
 
 
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
