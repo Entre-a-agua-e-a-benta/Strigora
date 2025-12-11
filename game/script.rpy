@@ -13,6 +13,9 @@ default musica_atual = "ambiencia_ext_geral.mp3"
 ## Variaveis do diálogo com o Lázaro
 default dor_lazaro = False
 default afastou_lazaro = False
+# Variáveis do dialogo com william
+default naotinta_william = False
+default sombrass_william = False
 
 ## Personagens
 define personagens_list = list()
@@ -49,14 +52,13 @@ label start:
                 self.nome = nome
                 self.genero = genero
 
-                distancia = 1280*0.14 # largura * zoom
-                self.posicao = (fileira[0] + (175+75)*(ordem-1), fileira[1])
+                self.posicao = (fileira[0] + (175+75)*(ordem-1), fileira[1]) # 175 é a largura da imagem reduzida, 75 é o espaçamento entre elas
 
                 self.conversouHoje = False
                 self.progresso = 0
                 self.listaPistas = []
                 self.listaFalas = []
-                self.conhecido = False
+                self.conhecido = False 
                 self.conversavel = True
                 self.vivo = True
                 self.descricao = ""
@@ -79,22 +81,6 @@ label start:
                             ("Vincent", 'M', primeira_fileira, 1),
                             ("Seren", 'F', segunda_fileira, 3),
                             ("Bruxa", 'F', (0, 0), 1)]
-        for personagem in personagens_list:
-            personagens_dict[personagem[0]] = Personagem(personagem[0], personagem[1], personagem[2], personagem[3])
-        personagens_dict["Bruxa"].conhecido = True
-        personagens_dict["Bruxa"].posicao = (1720, 760)
-        personagens_dict["Bartolomeu"].descricao = "Padeiro da vila."
-        personagens_dict["Salvatore"].descricao = "É conhecido como o senhor da vila."
-        personagens_dict["Holga"].descricao = "Irmã da vítima mais recente da bruxa."
-        personagens_dict["Lázaro"].descricao = "O leproso da vila, vive isolado."
-        personagens_dict["Joana"].descricao = "Costureira da vila."
-        personagens_dict["Margarida"].descricao = "Curandeira da vila."
-        personagens_dict["Agnes"].descricao = "Criança pedinte que vive pela vila sem lar, geralmente dorme no celeiro do senhor."
-        personagens_dict["Bêbado"].descricao = "Irmão do dono da estalagem taverna (Vincent) e pai de uma menina de 10 anos. Vive bêbado pela vila."
-        personagens_dict["William"].descricao = "Filho do senhor Salvatore, não sai muito de casa por ordem do seu pai."
-        personagens_dict["Vincent"].descricao = "Dono do albergo e irmão do bêbado da vila."
-        personagens_dict["Seren"].descricao = "Filha do bêbado da vila. Seu tio, Vincent, é quem cuida dela."
-        personagens_dict["Bruxa"].descricao = "A bruxa que está devastando a vila."
         
         def checar_interacao():
             global interacao
@@ -224,7 +210,7 @@ label start:
         def mostrar_personagem(personagem: str, emocao: str):
             global name_side
             name_side = "left" if personagem == "Padre" else "right"
-            renpy.show_screen("personagemEmocao", personagem.lower(), emocao)
+            renpy.show_screen("personagemEmocao", unidecode(personagem.lower()), emocao)
 
         def mostrar_botao(posicao: tuple, texto: str, jumpTo: str):
             renpy.show_screen("botao_passos", posicao, texto, jumpTo)
@@ -235,15 +221,30 @@ label start:
                 renpy.music.play(musica)
                 musica_atual = musica
 
-        
-
 #### $ adicionar_pista("Vincent", "Gosta de HOMENS") #### é assim que bota pista
 
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
-
-jump noite
-
 label primeiracena:
+    python:
+        for personagem in personagens_list:
+            personagens_dict[personagem[0]] = Personagem(personagem[0], personagem[1], personagem[2], personagem[3])
+
+        personagens_dict["Bruxa"].conhecido = True
+        personagens_dict["Bruxa"].posicao = (1720, 760)
+
+        personagens_dict["Bartolomeu"].descricao = "Padeiro da vila."
+        personagens_dict["Salvatore"].descricao = "É conhecido como o senhor da vila, foi quem me chamou para vir ajudá-los. Tem um filho."
+        personagens_dict["Holga"].descricao = "Irmã da vítima mais recente da bruxa."
+        personagens_dict["Lázaro"].descricao = "O leproso da vila, vive isolado."
+        personagens_dict["Joana"].descricao = "Costureira da vila."
+        personagens_dict["Margarida"].descricao = "Curandeira da vila."
+        personagens_dict["Agnes"].descricao = "Criança pedinte que vive pela vila sem lar, geralmente dorme no celeiro do senhor."
+        personagens_dict["Bêbado"].descricao = "Irmão do dono da estalagem taverna (Vincent) e pai de uma menina de 10 anos. Vive bêbado pela vila."
+        personagens_dict["William"].descricao = "Filho do senhor Salvatore, não sai muito de casa por ordem do seu pai."
+        personagens_dict["Vincent"].descricao = "Dono do albergo e irmão do bêbado da vila."
+        personagens_dict["Seren"].descricao = "Filha do bêbado da vila. Seu tio, Vincent, é quem cuida dela."
+        personagens_dict["Bruxa"].descricao = "A bruxa que está devastando a vila."
+
     $ tocar_musica("tema.mp3")
 
     scene tela branca
@@ -1277,8 +1278,7 @@ label ontem3_bartolomeu:
     b "Ao deixar a massa descansar, os ingredientes têm tempo de se misturar e se integrar, resultando em um produto final mais saboroso e equilibrado. Uma massa bem descansada é mais fácil de moldar e dar forma, resultando em produtos finais mais bonitos e uniformes."
     $ checar_interacao()
     jump padaria
-
-#################### dia 4
+################## dia 4
 label ontem4_bartolomeu:
     $ mostrar_personagem("Bartolomeu", 'N')
     b "Fiquei enfurnado dentro da minha cozinha, tem dias que é preciso determinação para expulsar esses malditos ratos que vivem aparecendo por aqui."
@@ -1579,7 +1579,6 @@ label escolhas_salvatore:
 
         "Não perguntar nada":
             jump caminhobebado_margarida
-
 label acontecendo_salvatore:
     $ alterar_interacao(-1)
     $ mostrar_personagem("Salvatore", 'R')
@@ -1711,6 +1710,8 @@ label suspeitofilho_salvatore:
     $ checar_interacao()
     jump caminhobebado_margarida
 
+
+################################################### CENAS DO WILLIAM ####################################################################
 label dialogo_william:
     call hide_all_screens
     if personagens_dict["William"].conversavel:
@@ -1733,12 +1734,21 @@ label escolhas_william:
         "Me conte sobre você.":
             jump meconte_william
 
-        "Viu algo estranho nesses últimos dias?":
+        "Viu algo estranho nesses últimos dias?" if personagens_dict["William"].conversouHoje == False and personagens_dict["William"].progresso == 0:
+            $ progredir("William") 
             jump estranho_william
+        "Por favor pequeno, consegue me contar sobre seu cabelo? Isso ainda me inquieta." if personagens_dict["William"].conversouHoje == False and personagens_dict["William"].progresso == 1:
+            $ progredir("William") 
+            jump cabelo_william
+
+        "O que você faz enquanto está sozinho?":
+            jump sozinho_william
+
+        "O que você fez ontem à noite?":
+            jump ontem_william
 
         "Não perguntar nada.":
             jump casasalvatoreint
-    
 
 label meconte_william:
     $ mostrar_personagem("William", 'N')
@@ -1771,18 +1781,84 @@ label estranho_william:
     w "Outro dia, eu acordei antes do sol. Estava muito escuro, mas eu ouvi vozes lá embaixo, na sala. Fui espiar da escada, mas não consegui ver direito, só umas sombras paradas…"
     w "Parecia que cochichavam, mas quando cheguei mais perto, ficou tudo quieto, como se nunca tivessem estado ali."
     w "Eu não devia ter descido, mas eu tropecei num balde… Era aquele balde de tinta que meu pai usa pra arrumar… meu cabelo."
-    w "Espalhou tudo pelo chão. Papai ficou bravo. Mandou eu subir correndo, disse que eu não podia ver quem estava ali. No outro dia, eu vi umas pegadas pretas perto da porta. Devem ter sido minhas… mas às vezes acho que não."
+    w "Espalhou tudo pelo chão. Papai ficou bravo. Mandou eu subir correndo, disse que eu não podia ver quem estava ali."
+    $ adicionar_pista("Salvatore", 'Disse ao William que não podia ver quem estava em sua casa quando ele viu as sombras.')
+    w "No outro dia, eu vi umas pegadas pretas perto da porta. Devem ter sido minhas… mas às vezes acho que não."
+    $ adicionar_fala("William", '\"No dia após as sombras, vi pegadas perto da porta que não sei se são minhas\'')
     $ mostrar_personagem("Padre", 'N')
     menu:
         "Porque um balde de tinta?":
             jump tinta_william
+        "Essas sombras... o que eram?":
+            jump sombras_william
 label tinta_william:
-    $ mostrar_personagem("William", 'N')
+    $ naotinta_william = True
+    $ mostrar_personagem("William", 'T')
     w "Papai não gosta que eu fale sobre isso… "
     $ adicionar_pista("William", 'Seu pai usa algum tipo de tinta para arrumar seu cabelo.')
+    if sombrass_william == False:
+        $ mostrar_personagem("Padre", 'N')
+        menu:
+            "Essas sombras... o que eram?":
+                jump sombras_william
+    else:
+        jump casasalvatoreint
+        $ checar_interacao()
+label sombras_william:
+    $ sombrass_william = True
+    $ mostrar_personagem("William", 'N')
+    w "Não sei… nem sei se eram pessoas."
+    w "Eram como manchas no escuro…"
+    w "Tinha uma maior, parecia importante… "
+    $ mostrar_personagem("William", 'T')
+    w "As outras menores pareciam curvadas, como se procurassem algo no chão."
+    $ adicionar_fala("William", '\"Outro dia vi umas sombras paradas no primeiro andar, uma delas era maior e parecia importante, elas estavam curvadas procurando algo no chão\"')
+    w "Não quero falar muito sobre…"
+    if naotinta_william == False:
+        $ mostrar_personagem("Padre", 'N')
+        menu:
+            "Porque um balde de tinta?":
+                jump tinta_william   
+    else:
+        jump casasalvatoreint    
+        $ checar_interacao()
+
+label cabelo_william:
+    $ mostrar_personagem("William", 'N')
+    $ alterar_interacao(-1)
+    w "Tudo bem... eu gosto de você padre."
+    $ mostrar_personagem("William", 'F')
+    w "Finalmente meu pai deixou eu falar com alguém."
+    w "Meu cabelo não é dessa cor. É tinta."
+    w "Toda vez que começa a clarear, papai chama o homem que pinta."
+    $ mostrar_personagem("William", 'T')
+    w "Diz que é perigoso eu parecer com… alguém. Ele nunca fala quem."
+    $ adicionar_fala("William", "\"Meu pai diz que é perigoso eu parecer com alguém, por isso pinta meu cabelo sempre que ele começa a clarear.\"") 
+    $ mostrar_personagem("William", 'R')
+    w "Eu também não pergunto. Quando perguntei, ele ficou bravo, e me deixou de castigo por dois dias…"
+    $ mostrar_personagem("William", 'T')
+    w "Não conte pra ele que eu te disse isso, por favor."
     $ checar_interacao()
     jump casasalvatoreint
 
+label sozinho_william:
+    $ mostrar_personagem("William", 'N')
+    $ alterar_interacao(-1)
+    w "Eu desenho."
+    w "Mas só escondido."
+    w "Se meu pai vir, ele fala que isso deixa a cabeça fraca."
+    w "Ah… e às vezes tento fazer barquinhos de madeira… mas nunca ficam bons."
+    w "Ontem eu fiz um que afundou em três segundos."
+    $ checar_interacao()
+    jump casasalvatoreint
+
+label ontem_william:
+    $ mostrar_personagem("William", 'N')
+    $ alterar_interacao(-1)  
+    w "Eu tomei meu leite quente, li um pouco e fui dormir..."
+    w "A mesma coisa de sempre."
+    $ checar_interacao()
+    jump casasalvatoreint
 
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
 
@@ -1800,7 +1876,7 @@ label casapadre_noite:
             renpy.say(pi, "Vou ver o quadro na parede para revisar minhas anotações de hoje.")
             renpy.say(pi, "Tenho que estar atento às pistas para não matar inocentes.")
         if mortos == 1:
-            renpy.say(pi, "Devo tomar mais cuidado, uma hora a vila não vai mais me perdoar.")
+            renpy.say(pi, "Devo tomar mais cuidado, já matei 1 inocente. Uma hora a vila não vai mais me perdoar.")
         if mortos == 2:
             renpy.say(pi, "Se eu matar mais alguém, tenho certeza que a vila não me perdoará.")
     call screen casaPadreNOITE
@@ -1819,7 +1895,6 @@ label pistas:
 label dialogo_bruxa: # Matou a Bruxa
     dev "No momento não é para essa funcionalidade estar funcionando, se você está vendo isso é um bug"
     return
-
 label expulso: # Matou 3 pessoas inocentes
     dev "Que pena! O padre foi expulso da vila por matar inocentes demais"
     return

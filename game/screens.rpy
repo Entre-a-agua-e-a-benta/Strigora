@@ -1645,7 +1645,7 @@ screen tavernaint():
     use botao("botao_passos", 0.07, (1800, 600), "Sair do albergo", "tavernaext")
     use botao("botao_passos", 0.07, (150, 500), "Entrar no quarto", "casapadre")
     if personagens_dict["Vincent"].vivo:
-        use botao(personagens_dict["Vincent"].imagem, 0.10, (1250, 100), "Falar com o dono", "dialogo_vincent")
+        use botao(personagens_dict["Vincent"].imagem, 0.10, (1250, 50), "Falar com o dono", "dialogo_vincent", False)
     if personagens_dict["Seren"].vivo and personagens_dict["Vincent"].progresso >= 2:
         use botao(personagens_dict["Seren"].imagem, 0.3, (900, 500), "Falar com a garota", "dialogo_seren")
     add "botoes/taverna balcao.png"
@@ -1748,7 +1748,7 @@ screen plantacao():
 
 ############################################################# FUNÇÂO BOTÂO ##############################################################
 
-screen botao(imagem, zoomBase, posicao, texto, jumpTo):
+screen botao(imagem, zoomBase, posicao, texto, jumpTo, textoEmBaixo=True):
     tag passos
     vbox:
         xanchor 0.5
@@ -1757,6 +1757,8 @@ screen botao(imagem, zoomBase, posicao, texto, jumpTo):
         ypos posicao[1]
 
         default displayText = ""
+        if not textoEmBaixo:
+            text displayText xalign 0.5 outlines [ ( 3, "#000005", 0, 0) ]
         imagebutton:
             xalign 0.5
             idle imagem
@@ -1771,8 +1773,8 @@ screen botao(imagem, zoomBase, posicao, texto, jumpTo):
 
             hovered SetLocalVariable("displayText", texto)
             unhovered SetLocalVariable("displayText", "")
-        
-        text displayText xalign 0.5 outlines [ ( 3, "#000005", 0, 0) ]
+        if textoEmBaixo:
+            text displayText xalign 0.5 outlines [ ( 3, "#000005", 0, 0) ]
     
 screen botao_pistas(personagem, zoomBase, posicao):
     tag passos
@@ -1816,7 +1818,10 @@ screen HUD():
         background None
         xpos 25
         ypos 25
-        text (str(interacao) + " interação(ões) restante(s) hoje") size 40 color "#FFFFFF" outlines [ ( 3, "#000005", 0, 0) ]
+        if interacao == 1:
+            text(f"1 interação restante hoje") size 40 color "#FFFFFF" outlines [ (3, "#000005", 0, 0) ]
+        else:
+            text(f"{interacao} interações restantes hoje") size 40 color "#FFFFFF" outlines [ (3, "#000005", 0, 0) ]
     frame:
         background None
         xpos 1300
@@ -2015,12 +2020,13 @@ screen pistas_personagem(personagem):
         xysize(900,550)
         xpos 0.5
         ypos 370
-        vbox:
-            text "Disse sobre alguém:"
-            text falas_list[0]
-            text falas_list[1]
-            text falas_list[2]
-            text falas_list[3]
-            text falas_list[4]
-            text falas_list[5]
-            text falas_list[6]
+        if personagem != "Bruxa":
+            vbox:
+                text "Falas de destaque:"
+                text falas_list[0]
+                text falas_list[1]
+                text falas_list[2]
+                text falas_list[3]
+                text falas_list[4]
+                text falas_list[5]
+                text falas_list[6]
