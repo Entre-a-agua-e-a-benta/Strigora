@@ -29,7 +29,11 @@ define config.version = "1.0"
 ## Texto que é colocado na tela "Sobre" do jogo. Coloque o texto entre aspas
 ## triplas e deixe uma linha em branco entre os parágrafos.
 
-define gui.about = _p("""
+define gui.about = _p("""O nome Strigora refere-se a um festival anual que ocorre em Triora, uma vila na Ligúria, Itália. É uma celebração dedicada à história e lendas sobre bruxaria, e é especialmente relevante porque Triora é conhecida como a "cidade das bruxas" devido ao grande número de mulheres que foram acusadas e perseguidas por bruxaria durante a Idade Média e o Renascimento. 
+
+
+Este jogo se passa durante a Inquisição, quando um padre caçador de bruxas é enviado à vila isolada de Triora, na Itália, para investigar relatos de bruxaria. Em meio ao medo e à desconfiança, o jogador deve explorar o vilarejo, interagir com os moradores, realizar missões paralelas, reunir pistas e decidir quem acusar a cada noite.
+
 """)
 
 

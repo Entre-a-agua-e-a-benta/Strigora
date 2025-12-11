@@ -27,7 +27,7 @@ define config.check_conflicting_properties = True
 
 ## Uma cor de destaque usada em toda a interface para rotular e destacar o
 ## texto.
-define gui.accent_color = '#99ccff'
+define gui.accent_color = '#4d4069'
 
 ## A cor usada para um botão de texto quando ele não está selecionado nem passa
 ## o mouse.
@@ -38,7 +38,7 @@ define gui.idle_color = '#888888'
 define gui.idle_small_color = '#aaaaaa'
 
 ## A cor que é usada para botões e barras que passam pelo mouse.
-define gui.hover_color = '#c1e0ff'
+define gui.hover_color = '#4d4069'
 
 ## A cor usada em um botão de texto quando ele está selecionado, mas não
 ## focalizado. Um botão estará selecionado se for a tela atual ou o valor de
@@ -62,13 +62,13 @@ define gui.interface_text_color = '#ffffff'
 ## Fontes e tamanhos de fonte ##################################################
 
 ## A fonte usada para o texto do jogo.
-define gui.text_font = "DejaVuSans.ttf"
+define gui.text_font = "times.ttf"
 
 ## A fonte usada para os nomes dos caracteres.
-define gui.name_text_font = "DejaVuSans.ttf"
+define gui.name_text_font = "times.ttf"
 
 ## A fonte usada para o texto fora do jogo.
-define gui.interface_text_font = "DejaVuSans.ttf"
+define gui.interface_text_font = "times.ttf"
 
 ## O tamanho do texto normal do diálogo.
 define gui.text_size = 33

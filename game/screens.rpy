@@ -1971,9 +1971,9 @@ screen pistas_personagem(personagem):
     add "fundo pistas.png"
     $ genero = "o" if personagens_dict[personagem].genero == 'M' else "a"
     frame:
-        xysize(900,450)
-        xpos 0.5
-        ypos 50
+        xysize(850,550)
+        xpos 70
+        ypos 370
         vbox:
             text "Informações encontradas:"
             text pistas_list[0]
@@ -1990,9 +1990,9 @@ screen pistas_personagem(personagem):
         ypos 130
 
     frame: 
-        xysize(800, 500)
-        xpos 70
-        ypos 400
+        xysize(900, 280)
+        xpos 0.5
+        ypos 70
         vbox:
             text "Descrição do personagem:"
             text personagens_dict[personagem].descricao
@@ -2012,9 +2012,9 @@ screen pistas_personagem(personagem):
                 action Function(passar_dia, personagem)
 
     frame:
-        xysize(900,450)
+        xysize(900,550)
         xpos 0.5
-        ypos 550
+        ypos 370
         vbox:
             text "Disse sobre alguém:"
             text falas_list[0]

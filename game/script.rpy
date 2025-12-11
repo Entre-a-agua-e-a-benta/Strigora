@@ -17,16 +17,17 @@ default afastou_lazaro = False
 ## Personagens
 define personagens_list = list()
 define personagens_dict = dict()
-define p = Character("Padre", what_italic=True) ## O JOGADOR
-define v = Character("Vincent") ## DONO DA ESTALAGEM/TAVERNA
+define pi = Character("Padre", what_italic=True, color="#FFFFFF") ## O PADRE QUANDO ESTÁ PENSANDO
+define p =  Character("Padre", color="#390614")
+define v = Character("Vincent", color="#210b0c") ## DONO DA ESTALAGEM/TAVERNA
 define s = Character("Seren") ## CRIANÇA GEMEA FILHA DO BEBADO
-define m = Character("Margarida") ## Curandeira
-define l = Character("Lázaro") ## Leproso
-define h = Character("Holga")
-define b = Character("Bartolomeu") ## PADEIRO
-define be = Character("Bêbado")
-define ss = Character("Salvatore") ## Senhor Salvatore
-define j = Character("Joana") ## Costureira
+define m = Character("Margarida", color="#865662") ## Curandeira
+define l = Character("Lázaro", color="#8d1502") ## Leproso
+define h = Character("Holga", color="#37286d")
+define b = Character("Bartolomeu", color="#874123") ## PADEIRO
+define be = Character("Bêbado", color="#50372b")
+define ss = Character("Salvatore", color="#06005e") ## Senhor Salvatore
+define j = Character("Joana", color="#7f8c9b") ## Costureira
 define a = Character("Agnes") ## Criança pedinte
 define w = Character("William") ## Criança William
 
@@ -240,7 +241,10 @@ label start:
 
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
 
+jump noite
+
 label primeiracena:
+    $ tocar_musica("tema.mp3")
 
     scene tela branca
     dev "Este jogo ainda é uma demo, algumas funcionalidades ou conversas podem estar comprometidas. Aproveite a jornada dentro do possível nesse momento."
@@ -253,7 +257,7 @@ label primeiracena:
     hdc "Há mais de um mês, este lugar está sob um mau agouro… A certeza reside em mim: há feitiçaria, há um mau agouro por trás dessa ruína. Foi por isso que te chamei, Padre, não por fé, mas por ordem."
     hdc "Eu exijo que encontre esta bruxa."
     hdc "Não desejo preces; traga-me a verdade. E assegure-se de que sua busca seja feita com cautela, antes que o pânico tome conta de tudo."
-    p "Que Deus me guie... e que eu encontre este mal antes que ele engula o que resta dessa aldeia."
+    pi "Que Deus me guie... e que eu encontre este mal antes que ele engula o que resta dessa aldeia."
 
 
     $ personagens_dict["Salvatore"].conhecido = True
@@ -1791,8 +1795,14 @@ label casapadre_noite:
         for personagem in personagens_list:
             if personagens_dict[personagem[0]].vivo == False:
                 mortos = mortos + 1
+        if mortos == 0:
+            renpy.say(pi, "O dia chegou ao fim...")
+            renpy.say(pi, "Vou ver o quadro na parede para revisar minhas anotações de hoje.")
+            renpy.say(pi, "Tenho que estar atento às pistas para não matar inocentes.")
+        if mortos == 1:
+            renpy.say(pi, "Devo tomar mais cuidado, uma hora a vila não vai mais me perdoar.")
         if mortos == 2:
-            renpy.say(p, "Se eu matar mais alguém, a vila não me perdoará")
+            renpy.say(pi, "Se eu matar mais alguém, tenho certeza que a vila não me perdoará.")
     call screen casaPadreNOITE
     return
 
