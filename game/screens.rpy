@@ -1707,7 +1707,7 @@ screen casaHolgaEXT():
     use botao("botao_passos", 0.07, (100, 900), "Albergo", "tavernaext")
     use botao("botao_passos", 0.07, (1700, 900), "Monumento", "praca2")
     if personagens_dict["Holga"].vivo:
-        use botao(personagens_dict["Holga"].imagem, 0.5, (700, 420), "Falar com a a irmã da vítma mais recente", "dialogo_holga") 
+        use botao(personagens_dict["Holga"].imagem, 0.5, (700, 420), "Falar com a a irmã da vítima mais recente", "dialogo_holga") 
 
 ## Praca 2
 screen praca2():
@@ -2004,15 +2004,12 @@ screen pistas_personagem(personagem):
         textbutton "Voltar" style "word_list":
             action Jump("noite") alt "Noite"
 
-    if personagem != "Bruxa":
+    if personagem != "Bruxa" and personagens_dict[personagem].vivo and pistas_list[0] != "":
         frame:
             xpos 400
             ypos 930
             textbutton "Matar " + personagem style "word_list":
-                if pistas_list[0] == "":
-                    action Notify("Não tenho provas para acusá-l" + genero)
-                else:
-                    action Function(passar_dia, personagem)
+                action Function(passar_dia, personagem)
 
     frame:
         xysize(900,450)

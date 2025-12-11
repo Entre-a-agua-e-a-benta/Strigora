@@ -32,7 +32,7 @@ define w = Character("William") ## Criança William
 
 define dev = Character("Strigora", color="#a88ab4")
 
-define m = Character("Mensageiro", color="#FFFFFF")
+define msg = Character("Mensageiro", color="#FFFFFF")
 define hdc = Character("Homem da carta", color="#FFFFFF")
 
 # The game starts here.
@@ -85,11 +85,19 @@ label start:
         personagens_dict["Bartolomeu"].descricao = "Padeiro da vila."
         personagens_dict["Salvatore"].descricao = "É conhecido como o senhor da vila."
         personagens_dict["Holga"].descricao = "Irmã da vítima mais recente da bruxa."
+        personagens_dict["Lázaro"].descricao = "O leproso da vila, vive isolado."
+        personagens_dict["Joana"].descricao = "Costureira da vila."
+        personagens_dict["Margarida"].descricao = "Curandeira da vila."
+        personagens_dict["Agnes"].descricao = "Criança pedinte que vive pela vila sem lar, geralmente dorme no celeiro do senhor."
         personagens_dict["Bêbado"].descricao = "Irmão do dono da estalagem taverna (Vincent) e pai de uma menina de 10 anos. Vive bêbado pela vila."
+        personagens_dict["William"].descricao = "Filho do senhor Salvatore, não sai muito de casa por ordem do seu pai."
+        personagens_dict["Vincent"].descricao = "Dono do albergo e irmão do bêbado da vila."
+        personagens_dict["Seren"].descricao = "Filha do bêbado da vila. Seu tio, Vincent, é quem cuida dela."
+        personagens_dict["Bruxa"].descricao = "A bruxa que está devastando a vila."
         
         def checar_interacao():
             global interacao
-            if interacao == 0:
+            if interacao <= 0:
                 renpy.jump("casapadre_noite")
 
         def alterar_interacao(valor: int):
@@ -125,11 +133,11 @@ label start:
             # Chance para cada evento (Ruim, Neutro, Bom)
             if modificadorEvento == 1: # Dia de sorte
                 chanceEventos = (20, 50, 30)
-            elif modificadorEvento == 0: # Dia normal
+            elif modificadorEvento == 0: # Dia normalS
                 chanceEventos = (25, 50, 25)
             elif modificadorEvento == -1: # Dia de azar
                 chanceEventos = (30, 50, 20)
-            renpy.notify(f"chance atual de evento: {chanceEventos[0]}/{chanceEventos[1]}/{chanceEventos[2]}") # DEBUG, APAGAR!!!
+            ## renpy.notify(f"chance atual de evento: {chanceEventos[0]}/{chanceEventos[1]}/{chanceEventos[2]}") # DEBUG, APAGAR!!!
 
             evento = (randint(1, 100), randint(1, 4)) # (1~100, 1~4)
             # evento = (10, 1) # manipulando evento pra testes
@@ -239,10 +247,10 @@ label primeiracena:
     dev "A cena do chamado para a vila, posteriormente será uma custcene que está em desenvolvimento."
     dev "Agradeço a paciência e espero te ver uma próxima vez, quando o jogo Strigora estiver completo."
     scene tela preta
-    m "É uma aldeia… Está doente… Estão exigindo que eu te entregasse em mãos."
+    msg "É uma aldeia… Está doente… Estão exigindo que eu te entregasse em mãos."
     hdc "Padre"
     hdc "Chamo-o aqui não por fé, mas por ordem. O que está acontecendo não são coincidências."
-    hdc "á mais de um mês, este lugar está sob um mau agouro… A certeza reside em mim: há feitiçaria, há um mau agouro por trás dessa ruína. Foi por isso que te chamei, Padre, não por fé, mas por ordem."
+    hdc "Há mais de um mês, este lugar está sob um mau agouro… A certeza reside em mim: há feitiçaria, há um mau agouro por trás dessa ruína. Foi por isso que te chamei, Padre, não por fé, mas por ordem."
     hdc "Eu exijo que encontre esta bruxa."
     hdc "Não desejo preces; traga-me a verdade. E assegure-se de que sua busca seja feita com cautela, antes que o pânico tome conta de tudo."
     p "Que Deus me guie... e que eu encontre este mal antes que ele engula o que resta dessa aldeia."
@@ -264,7 +272,7 @@ label primeiracena:
     $ mostrar_personagem("Salvatore", 'N')
     ss "Ouça padre"
     $ mostrar_personagem("Salvatore", 'T')
-    ss "Eldra, a vítma mais recente, era irmã de Holga, uma mulher jovem que mora nos entornos da Piazza."
+    ss "Eldra, a vítima mais recente, era irmã de Holga, uma mulher jovem que mora nos entornos da Piazza."
     ss "Nós éramos... bem próximos."
     ss "Na noite de sua morte, ouvi sua voz distorcida me falando que em sete dias a bruxa matará a todos nós."
     ss "Por favor, faça algo antes que seja tarde."
@@ -473,7 +481,7 @@ label meconte_vincent:
             jump irmao_vincent
 label irmao_vincent:
     $ mostrar_personagem("Vincent", 'N')
-    v "Ah, com certeza você vai vê- lo por aí… Ele está sempre pelos cantos da aldeia. Ele vem aqui, bebe sem pagar, mas não tenho coragem de cobrar."
+    v "Ah, com certeza você vai vê-lo por aí… Ele está sempre pelos cantos da aldeia. Ele vem aqui, bebe sem pagar, mas não tenho coragem de cobrar."
     $ mostrar_personagem("Vincent", 'T')
     v "Depois que a mulher dele se foi, sobrou pouco dele também."
     $ checar_interacao()
@@ -498,8 +506,9 @@ label crianca_vincent:
     $ mostrar_personagem("Vincent", 'F')
     v "Eu cuido dela"
     $ mostrar_personagem("Vincent", 'T')
-    v "Mas de um tempo para cá, ela parece doente, às vezes, fala coisa dormindo e acorda com febre alta. Eu tento ser como um pai para ela, mas mesmo assim acho que às vezes não sou o suficiente."
+    v "Mas de um tempo para cá, ela parece doente. Ás vezes, fala coisa dormindo e acorda com febre alta. Eu tento ser como um pai para ela, mas mesmo assim acho que às vezes não sou o suficiente."
     $ adicionar_fala("Seren", "Parece doente, às vezes, fala coisa dormindo e acorda com febre alta")
+    v "Pedirei para ela falar com o senhor."
     $ checar_interacao()
     jump tavernaint
 
@@ -661,7 +670,7 @@ label dialogo_margarida:
         if personagens_dict["Margarida"].conhecido == False:
             $ personagens_dict["Margarida"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
-            p "Buongio...)"
+            p "Buongio..."
             $ mostrar_personagem("Margarida", 'N')
             m "A benção, padre."
             m "Veio aqui procurar um motivo para jogar a culpa em mim?"
@@ -758,13 +767,12 @@ label estranho_margarida:
             jump doce_margarida
 label doce_margarida:
     $ mostrar_personagem("Margarida", 'N')
-    $ alterar_interacao(-1)
     m "Alguns venenos... enganam o nariz. Doces demais. "
     m "A língua acha gostoso, o corpo… não."
     m "Eu diria para ter cuidado com comida que lhe oferecerem, padre. Especialmente vindo de gente que sorri rápido demais."
     $ adicionar_fala("Margarida", "Eu diria para ter cuidado com comida que lhe oferecerem, padre. Especialmente vindo de gente que sorri rápido demais.")
     m "O doce mata mais suavemente que a lâmina"
-    $ checar_interacao
+    $ checar_interacao()
     jump casamargaridaext
 
 ######################################## CENAS QUE OCORREM NA CASA DO Lázaro #######################################################
@@ -986,7 +994,7 @@ label continuacao_holga:
     h "E os galhos… quebrados, como se algo a tivesse arrastado para dentro da mata."
     h "Há quem diga que foi a bruxa"
     h "Tudo o que ouvi foi a sua voz chamando por ajuda… mas… em uma língua… que não era a dela."
-    $ adicionar_pista("Bruxa", 'Fala e faz as vitmas falarem em uma língua estranha')
+    $ adicionar_pista("Bruxa", 'Fala e faz as vitimas falarem em uma língua estranha')
     h "Os velhos dizem que foi castigo… Os jovens, murmuram que foi inveja..."
     h "Desde então sinto sua falta todos os dias."
     $ checar_interacao()
@@ -1573,7 +1581,7 @@ label acontecendo_salvatore:
     $ mostrar_personagem("Salvatore", 'R')
     ss "Está tudo errado... já faz mais de um mês que isso começou."
     ss "Cada manhã... uma maldição nova."
-    ss "Primeiro foi o carneiro morto, com suas estranhas espalhadas na praça…"
+    ss "Primeiro foi o carneiro morto, com suas entranhas espalhadas na praça…"
     ss "Depois as sementes."
     ss "Elas brotavam e simplesmente apodreciam no mesmo dia."
     ss "As minhas plantações ficaram inúteis. Eu já não sabia o que fazer..."
@@ -1648,9 +1656,8 @@ label nao_salvatore:
             jump falarfilho_salvatore
 label falarfilho_salvatore:
     $ mostrar_personagem("Salvatore", 'N')
-    ss "Entre na minha casa amanhã e poderá falar com o garoto, padre."
-    ss "Preciso conversar com ele antes disso."
     ss "O garoto não está acostumado a conversar com pessoas, como eu já lhe disse."
+    ss "Mas fique à vontade. Ele está dentro de casa."
     $ checar_interacao()
     jump caminhobebado_margarida
 
@@ -1704,6 +1711,7 @@ label dialogo_william:
     call hide_all_screens
     if personagens_dict["William"].conversavel:
         if personagens_dict["William"].conhecido == False:
+            $ personagens_dict["William"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
             p "Buongiorno bambino."
             p "Posso fazer algumas perguntas sobre a situação da vila?"
@@ -1766,7 +1774,7 @@ label estranho_william:
             jump tinta_william
 label tinta_william:
     $ mostrar_personagem("William", 'N')
-    W "Papai não gosta que eu fale sobre isso… "
+    w "Papai não gosta que eu fale sobre isso… "
     $ adicionar_pista("William", 'Seu pai usa algum tipo de tinta para arrumar seu cabelo.')
     $ checar_interacao()
     jump casasalvatoreint
