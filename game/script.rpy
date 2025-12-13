@@ -224,6 +224,9 @@ label start:
 #### $ adicionar_pista("Vincent", "Gosta de HOMENS") #### é assim que bota pista
 
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
+
+   
+
 label primeiracena:
     python:
         for personagem in personagens_list:
@@ -232,17 +235,17 @@ label primeiracena:
         personagens_dict["Bruxa"].conhecido = True
         personagens_dict["Bruxa"].posicao = (1720, 760)
 
-        personagens_dict["Bartolomeu"].descricao = "Padeiro da vila."
-        personagens_dict["Salvatore"].descricao = "É conhecido como o senhor da vila, foi quem me chamou para vir ajudá-los. Tem um filho."
-        personagens_dict["Holga"].descricao = "Irmã da vítima mais recente da bruxa."
-        personagens_dict["Lázaro"].descricao = "O leproso da vila, vive isolado."
-        personagens_dict["Joana"].descricao = "Costureira da vila."
-        personagens_dict["Margarida"].descricao = "Curandeira da vila."
-        personagens_dict["Agnes"].descricao = "Criança pedinte que vive pela vila sem lar, geralmente dorme no celeiro do senhor."
-        personagens_dict["Bêbado"].descricao = "Irmão do dono da estalagem taverna (Vincent) e pai de uma menina de 10 anos. Vive bêbado pela vila."
-        personagens_dict["William"].descricao = "Filho do senhor Salvatore, não sai muito de casa por ordem do seu pai."
-        personagens_dict["Vincent"].descricao = "Dono do albergo e irmão do bêbado da vila."
-        personagens_dict["Seren"].descricao = "Filha do bêbado da vila. Seu tio, Vincent, é quem cuida dela."
+        personagens_dict["Bartolomeu"].descricao = "O dono da padaria. Gosta de tirar proveito das situações, e se considera humilde por dar, vez ou outra, um pão amanhecido a uma criança necessitada."
+        personagens_dict["Salvatore"].descricao = "O senhor da vila. Ele é pai solteiro, estava apaixonado e planejava se casar com Edla. Foi quem me chamou para vir ajudá-los."
+        personagens_dict["Holga"].descricao = "É a irmã mais velha da vítima mais recente, Edla. Ela se descreve como a \"sombra\" da irmã, que era vista como a mais bela e luminosa."
+        personagens_dict["Lázaro"].descricao = "Mora na parte mais vazia da aldeia, pois as pessoas têm medo de contatá-lo e acreditam que sua doença é uma praga jogada pela bruxa."
+        personagens_dict["Joana"].descricao = "A costureira. Ela ganha a vida fazendo e consertando roupas, e está sempre com uma agulha presa no coque."
+        personagens_dict["Margarida"].descricao = "A curandeira e contadora de histórias. É vista frequentemente colhendo plantas medicinais e fazendo rezas."
+        personagens_dict["Agnes"].descricao = "É uma criança que deve ter por volta dos 12 anos, mora nas ruas."
+        personagens_dict["Bêbado"].descricao = " É o irmão do dono da estalagem e pai de uma menina de 10 anos. Desde a morte da esposa, ele vive bêbado pelos cantos da aldeia, sempre bebendo algo e falando coisas confusas e sem nexo."
+        personagens_dict["William"].descricao = "É uma criança de 10 anos. Ele é o filho do Senhor Salvatore e raramente é autorizado a sair de casa."
+        personagens_dict["Vincent"].descricao = " É o responsável pela estalagem e taverna, que se chama \"A viúva sangrenta\"."
+        personagens_dict["Seren"].descricao = "Tem cerca de 10 anos. Ela acredita ser culpada pela morte de sua mãe e se sente difícil de ser enxergada pelo pai. Seu tio, Vincent, é quem cuida dela."
         personagens_dict["Bruxa"].descricao = "A bruxa que está devastando a vila."
 
     $ tocar_musica("tema.mp3")
@@ -701,7 +704,8 @@ label escolhas_margarida:
         "Me conte uma história" if personagens_dict["Margarida"].listaPerguntas[2] == False:
             $ personagens_dict["Margarida"].listaPerguntas[2] = True
             jump historia_margarida
-        "Viu algo de estranho ultimamente?":
+        "Viu algo de estranho ultimamente?" if personagens_dict["Margarida"].listaPerguntas[3] == False:
+            $ personagens_dict["Margarida"].listaPerguntas[3] = True
             jump estranho_margarida
         "Não perguntar nada":
             jump casamargaridaext
@@ -1403,9 +1407,93 @@ label escolhas_agnes:
     menu: 
         "Me conte sobre você":
             jump meconte_agnes
+        "Sabe me dizer a quanto tempo exatamente você mora na rua?":
+            jump morarua_agnes
+        "Onde e o que você fez ontem a noite?":
+            jump ontem_agnes
+
+        "Algum dos habitantes te parece estranho?":
+            jump estranho_agnes
+
+        "Não perguntar nada":
+            jump praca2
 
 label meconte_agnes:
-    dev "O jogo ainda está em desenvolvimento! Jogue outro dia para conhecer mais da Agnes!"
+    $ mostrar_personagem("Agnes", 'N')
+    $ alterar_interacao(-1)
+    a "Eu me chamo Agnes…"
+    $ mostrar_personagem("Agnes", 'T')
+    a "Tenho 12 anos e ninguém quis me abrigar. A maioria aqui passa por mim e finge que eu não existo."
+    a "Eu durmo onde dá… Celeiro do Senhor Salvatore, às vezes o sótão da taverna, uma vez até na igreja, mas o padre antigo me expulsou."
+    a "Antes, eu pegava uns grãos escondido do celeiro, mas agora… até lá mal tem o que comer."
+    a "Talvez o universo esteja cobrando. Talvez ele saiba que nunca dividiram o suficiente."
+    $ mostrar_personagem("Agnes", 'R')
+    a "Eu não entendo por que alguns têm tanto… e outros nem um pedaço de pão."
+    $ adicionar_pista("Agnes", 'Talvez odeie a vila por ninguém se importar com ela.')
+    a "Bartolomeu me dá pão velho às vezes. Duro como pedra, mas é pão."
+    a "Ele fala alto, diz que está \"fazendo caridade\" pra todos ouvirem."
+    a "Eu finjo que acredito… porque é melhor mastigar pedra do que não mastigar nada."
+    $ checar_interacao()
+    jump praca2
+
+label morarua_agnes:
+    $ alterar_interacao(-1)
+    $ mostrar_personagem("Agnes", 'N')
+    a "Eu não sei…"
+    $ mostrar_personagem("Agnes", 'T')
+    a "Desde que meus pais morreram…"
+    a "Já faz tanto tempo..."
+    $ mostrar_personagem("Padre", 'T')
+    menu:
+        "E a casa que era de seus pais? Porque você não fica por lá? Pode estar vazia, mas ainda assim é um teto…":
+            jump casa_agnes
+label casa_agnes:
+    $ mostrar_personagem("Agnes", 'T')
+    a "Depois que eles morreram… queimaram a casa."
+    a "Disseram que era amaldiçoada. Que ninguém devia morar onde gente “marcada” viveu."
+    $ mostrar_personagem("Agnes", 'R')
+    a "Não deixaram eu pegar nada. Nem uma das roupas que minha mãe costurou…"
+    $ adicionar_fala("Agnes", 'Queimaram a casa onde morava com meus pais pois ninguém devia morar onde gente “marcada” viveu.')
+    a "Olham pra mim como se eu também fosse marcada."
+    $ adicionar_pista("Agnes", 'Talvez odeie a vila por queimar sua casa e olhar pra ela como se fosse \"marcada\".')
+    $ mostrar_personagem("Agnes", 'T')
+    a "Talvez eu seja mesmo. Eles podiam ter me queimado junto."
+    a "Teria doído menos."
+    $ checar_interacao()
+    jump praca2
+
+label ontem_agnes:
+    $ mostrar_personagem("Agnes", 'N')
+    $ alterar_interacao(-1)
+    a "Ontem… fiquei sentada perto do moinho até escurecer."
+    a "Tinha um cheiro estranho no ar… como carne e fumaça."
+    a "Eu ia dormir ali mesmo, mas ouvi alguém andando no mato. Me escondi. Então eu vi uma sombra arrastando uma coisa grande…algo pesado."
+    a "Depois, sumiu no meio da plantação."
+    a "No fim eu acabei dormindo atrás das tábuas do curral abandonado. É frio, mas é seco."
+    $ adicionar_fala("Agnes", 'Vi uma sombra perto do moinho arrastando algo pesado.')
+    a "Antes de sair de lá, eu olhei para dentro da casa, bem na direção da janela do quarto do filho do Senhor. Eu fiquei ali, parada. Observando. Por um bom tempo…"
+    $ mostrar_personagem("Padre", 'N')
+    menu:
+        "O que você viu pela janela?":
+            jump janela_agnes
+label janela_agnes:
+    $ mostrar_personagem("Agnes", 'N')
+    a "Estava escuro, mas a  escuridão não cobria tudo ali."
+    a "A luz fraca do luar batia na vidraça."
+    a "Eu vi o pequeno William. Ele estava deitado na cama, mas parecia acordado."
+    $ checar_interacao()
+    jump praca2
+
+label estranho_agnes:
+    $ mostrar_personagem("Agnes", 'N')
+    $ alterar_interacao(-1)
+    a "Todos são estranhos quando estão sozinhos."
+    $ mostrar_personagem("Agnes", 'R')
+    a "Tem gente que finge ser boa. O padeiro é um deles… mas ele ao menos me da pão as vezes."
+    a "O Vincent… ele me trata como um rato, fala de mim como se eu fosse um animal."
+    $ mostrar_personagem("Agnes", 'F')
+    a "A Margarida ainda é gentil comigo… pelo menos…"
+    $ checar_interacao()
     jump praca2
 
 ######################################## CENAS JOANA ###########################################################

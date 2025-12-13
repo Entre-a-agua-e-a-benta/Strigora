@@ -62,13 +62,13 @@ define gui.interface_text_color = '#ffffff'
 ## Fontes e tamanhos de fonte ##################################################
 
 ## A fonte usada para o texto do jogo.
-define gui.text_font = "times.ttf"
+define gui.text_font = "Grenze-Light.ttf"
 
 ## A fonte usada para os nomes dos caracteres.
-define gui.name_text_font = "times.ttf"
+define gui.name_text_font = "Grenze-ExtraBold.ttf"
 
 ## A fonte usada para o texto fora do jogo.
-define gui.interface_text_font = "times.ttf"
+define gui.interface_text_font = "Grenze-Light.ttf"
 
 ## O tamanho do texto normal do diálogo.
 define gui.text_size = 33
@@ -113,7 +113,7 @@ define gui.textbox_yalign = 1.0
 ## Pode ser um número inteiro de pixels a partir da esquerda ou do topo, ou 0,5
 ## para o centro.
 define gui.name_xpos = 360
-define gui.name_ypos = 0
+define gui.name_ypos = -22
 
 ## O alinhamento horizontal do nome do personagem. Pode ser 0,0 para alinhado à
 ## esquerda, 0,5 para centralizado e 1,0 para alinhado à direita.
@@ -126,7 +126,7 @@ define gui.namebox_height = None
 
 ## As bordas da caixa que contém o nome do personagem, na ordem esquerda,
 ## superior, direita e inferior.
-define gui.namebox_borders = Borders(5, 5, 5, 5)
+define gui.namebox_borders = Borders(20, 5, 20, 5)
 
 ## Se for True, o plano de fundo da caixa de nome será lado a lado; se for
 ## False, o plano de fundo da caixa de nome será dimensionado.
@@ -294,7 +294,7 @@ define gui.main_menu_text_xalign = 1.0
 ## está presente.
 
 ## Quadros genéricos.
-define gui.frame_borders = Borders(6, 6, 6, 6)
+define gui.frame_borders = Borders(50, 6, 50, 6)
 
 ## O quadro que é usado como parte da tela de confirmação.
 define gui.confirm_frame_borders = Borders(60, 60, 60, 60)
@@ -520,3 +520,5 @@ transform zoom_telapistas:
         linear 0.05 zoom 0.27  # Zooms to 110% over 0.05 seconds
     on idle:
         linear 0.1 zoom 0.25  # Returns to original size over 0.1 seconds
+
+#define config.mouse = {'default' : [('images/botoes/mouse.png', 0, 270)]}
