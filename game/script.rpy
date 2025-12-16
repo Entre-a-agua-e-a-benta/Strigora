@@ -279,13 +279,13 @@ label primeiracena:
     ss "Meu nome é Salvatore."
     $ personagens_dict["Salvatore"].conhecer()
     ss "O povo da vila se refere a mim como \“Senhor”\, por respeito… ou medo. Tanto faz."
-    ss "Sou o homem mais velho desta terra que ainda caminha com firmeza. Sempre tentei manter tudo sob controle, como deve ser."
-    ss "Por isso lhe chamei. Não por fé, mas por ordem. Se há uma bruxa entre nós… é seu dever encontrá-la."
+    ss "Sou o homem mais velho desta terra que ainda consegue caminhar com firmeza. Sempre tentei manter tudo sob controle, como deve ser."
+    ss "Por isso lhe chamei. Se há uma bruxa entre nós… é seu dever encontrá-la."
     ss "Eu não quero rezas ou  palavras bonitas. Quero respostas. E, finalmente, silêncio."
     $ mostrar_personagem("Salvatore", 'R')
     ss "Quando o povo começa a berrar antes da hora, ninguém ouve quem realmente deveria ser escutado."
     $ mostrar_personagem("Salvatore", 'N')
-    ss "Ouça padre"
+    ss "Ouça padre."
     $ mostrar_personagem("Salvatore", 'T')
     ss "Edla, a vítima mais recente, era irmã de Holga, uma mulher jovem que mora nos entornos da Piazza."
     $ personagens_dict["Holga"].conhecer()
@@ -998,7 +998,8 @@ label escolhas_holga:
         "Boatos dizem que você viu essa tal bruxa, me fale mais sobre isso" if personagens_dict["Holga"].conversouHoje == False and personagens_dict["Holga"].progresso == 2:
             $ progredir("Holga")
             jump viubruxa_holga
-        "O que você fez ontem a noite?":
+        "O que você fez ontem a noite?" if personagens_dict["Lázaro"].listaPerguntas[0] == False:
+            $ personagens_dict["Lázaro"].listaPerguntas[0] = True
             jump ontem_holga
         "Não perguntar nada":
             jump casaholgaext
@@ -1438,14 +1439,19 @@ label dialogo_agnes:
 label escolhas_agnes:
     $ mostrar_personagem("Padre", 'N')
     menu: 
-        "Me conte sobre você":
+        "Me conte sobre você" if personagens_dict["Agnes"].conversouHoje == False and personagens_dict["Agnes"].progresso == 0:
+            $ progredir("Agnes")
             jump meconte_agnes
-        "Sabe me dizer a quanto tempo exatamente você mora na rua?":
+        "Sabe me dizer a quanto tempo exatamente você mora na rua?"if personagens_dict["Agnes"].conversouHoje == False and personagens_dict["Agnes"].progresso == 1:
+            $ progredir("Agnes")
             jump morarua_agnes
-        "Onde e o que você fez ontem a noite?":
+
+        "Onde e o que você fez ontem a noite?" if personagens_dict["Agnes"].listaPerguntas[0] == False:
+            $ personagens_dict["Agnes"].listaPerguntas[0] = True
             jump ontem_agnes
 
-        "Algum dos habitantes te parece estranho?":
+        "Algum dos habitantes te parece estranho?" if personagens_dict["Agnes"].listaPerguntas[1] == False:
+            $ personagens_dict["Agnes"].listaPerguntas[1] = True
             jump estranho_agnes
 
         "Não perguntar nada":
@@ -1864,10 +1870,12 @@ label escolhas_william:
             $ progredir("William") 
             jump cabelo_william
 
-        "O que você faz enquanto está sozinho?":
+        "O que você faz enquanto está sozinho?"if personagens_dict["William"].listaPerguntas[0] == False:
+            $ personagens_dict["William"].listaPerguntas[0] = True
             jump sozinho_william
 
-        "O que você fez ontem à noite?":
+        "O que você fez ontem à noite?" if personagens_dict["William"].listaPerguntas[1] == False:
+            $ personagens_dict["William"].listaPerguntas[1] = True
             jump ontem_william
 
         "Não perguntar nada.":

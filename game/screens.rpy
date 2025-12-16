@@ -309,9 +309,9 @@ screen navigation:
 
             textbutton _("Histórico") action ShowMenu("history")
 
-            textbutton _("Salvar") action ShowMenu("save")
+            #textbutton _("Salvar") action ShowMenu("save")
 
-        textbutton _("Carregar Jogo") action ShowMenu("load")
+        #textbutton _("Carregar Jogo") action ShowMenu("load")
 
         textbutton _("Configurações") action ShowMenu("preferences")
 
