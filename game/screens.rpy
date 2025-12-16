@@ -1857,9 +1857,9 @@ screen HUD():
 
     frame:
         background None
-        xpos 1430
-        ypos 15
-        add str(dia) + "_dia" zoom 0.7
+        xpos 1355
+        ypos -30
+        add str(dia) + "_dia" zoom 0.8
 
 ######################################################### Falas de personagens ##############################################################
 

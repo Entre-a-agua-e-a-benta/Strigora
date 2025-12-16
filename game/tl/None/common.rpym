@@ -491,11 +491,11 @@ translate None strings:
 
     # renpy/common/00gui.rpy:452
     old "Are you sure you want to quit?"
-    new "Certeza que deseja sair ?"
+    new "Certeza que deseja sair? \nO jogo não será salvo e você perderá seu progresso anterior."
 
     # renpy/common/00gui.rpy:453
     old "Are you sure you want to return to the main menu?\nThis will lose unsaved progress."
-    new "Certeza que deseja voltar para o menu principal?\nPerderá todo jogo não salvo."
+    new "Certeza que deseja voltar para o menu principal?\nO jogo não será salvo e você perderá seu progresso anterior."
 
     # renpy/common/00gui.rpy:454
     old "Are you sure you want to continue where you left off?"
