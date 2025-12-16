@@ -1272,7 +1272,7 @@ screen notify(message):
     frame at notify_appear:
         text "[message!tq]"
 
-    timer 3.25 action Hide('notify')
+    timer 5 action Hide('notify')
 
 
 transform notify_appear:
@@ -1667,7 +1667,9 @@ screen casabebado():
 ## Tela da casa do padre interna
 screen casapadre():
     tag passos
-    use botao("botao_passos", 0.5, (1200, 900), "Sair do quarto", "tavernaint", False)
+    if interacao > 0:
+        use botao("botao_passos", 0.5, (1200, 900), "Sair do quarto", "tavernaint", False)
+    use botao("mural de pistas", 0.99, (845, 254), "Ver quadro de pistas", "noite")
 
 ## Tela da casa da curandeira externa
 screen casaMargaridaEXT():
@@ -1810,9 +1812,9 @@ screen botao_pistas(personagem, zoomBase, posicao):
             yanchor 1.0
             xpos posicao[0]
             ypos posicao[1] + 60
-            text personagem.nomeConhecido size 40 color "#382114" outlines [ ( 1, "#000005", 0, 0) ] font "LHANDW.ttf"
+            text personagem.nomeConhecido size 40 color "#382114" outlines [ ( 1, "#000005", 0, 0) ] font "UnifrakturMaguntia-Regular.ttf"
 
-screen botao_passar_dia(imagem, zoomBase, posicaoY):
+screen botao_quadro(imagem, zoomBase, posicaoY, passarDia):
     tag passos
     imagebutton:
         xalign 0.5
@@ -1826,19 +1828,33 @@ screen botao_passar_dia(imagem, zoomBase, posicaoY):
                 linear 0.05 zoom 1.1*zoomBase  # Zooms to 110% over 0.05 seconds
             on idle:
                 linear 0.1 zoom zoomBase  # Returns to original size over 0.1 seconds
-        action [Function(passar_dia)]
+        if passarDia:
+            action [Function(passar_dia)]
+        else:
+            action [Jump("casapadre")]
 
 ############################################################# Hud ################################################
 screen HUD():
-    frame:
-        background None
-        xpos 5
-        ypos 15
-        add str(interacao) + "_interacao" zoom 0.7
-        # if interacao == 1:
-        #     text(f"1 interação restante hoje") size 40 color "#FFFFFF" outlines [ (3, "#000005", 0, 0) ]
-        # else:
-        #     text(f"{interacao} interações restantes hoje") size 40 color "#FFFFFF" outlines [ (3, "#000005", 0, 0) ]
+    $ imagePath = ""
+    $ zoomInteracao = 0.8
+    hbox:
+        xpos 25
+        ypos 25
+        spacing 25
+        for i in range(1, interacao+1): # Interações disponíveis
+            if i > 0 and i <= 3:
+                $ imagem = imagePath + "interacao_normal_disponivel"
+            else:
+                $ imagem = imagePath + "interacao_bonus_disponivel"
+            add imagem zoom zoomInteracao
+
+        for i in range(interacaoMaxHoje, interacao, -1): # Interações indisponíveis
+            if i >= 4:
+                $ imagem = imagePath + "interacao_bonus_indisponivel"
+            else:
+                $ imagem = imagePath + "interacao_normal_indisponivel"
+            add imagem zoom zoomInteracao
+
     frame:
         background None
         xpos 1430
@@ -1937,16 +1953,12 @@ label hide_all_screens:
     hide screen pistas
     hide screen vincent_pistas
 
-    hide screen casaPadreNOITE
     hide screen pistas
     hide screen vincent_pistas
 
     hide screen botao
     return
 
-######################################### NOITE ######################################################
-screen casaPadreNOITE():
-    use botao("mural de pistas", 0.99, (845, 254), "Ver quadro de pistas", "noite")  
 
 ################################# PISTAS ##############################################
 image tela preta = Solid("#000")
@@ -1959,22 +1971,10 @@ screen pistas():
         $ personagem = personagens_dict[personagem[1]]
         $ zoom = 0.14 if personagem.nome != "Bruxa" else 0.3
         use botao_pistas(personagem, zoom, personagem.posicao)
-    use botao_passar_dia("botao nao matar", 0.85, 880)
-    
-    # screen pistas():
-#     tag pistas
-#     imagemap:
-        
-#         ground "images/pistas_idle.jpg"
-#         hover "images/pistas_hover.jpg"
-#         for personagemData in personagens_list:
-#             $ personagem = personagens_dict[personagemData[0]]
-#             if personagem.conhecido:
-#                 hotspot personagem.hotspot action [Hide("texto_botao"), SetVariable("infoPersonagem", personagem.nome), Jump("pistas")]
-#             else:
-#                 hotspot personagem.hotspot action [Notify("Ainda não conheço este personagem...")]
-#         hotspot (572, 923, 770, 91) action Function(passar_dia)
-
+    if interacao <= 0:
+        use botao_quadro("botao nao matar", 0.85, 880, True)
+    else:
+        use botao_quadro("voltar", 0.2, 880, False)
 
 style word_list is button:
     background None
@@ -2010,9 +2010,12 @@ screen pistas_personagem(personagem):
     add retrato at zoom_retrato
 
     text personagens_dict[personagem].nomeConhecido:
-        size 100
+        size 90
         xpos 310
         ypos 130
+        font "UnifrakturMaguntia-Regular.ttf"
+        color "#382114" 
+        outlines [ ( 1, "#000005", 0, 0) ]
 
     frame: 
         xysize(900, 280)
@@ -2029,7 +2032,7 @@ screen pistas_personagem(personagem):
         textbutton "Voltar" style "word_list":
             action Jump("noite") alt "Noite"
 
-    if personagem != "Bruxa" and personagens_dict[personagem].vivo and pistas_list[0] != "":
+    if personagem != "Bruxa" and personagens_dict[personagem].vivo and pistas_list[0] != "" and interacao <= 0:
         frame:
             xpos 400
             ypos 930

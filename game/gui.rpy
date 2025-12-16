@@ -27,7 +27,7 @@ define config.check_conflicting_properties = True
 
 ## Uma cor de destaque usada em toda a interface para rotular e destacar o
 ## texto.
-define gui.accent_color = '#4d4069'
+define gui.accent_color = '#5b526e'
 
 ## A cor usada para um botão de texto quando ele não está selecionado nem passa
 ## o mouse.
@@ -80,7 +80,7 @@ define gui.name_text_size = 45
 define gui.interface_text_size = 33
 
 ## O tamanho dos rótulos na interface de usuário do jogo.
-define gui.label_text_size = 36
+define gui.label_text_size = 40
 
 ## O tamanho do texto na tela de notificação.
 define gui.notify_text_size = 24
@@ -263,7 +263,7 @@ define gui.navigation_xpos = 100
 define gui.skip_ypos = 15
 
 ## A posição vertical da tela de notificação.
-define gui.notify_ypos = 68
+define gui.notify_ypos = 150
 
 ## O espaçamento entre as opções de menu.
 define gui.choice_spacing = 33
@@ -303,7 +303,7 @@ define gui.confirm_frame_borders = Borders(60, 60, 60, 60)
 define gui.skip_frame_borders = Borders(24, 8, 75, 8)
 
 ## O quadro que é usado como parte da tela de notificação.
-define gui.notify_frame_borders = Borders(24, 8, 60, 8)
+define gui.notify_frame_borders = Borders(30, 8, 90, 8)
 
 ## Os planos de fundo dos quadros devem ser lado a lado?
 define gui.frame_tile = False

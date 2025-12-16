@@ -5,6 +5,7 @@ default name_side = "left"
 
 default dia = 1 # Define dia incial
 default interacao = 3 # Define quantas interações pode ter
+default interacaoMaxHoje = 3 # Número max de interações no dia p/ HUD
 
 default modificadorEvento = 0 # Modificador de chance para eventos aleatórios
 
@@ -95,16 +96,16 @@ label start:
         def checar_interacao():
             global interacao
             if interacao <= 0:
-                renpy.jump("casapadre_noite")
+                renpy.jump("casapadre")
 
         def alterar_interacao(valor: int):
             global interacao
             interacao = interacao + valor
             sinal = "+" if valor >= 0 else ""
-            renpy.notify(sinal + str(valor) + " interação")
+            #renpy.notify(sinal + str(valor) + " interação")
 
         def passar_dia(matar_personagem=None):
-            global dia, interacao, personagens_list, personagens_dict
+            global dia, interacao, interacaoMaxHoje, personagens_list, personagens_dict
             dia = dia + 1
             mortos = 0
             for personagem in personagens_list:
@@ -122,6 +123,7 @@ label start:
                     renpy.jump("expulso")
             if dia >= 8:
                 renpy.jump("final")
+            interacaoMaxHoje = 3
             evento_aleatorio()
             renpy.jump("casapadre")
 
@@ -167,9 +169,12 @@ label start:
                 if evento[1] == 1:
                     # Missa comunitária (+2 interação)
                     renpy.notify("Missa comunitária (+2 interação)")
+                    interacaoMaxHoje = 5
                     alterar_interacao(+2)
                 elif evento[1] == 2: # Dia promissor (+1 interação) - igual ao anterior
-                    renpy.notify("Dia promissor")
+                    renpy.notify("Dia promissor (+1 interação)")
+                    interacaoMaxHoje = 4
+                    alterar_interacao(+1)
                 elif evento[1] == 3: # Janta comunitária (+ chance de evento bom)
                     renpy.notify("Janta comunitária (+ chance de evento bom na próxima noite)")
                     modificadorEvento = 1
@@ -262,17 +267,7 @@ label primeiracena:
         personagens_dict["Seren"].descricao = "Tem cerca de 10 anos. Ela acredita ser culpada pela morte de sua mãe e se sente difícil de ser enxergada pelo pai. Seu tio, Vincent, é quem cuida dela."
         personagens_dict["Bruxa"].descricao = "A bruxa que está devastando a vila."
     
-    $ tocar_musica("tema.mp3")
-
-    scene tela branca
-    dev "Este jogo ainda é uma demo, algumas funcionalidades ou conversas podem estar comprometidas. Aproveite a jornada dentro do possível nesse momento."
-    dev "A cena do chamado para a vila, posteriormente será uma custcene que está em desenvolvimento."
-    dev "Agradeço a paciência e espero te ver uma próxima vez, quando o jogo Strigora estiver completo."
-
-    $ renpy.movie_cutscene("game/images/output.webm")
-    pause 0.45
-    # image unique_identifier = Movie(size=(1920, 1080), channel="movie", play="output.webm", loop=False)
-    # show screen Movie("unique_identifier ")
+    $ renpy.movie_cutscene("images/cutscene_inicial.webm")
 
     $ personagens_dict["Salvatore"].conhecido = True
     $ tocar_musica("ambiencia_ext_geral.mp3")
@@ -313,6 +308,7 @@ label tavernaext:
 ## Cena dentro da taverna
 label tavernaint:
     call hide_all_screens
+    $ tocar_musica("ambiencia_int_casas.wav")
     scene bg taverna int
     call screen tavernaint
 
@@ -327,7 +323,22 @@ label casabebadoext:
 label casapadre:
     call hide_all_screens
     $ tocar_musica("ambiencia_int_casas.wav")
-    scene bg casa padre int
+    if interacao <= 0:
+        scene bg casa padre int
+        python:
+            mortos = 0
+            for personagem in personagens_list:
+                if personagens_dict[personagem[1]].vivo == False:
+                    mortos = mortos + 1
+            if mortos == 0:
+                renpy.say(pi, "O dia chegou ao fim...")
+                renpy.say(pi, "Vou ver o quadro na parede para revisar minhas anotações de hoje.")
+                renpy.say(pi, "Tenho que estar atento às pistas para não matar inocentes.")
+            if mortos == 1:
+                renpy.say(pi, "Devo tomar mais cuidado, já matei 1 inocente. Uma hora a vila não vai mais me perdoar.")
+            if mortos == 2:
+                renpy.say(pi, "Se eu matar mais alguém, tenho certeza que a vila não me perdoará.")
+    scene bg casa padre noite
     call screen casapadre
 
 ## Cena Casa Margarida Ext
@@ -1974,26 +1985,6 @@ label ontem_william:
     jump casasalvatoreint
 
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
-
-label casapadre_noite:
-    call hide_all_screens
-    play music "ambiencia_int_casas.wav"
-    scene bg casa padre noite
-    python:
-        mortos = 0
-        for personagem in personagens_list:
-            if personagens_dict[personagem[1]].vivo == False:
-                mortos = mortos + 1
-        if mortos == 0:
-            renpy.say(pi, "O dia chegou ao fim...")
-            renpy.say(pi, "Vou ver o quadro na parede para revisar minhas anotações de hoje.")
-            renpy.say(pi, "Tenho que estar atento às pistas para não matar inocentes.")
-        if mortos == 1:
-            renpy.say(pi, "Devo tomar mais cuidado, já matei 1 inocente. Uma hora a vila não vai mais me perdoar.")
-        if mortos == 2:
-            renpy.say(pi, "Se eu matar mais alguém, tenho certeza que a vila não me perdoará.")
-    call screen casaPadreNOITE
-    return
 
 label noite:
     call screen pistas
