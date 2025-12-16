@@ -1974,7 +1974,7 @@ screen pistas():
     if interacao <= 0:
         use botao_quadro("botao nao matar", 0.85, 880, True)
     else:
-        use botao_quadro("voltar", 0.2, 880, False)
+        use botao_quadro("voltar", 0.3, 900, False)
 
 style word_list is button:
     background None
