@@ -21,15 +21,15 @@ default sombrass_william = False
 define personagens_list = list()
 define personagens_dict = dict()
 define pi = Character("Padre", what_italic=True, color="#FFFFFF") ## O PADRE QUANDO ESTÁ PENSANDO
-define p =  Character("Padre", color="#390614")
-define v = Character("Vincent", color="#210b0c") ## DONO DA ESTALAGEM/TAVERNA
+define p =  Character("Padre", color="#522c36")
+define v = Character("Vincent", color="#ddc0a4") ## DONO DA ESTALAGEM/TAVERNA
 define s = Character("Seren") ## CRIANÇA GEMEA FILHA DO BEBADO
 define m = Character("Margarida", color="#865662") ## Curandeira
-define l = Character("Lázaro", color="#8d1502") ## Leproso
-define h = Character("Holga", color="#37286d")
+define l = Character("Lázaro", color="#aa3c2e") ## Leproso
+define h = Character("Holga", color="#51496d")
 define b = Character("Bartolomeu", color="#874123") ## PADEIRO
-define be = Character("Bêbado", color="#50372b")
-define ss = Character("Salvatore", color="#06005e") ## Senhor Salvatore
+define be = Character("Bêbado", color="#5a453b")
+define ss = Character("Salvatore", color="#fed047") ## Senhor Salvatore
 define j = Character("Joana", color="#7f8c9b") ## Costureira
 define a = Character("Agnes") ## Criança pedinte
 define w = Character("William") ## Criança William
@@ -64,7 +64,7 @@ label start:
                 self.descricao = ""
                 self.imagem = f"personagens/{unidecode(nome.lower())}/{unidecode(nome.lower())}.png"
                 self.retrato = f"personagens/3x4/{unidecode(nome.lower())} retrato.png"
-                self.listaPerguntas = [False, False, False]
+                self.listaPerguntas = [False, False, False, False]
         
         ## Inicializa o dicionário de personagens
         primeira_fileira = (150, 450)
