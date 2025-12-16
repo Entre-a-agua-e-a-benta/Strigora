@@ -502,10 +502,10 @@ init python:
 transform zoom_retrato:
     xpos 70
     ypos 50
-    zoom 0.3
+    zoom 0.175
     on show:
         pause 0.0
-        linear 0.05 zoom 0.3  # Zooms to 110% over 0.05 seconds
+        linear 0.05 zoom 0.175  # Zooms to 110% over 0.05 seconds
 
 transform dynamic_pos:
     xalign posicao_texto_x
@@ -521,4 +521,16 @@ transform zoom_telapistas:
     on idle:
         linear 0.1 zoom 0.25  # Returns to original size over 0.1 seconds
 
-#define config.mouse = {'default' : [('images/botoes/mouse.png', 0, 270)]}
+define config.mouse = {'default' : [('images/botoes/mouse.png', 0, 34)]}
+
+transform preto_e_branco:
+    matrixcolor SaturationMatrix(0)
+
+transform preto:
+    matrixcolor TintMatrix("#000000")
+
+transform swap_red_and_green:
+    matrixcolor Matrix([0.0, 1.0, 0.0, 0.0,
+                        1.0, 0.0, 0.0, 0.0,
+                        0.0, 0.0, 1.0, 0.0,
+                        0.0, 0.0, 0.0, 1.0,])

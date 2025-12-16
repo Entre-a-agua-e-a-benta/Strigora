@@ -22,17 +22,19 @@ define personagens_list = list()
 define personagens_dict = dict()
 define pi = Character("Padre", what_italic=True, color="#FFFFFF") ## O PADRE QUANDO ESTÁ PENSANDO
 define p =  Character("Padre", color="#522c36")
-define v = Character("Vincent", color="#ddc0a4") ## DONO DA ESTALAGEM/TAVERNA
-define s = Character("Seren") ## CRIANÇA GEMEA FILHA DO BEBADO
-define m = Character("Margarida", color="#865662") ## Curandeira
-define l = Character("Lázaro", color="#aa3c2e") ## Leproso
-define h = Character("Holga", color="#51496d")
-define b = Character("Bartolomeu", color="#874123") ## PADEIRO
+define v = Character("Dono do Albergo", color="#ddc0a4") ## DONO DA ESTALAGEM/TAVERNA
+define s = Character("Filha do bêbado") ## CRIANÇA GEMEA FILHA DO BEBADO
+define m = Character("Curandeira", color="#865662") ## Curandeira
+define l = Character("Leproso", color="#aa3c2e") ## Leproso
+define h = Character("Irmã da Edla", color="#51496d")
+define b = Character("Padeiro", color="#874123") ## PADEIRO
 define be = Character("Bêbado", color="#5a453b")
-define ss = Character("Salvatore", color="#fed047") ## Senhor Salvatore
-define j = Character("Joana", color="#7f8c9b") ## Costureira
-define a = Character("Agnes") ## Criança pedinte
-define w = Character("William") ## Criança William
+define ss = Character("Senhor da vila", color="#fed047") ## Senhor Salvatore
+define j = Character("Costureira", color="#7f8c9b") ## Costureira
+define a = Character("Pedinte") ## Criança pedinte
+define w = Character("Filho do senhor") ## Criança William
+
+define bx = Character("Bruxa")
 
 define dev = Character("Strigora", color="#a88ab4")
 
@@ -48,8 +50,12 @@ label start:
         from random import randint
 
         class Personagem:
-            def __init__(self, nome = "Fulano", genero = 'M', fileira = (0, 0), ordem = 0):
+            def __init__(self, character=dev, nome = "Fulano", genero = 'M', fileira = (0, 0), ordem = 0):
+                self.character = character
+                self.nomeConhecido = character.name
+
                 self.nome = nome
+                self.profissao = character.name
                 self.genero = genero
 
                 self.posicao = (fileira[0] + (175+75)*(ordem-1), fileira[1]) # 175 é a largura da imagem reduzida, 75 é o espaçamento entre elas
@@ -63,24 +69,28 @@ label start:
                 self.vivo = True
                 self.descricao = ""
                 self.imagem = f"personagens/{unidecode(nome.lower())}/{unidecode(nome.lower())}.png"
-                self.retrato = f"personagens/3x4/{unidecode(nome.lower())} retrato.png"
+                self.retrato = f"personagens/retrato/{unidecode(nome.lower())}_retrato.png"
                 self.listaPerguntas = [False, False, False, False]
+
+            def conhecer(self):
+                self.character.name = self.nome
+                self.nomeConhecido = self.nome
         
         ## Inicializa o dicionário de personagens
         primeira_fileira = (150, 450)
         segunda_fileira = (300, 815)
-        personagens_list = [("Bartolomeu", 'M', primeira_fileira, 3),
-                            ("Salvatore", 'M', primeira_fileira, 6),
-                            ("Holga", 'F', segunda_fileira, 1),
-                            ("Lázaro", 'M', primeira_fileira, 5),
-                            ("Joana", 'F', segunda_fileira, 2),
-                            ("Margarida", 'F', primeira_fileira, 2),
-                            ("Agnes", 'F', primeira_fileira, 4),
-                            ("Bêbado", 'M', segunda_fileira, 5),
-                            ("William", 'M', segunda_fileira, 4),
-                            ("Vincent", 'M', primeira_fileira, 1),
-                            ("Seren", 'F', segunda_fileira, 3),
-                            ("Bruxa", 'F', (0, 0), 1)]
+        personagens_list = [(b, "Bartolomeu", 'M', primeira_fileira, 3),
+                            (ss, "Salvatore", 'M', primeira_fileira, 6),
+                            (h, "Holga", 'F', segunda_fileira, 1),
+                            (l, "Lázaro", 'M', primeira_fileira, 5),
+                            (j, "Joana", 'F', segunda_fileira, 2),
+                            (m, "Margarida", 'F', primeira_fileira, 2),
+                            (a, "Agnes", 'F', primeira_fileira, 4),
+                            (be, "Bêbado", 'M', segunda_fileira, 5),
+                            (w, "William", 'M', segunda_fileira, 4),
+                            (v, "Vincent", 'M', primeira_fileira, 1),
+                            (s, "Seren", 'F', segunda_fileira, 3),
+                            (bx, "Bruxa", 'F', (0, 0), 1)]
         
         def checar_interacao():
             global interacao
@@ -98,9 +108,9 @@ label start:
             dia = dia + 1
             mortos = 0
             for personagem in personagens_list:
-                personagens_dict[personagem[0]].conversouHoje = False
-                personagens_dict[personagem[0]].conversavel = True
-                if personagens_dict[personagem[0]].vivo == False:
+                personagens_dict[personagem[1]].conversouHoje = False
+                personagens_dict[personagem[1]].conversavel = True
+                if personagens_dict[personagem[1]].vivo == False:
                     mortos = mortos + 1
             interacao = 3
             if matar_personagem != None:
@@ -134,7 +144,12 @@ label start:
                     while personagem.vivo != True or personagem.nome == "Bruxa":
                         personagem = personagens_dict[personagens_list[randint(0, len(personagens_list)-1)][0]]
                     personagem.conversavel = False
-                    renpy.notify("O poço foi sabotado e " + personagem.nome + " bebeu a agua. Não vou conseguir falar com " + personagem.nome + "...")
+                    if personagem.nomeConhecido == personagem.nome:
+                        nomeDisplay = personagem.nomeConhecido
+                    else:
+                        artigo = 'o' if personagem.genero == 'M' else 'a'
+                        nomeDisplay = artigo + " " + personagem.nomeConhecido
+                    renpy.notify("O poço foi sabotado e " + nomeDisplay + " bebeu a agua. Não vou conseguir falar com " + nomeDisplay + "...")
                 elif evento[1] == 2: # Perder interação (-1 interação)
                     renpy.notify("Perdi interação (-1 interação)")
                     alterar_interacao(-1)
@@ -176,7 +191,7 @@ label start:
             global personagens_dict
             if pista not in personagens_dict[personagem].listaPistas:
                 personagens_dict[personagem].listaPistas.append(pista)
-                renpy.notify("Pista adquirida: " + personagem + " " + pista[0].lower() + pista[1:])
+                renpy.notify("Pista adquirida: " + personagens_dict[personagem].nomeConhecido + " " + pista[0].lower() + pista[1:])
  
         """
         Atualiza a lista de pistas para mostrar na tela de pistas de cada personagem.
@@ -197,7 +212,7 @@ label start:
             global personagens_dict
             if fala not in personagens_dict[personagem].listaFalas:
                 personagens_dict[personagem].listaFalas.append(fala)
-                renpy.notify("Falas de: " + personagem + " " + fala[0].lower() + fala[1:])
+                renpy.notify("Falas de " + personagens_dict[personagem].nomeConhecido + ": " + fala)
         
         def atualizar_falas(personagem: str)->list:
             falas_list = ["", "", "", "", "", "", ""]
@@ -225,12 +240,11 @@ label start:
 
 ########################################## AQUI COMEÇA O JOGO ##############################################################    
 
-   
-
 label primeiracena:
     python:
         for personagem in personagens_list:
-            personagens_dict[personagem[0]] = Personagem(personagem[0], personagem[1], personagem[2], personagem[3])
+            personagens_dict[personagem[1]] = Personagem(personagem[0], personagem[1], personagem[2], personagem[3], personagem[4])
+            personagens_dict[personagem[1]].conhecido = True # DEBUG, TIRAR
 
         personagens_dict["Bruxa"].conhecido = True
         personagens_dict["Bruxa"].posicao = (1720, 760)
@@ -247,22 +261,18 @@ label primeiracena:
         personagens_dict["Vincent"].descricao = " É o responsável pela estalagem e taverna, que se chama \"A viúva sangrenta\"."
         personagens_dict["Seren"].descricao = "Tem cerca de 10 anos. Ela acredita ser culpada pela morte de sua mãe e se sente difícil de ser enxergada pelo pai. Seu tio, Vincent, é quem cuida dela."
         personagens_dict["Bruxa"].descricao = "A bruxa que está devastando a vila."
-
+    
     $ tocar_musica("tema.mp3")
 
     scene tela branca
     dev "Este jogo ainda é uma demo, algumas funcionalidades ou conversas podem estar comprometidas. Aproveite a jornada dentro do possível nesse momento."
     dev "A cena do chamado para a vila, posteriormente será uma custcene que está em desenvolvimento."
     dev "Agradeço a paciência e espero te ver uma próxima vez, quando o jogo Strigora estiver completo."
-    scene tela preta
-    msg "É uma aldeia… Está doente… Estão exigindo que eu te entregasse em mãos."
-    hdc "Padre"
-    hdc "Chamo-o aqui não por fé, mas por ordem. O que está acontecendo não são coincidências."
-    hdc "Há mais de um mês, este lugar está sob um mau agouro… A certeza reside em mim: há feitiçaria, há um mau agouro por trás dessa ruína. Foi por isso que te chamei, Padre, não por fé, mas por ordem."
-    hdc "Eu exijo que encontre esta bruxa."
-    hdc "Não desejo preces; traga-me a verdade. E assegure-se de que sua busca seja feita com cautela, antes que o pânico tome conta de tudo."
-    pi "Que Deus me guie... e que eu encontre este mal antes que ele engula o que resta dessa aldeia."
 
+    $ renpy.movie_cutscene("game/images/output.webm")
+    pause 0.45
+    # image unique_identifier = Movie(size=(1920, 1080), channel="movie", play="output.webm", loop=False)
+    # show screen Movie("unique_identifier ")
 
     $ personagens_dict["Salvatore"].conhecido = True
     $ tocar_musica("ambiencia_ext_geral.mp3")
@@ -271,6 +281,8 @@ label primeiracena:
     ss "Buongiorno padre."
     ss "Agradeço por ter aceitado o meu chamado."
     $ mostrar_personagem("Salvatore", 'N')
+    ss "Meu nome é Salvatore."
+    $ personagens_dict["Salvatore"].conhecer()
     ss "O povo da vila se refere a mim como \“Senhor”\, por respeito… ou medo. Tanto faz."
     ss "Sou o homem mais velho desta terra que ainda caminha com firmeza. Sempre tentei manter tudo sob controle, como deve ser."
     ss "Por isso lhe chamei. Não por fé, mas por ordem. Se há uma bruxa entre nós… é seu dever encontrá-la."
@@ -280,7 +292,8 @@ label primeiracena:
     $ mostrar_personagem("Salvatore", 'N')
     ss "Ouça padre"
     $ mostrar_personagem("Salvatore", 'T')
-    ss "Eldra, a vítima mais recente, era irmã de Holga, uma mulher jovem que mora nos entornos da Piazza."
+    ss "Edla, a vítima mais recente, era irmã de Holga, uma mulher jovem que mora nos entornos da Piazza."
+    $ personagens_dict["Holga"].conhecer()
     ss "Nós éramos... bem próximos."
     ss "Na noite de sua morte, ouvi sua voz distorcida me falando que em sete dias a bruxa matará a todos nós."
     ss "Por favor, faça algo antes que seja tarde."
@@ -479,6 +492,7 @@ label meconte_vincent:
     $ alterar_interacao(-1)
     $ mostrar_personagem("Vincent", "N")
     v "Bom… Eu sou o Vincent, cuido da taverna e da estalagem… Ou o que sobrou dela, parece que a aldeia resolveu que o medo é desculpa para parar de beber."
+    $ personagens_dict["Vincent"].conhecer()
     v "Mas desde que você chegou, tenho limpado o quarto duas vezes por dia, pelo menos um pouco de trabalho para manter a mente ocupada... "
     v "Não gosto de falar do que não vi com meus próprios olhos. E, pra ser sincero, ultimamente, prefiro ver cada vez menos. Gente demais sussurrando. Portas que antes ficavam abertas agora estão fechadas…"
     $ mostrar_personagem("Vincent", 'F')
@@ -582,6 +596,7 @@ label meconte_seren:
     $ alterar_interacao(-1)
     $ mostrar_personagem("Seren", 'N')
     s "Eu sou a Seren. Tenho dez anos…"
+    $ personagens_dict["Seren"].conhecer()
     s "Meu pai mora aqui na aldeia também… Às vezes ele passa por aqui, mas não fica muito."
     $ mostrar_personagem("Seren", 'T')
     s "Ele não gosta que eu fale com estranhos."
@@ -717,7 +732,10 @@ label meconte_margarida:
     $ mostrar_personagem("Margarida", 'R')
     m "Uma mulher sozinha , que mexe com o que não entendem, e já afiam a corda, já juntam lenha…"
     m "Ignorantes…"
-    m "Eles me chamam de contadora de histórias, como se eu fosse apenas isso. Eles não se lembram das pessoas que salvei. Já vi mais gente morrer do que você viu nascer. Sei quando a terra adoece, quando o vento muda de cheiro, quando a mão treme antes mesmo de tocar na porta."
+    m "Eles me chamam de contadora de histórias, como se eu fosse apenas isso."
+    m "Eu tenho nome, me chamo Margarida."
+    $ personagens_dict["Margarida"].conhecer()
+    m "Eles não se lembram das pessoas que salvei. Já vi mais gente morrer do que você viu nascer. Sei quando a terra adoece, quando o vento muda de cheiro, quando a mão treme antes mesmo de tocar na porta."
     $ adicionar_pista("Margarida", "Fala que ela mesma \"Sabe quando a terra adoece, quando o vento muda de cheiro, quando a mão treme antes mesmo de tocar na porta.\".")
     m "Mas não me olhe assim, eu não mexo com os mortos e nem falo com sombras. Só aprendi a ouvir o que ninguém mais quer escutar. A Natureza."
     $ mostrar_personagem("Padre", 'T')
@@ -823,6 +841,9 @@ label meconte_lazaro:
     $ mostrar_personagem("Lazaro", 'N')
     $ alterar_interacao(-1)
     l "Pode chegar mais perto…"
+    l "O povo da vila me chama de leproso, ou só me conhecem como o cara estranho que mora quase fora da aldeia."
+    l "Mas eu gostaria que você, padre, me chamasse pelo meu nome, Lázaro"
+    $ personagens_dict["Lázaro"].conhecer()
     l "Dizem que a bruxa me amaldiçoou, eles tem medo de mim. Sussurram isso quando pensam que não ouço. Mas meus ouvidos ainda funcionam."
     l "O povo da aldeia acredita que esta carne apodrecida, estas mãos imóveis e este rosto que já não reconheço no reflexo da água... são obra de feitiçaria. São muitos boatos que circulam sobre eu ter ficado assim."
     l "Alguns dizem que cruzei o caminho da costureira e não lhe dei a devida reverência. Que tomei algo que era dela."
@@ -1111,6 +1132,7 @@ label meconte_bartolomeu:
     $ alterar_interacao(-1)
     $ mostrar_personagem("Bartolomeu", 'N')
     b "Sou conhecido como Bartolomeu, o Padeiro."
+    $ personagens_dict["Bartolomeu"].conhecer()
     $ mostrar_personagem("Bartolomeu", 'F')
     b "Mas aqui na aldeia sou muito mais que isso… deveriam me considerar a alma do lugar, pois sou eu quem aquece o estômago de muitos por aqui!"
     $ mostrar_personagem("Padre", 'N')
@@ -1422,6 +1444,7 @@ label meconte_agnes:
     $ mostrar_personagem("Agnes", 'N')
     $ alterar_interacao(-1)
     a "Eu me chamo Agnes…"
+    $ personagens_dict["Agnes"].conhecer()
     $ mostrar_personagem("Agnes", 'T')
     a "Tenho 12 anos e ninguém quis me abrigar. A maioria aqui passa por mim e finge que eu não existo."
     a "Eu durmo onde dá… Celeiro do Senhor Salvatore, às vezes o sótão da taverna, uma vez até na igreja, mas o padre antigo me expulsou."
@@ -1537,6 +1560,7 @@ label meconte_joana:
     $ mostrar_personagem("Joana", 'N')
     $ alterar_interacao(-1)
     j "Buongiorno, padre. Me chamo Joana."
+    $ personagens_dict["Joana"].conhecer()
     j "Ganho a vida consertando e fazendo roupas para as pessoas desta pequena aldeia…"
     j "Sabe… costurar é coisa de silêncio. Precisa de concentração… A linha vai e volta, costurando até o que a gente não vê…"
     $ mostrar_personagem("Joana", 'T')
@@ -1843,6 +1867,7 @@ label meconte_william:
     $ alterar_interacao(-1)
     w "Olá, eu sou o Wi… William."
     w "Só William."
+    $ personagens_dict["William"].conhecer()
     w "Tenho dez anos. Meu pai cuida da aldeia toda, mas ele diz que eu tenho que ficar em casa, porque ainda não entendo o que é certo."
     w "Ele nunca me deixa sair…"
     w "Papai  diz que tem gente ruim lá fora. Gente que fala demais, que inventa coisas, que olha onde não deve…"
@@ -1957,7 +1982,7 @@ label casapadre_noite:
     python:
         mortos = 0
         for personagem in personagens_list:
-            if personagens_dict[personagem[0]].vivo == False:
+            if personagens_dict[personagem[1]].vivo == False:
                 mortos = mortos + 1
         if mortos == 0:
             renpy.say(pi, "O dia chegou ao fim...")
@@ -1991,7 +2016,7 @@ label final: # Passou do 7o dia sem matar a Bruxa e sem matar 3 pessoas inocente
     python:
         mortos = 0
         for personagem in personagens_list:
-            if personagens_dict[personagem[0]].vivo == False:
+            if personagens_dict[personagem[1]].vivo == False:
                 mortos = mortos + 1
         renpy.say(dev, f"Nesta campanha ocorreram {mortos} mortes pelas mãos do padre")
         renpy.say (dev, "Você não descobriu quem é a bruxa e todos os aldeões morreram.")
