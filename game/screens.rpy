@@ -1667,7 +1667,7 @@ screen casabebado():
 ## Tela da casa do padre interna
 screen casapadre():
     tag passos
-    use botao("botao_passos", 0.5, (1200, 950), "Sair do quarto", "tavernaint", False)
+    use botao("botao_passos", 0.5, (1200, 900), "Sair do quarto", "tavernaint", False)
 
 ## Tela da casa da curandeira externa
 screen casaMargaridaEXT():
@@ -1744,7 +1744,7 @@ screen casaJoanaEXT():
 
 screen plantacao():
     tag passos
-    use botao("botao_passos", 0.5, (400, 970), "Casa da costureira", "casajoanaext", False)
+    use botao("botao_passos", 0.5, (400, 910), "Casa da costureira", "casajoanaext", False)
 
 ############################################################# FUNÇÂO BOTÂO ##############################################################
 
@@ -1832,18 +1832,18 @@ screen botao_passar_dia(imagem, zoomBase, posicaoY):
 screen HUD():
     frame:
         background None
-        xpos 25
-        ypos 25
-        if interacao == 1:
-            text(f"1 interação restante hoje") size 40 color "#FFFFFF" outlines [ (3, "#000005", 0, 0) ]
-        else:
-            text(f"{interacao} interações restantes hoje") size 40 color "#FFFFFF" outlines [ (3, "#000005", 0, 0) ]
+        xpos 5
+        ypos 15
+        add str(interacao) + "_interacao" zoom 0.7
+        # if interacao == 1:
+        #     text(f"1 interação restante hoje") size 40 color "#FFFFFF" outlines [ (3, "#000005", 0, 0) ]
+        # else:
+        #     text(f"{interacao} interações restantes hoje") size 40 color "#FFFFFF" outlines [ (3, "#000005", 0, 0) ]
     frame:
         background None
-        xpos 1300
-        ypos 20
-
-        text ("Você está no dia " + str(dia) + " de 7 dias") size 40 color "#FFFFFF" outlines [ ( 3, "#000005", 0, 0) ]
+        xpos 1430
+        ypos 15
+        add str(dia) + "_dia" zoom 0.7
 
 ######################################################### Falas de personagens ##############################################################
 
