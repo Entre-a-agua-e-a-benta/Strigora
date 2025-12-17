@@ -1922,35 +1922,11 @@ image williamF = "personagens/william/william felicidade.png"
 image williamR = "personagens/william/william raiva.png"
 image williamT = "personagens/william/william tristeza.png"
 
-screen personagemEmocao(nome, emocao):
-    tag personagem
-    if nome == "lazaro":
-        add nome+emocao at personagem_right
-    if nome == "vincent":
-        add nome+emocao at personagem_right
-    if nome == "margarida":
-        add nome+emocao at personagem_right       
-    if nome == "padre":
-        add nome+emocao at padre_left
-    if nome == "holga":
-        add nome+emocao at personagem_right
-    if nome == "bartolomeu":
-        add nome+emocao at personagem_right
-    if nome == "bebado":
-        add nome+emocao at personagem_right
-    if nome == "agnes":
-        add nome+emocao at crianca_right
-    if nome == "joana":
-        add nome+emocao at joana_right
-    if nome == "salvatore":
-        add nome+emocao at salvatore_right
-    if nome == "seren":
-        add nome+emocao at personagem_right
-    if nome == "william":
-        add nome+emocao at personagem_right
-    if nome == "bruxa":
-        add nome+emocao at personagem_right
-        
+screen personagemEmocao(personagem, emocao):
+    if personagem == "Padre":
+        add unidecode(personagem).lower()+emocao at padre_left
+    else:
+        add unidecode(personagem).lower()+emocao at personagens_dict[personagem].transform 
 
 ############################################################### Esconde as telas ######################################################
 label hide_all_screens:
@@ -2060,7 +2036,7 @@ screen pistas_personagem(personagem):
             xpos 400
             ypos 930
             textbutton "Matar " + personagens_dict[personagem].nomeConhecido style "word_list":
-                action Function(passar_dia, personagem)
+                action [SetVariable("matar_personagem", personagem), Function(passar_dia)]
 
     frame:
         xysize(900,650)

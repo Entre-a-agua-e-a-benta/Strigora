@@ -534,3 +534,25 @@ transform swap_red_and_green:
                         1.0, 0.0, 0.0, 0.0,
                         0.0, 0.0, 1.0, 0.0,
                         0.0, 0.0, 0.0, 1.0,])
+
+transform padre_left:
+    zoom 0.5
+    ypos 0.1
+    xanchor 0.5
+    xpos 350
+transform personagem_right:
+    zoom 0.5
+    ypos 0.1
+    xpos 0.5
+transform crianca_right:
+    zoom 1.6
+    ypos 250
+    xpos 0.5
+transform salvatore_right:
+    zoom 0.55
+    ypos 0.1
+    xpos 500
+transform joana_right:
+    zoom 0.55
+    ypos 0.1
+    xpos 770

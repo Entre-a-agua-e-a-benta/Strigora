@@ -10,6 +10,7 @@ default interacaoMaxHoje = 3 # Número max de interações no dia p/ HUD
 default modificadorEvento = 0 # Modificador de chance para eventos aleatórios
 
 default infoPersonagem = "" # Para o quadro de pistas
+default matar_personagem = None # Personagem que será morto na noite -> deixar None
 default musica_atual = "ambiencia_ext_geral.mp3"
 ## Variaveis do diálogo com o Lázaro
 default dor_lazaro = False
@@ -52,7 +53,7 @@ label start:
         from random import randint
 
         class Personagem:
-            def __init__(self, character=dev, nome = "Fulano", genero = 'M', fileira = (0, 0), ordem = 0):
+            def __init__(self, character=dev, nome = "Fulano", genero = 'M', fileira = (0, 0), ordem = 0, transform = personagem_right):
                 self.character = character
                 self.nomeConhecido = character.name
 
@@ -62,6 +63,8 @@ label start:
 
                 self.posicao = (fileira[0] + (175+75)*(ordem-1), fileira[1]) # 175 é a largura da imagem reduzida, 75 é o espaçamento entre elas
 
+                self.transform = transform
+                
                 self.conversouHoje = False
                 self.progresso = 0
                 self.listaPistas = []
@@ -81,18 +84,18 @@ label start:
         ## Inicializa o dicionário de personagens
         primeira_fileira = (150, 450)
         segunda_fileira = (300, 815)
-        personagens_list = [(b, "Bartolomeu", 'M', primeira_fileira, 3),
-                            (ss, "Salvatore", 'M', primeira_fileira, 6),
-                            (h, "Holga", 'F', segunda_fileira, 1),
-                            (l, "Lázaro", 'M', primeira_fileira, 5),
-                            (j, "Joana", 'F', segunda_fileira, 2),
-                            (m, "Margarida", 'F', primeira_fileira, 2),
-                            (a, "Agnes", 'F', primeira_fileira, 4),
-                            (be, "Bêbado", 'M', segunda_fileira, 5),
-                            (w, "William", 'M', segunda_fileira, 4),
-                            (v, "Vincent", 'M', primeira_fileira, 1),
-                            (s, "Seren", 'F', segunda_fileira, 3),
-                            (bx, "Bruxa", 'F', (0, 0), 1)]
+        personagens_list = [(b, "Bartolomeu", 'M', primeira_fileira, 3, personagem_right),
+                            (ss, "Salvatore", 'M', primeira_fileira, 6, salvatore_right),
+                            (h, "Holga", 'F', segunda_fileira, 1, personagem_right),
+                            (l, "Lázaro", 'M', primeira_fileira, 5, personagem_right),
+                            (j, "Joana", 'F', segunda_fileira, 2, joana_right),
+                            (m, "Margarida", 'F', primeira_fileira, 2, personagem_right),
+                            (a, "Agnes", 'F', primeira_fileira, 4, crianca_right),
+                            (be, "Bêbado", 'M', segunda_fileira, 5, personagem_right),
+                            (w, "William", 'M', segunda_fileira, 4, crianca_right),
+                            (v, "Vincent", 'M', primeira_fileira, 1, personagem_right),
+                            (s, "Seren", 'F', segunda_fileira, 3, crianca_right),
+                            (bx, "Bruxa", 'F', (0, 0), 1, personagem_right)]
         
         def checar_interacao():
             global interacao
@@ -105,8 +108,8 @@ label start:
             sinal = "+" if valor >= 0 else ""
             #renpy.notify(sinal + str(valor) + " interação")
 
-        def passar_dia(matar_personagem=None):
-            global dia, interacao, interacaoMaxHoje, personagens_list, personagens_dict
+        def passar_dia():
+            global dia, interacao, interacaoMaxHoje, personagens_list, personagens_dict, matar_personagem
             dia = dia + 1
             mortos = 0
             for personagem in personagens_list:
@@ -115,21 +118,20 @@ label start:
                 if personagens_dict[personagem[1]].vivo == False:
                     mortos = mortos + 1
             interacao = 3
+            interacaoMaxHoje = 3
             if matar_personagem != None:
                 personagens_dict[matar_personagem].vivo = False
-                if mortos == 1:
-                    renpy.jump("morteum")
-                if mortos == 2:
-                    renpy.say(pi, "Dessa vez foi " + matar_personagem + " que morreu pelas minhas mãos.")
-                    renpy.say(pi, "Novamente, mais um inocente...")
-                    renpy.say(pi, "Que Deus me perdoe pelos meus pecados, realizados pela causa nobre que é salvar esse povo.")
+                mortos = contarMortos()
                 if matar_personagem == "Personagem que é a bruxa": # mudar aqui pra quem for a bruxa
                     renpy.jump("dialogo_bruxa")
-                if mortos >= 2: # Agora matou a 3a pessoa
+                if mortos == 1:
+                    renpy.jump("morte1")
+                if mortos == 2:
+                    renpy.jump("morte2")
+                if mortos >= 3: # Agora matou a 3a pessoa
                     renpy.jump("expulso")
             if dia >= 8:
                 renpy.jump("final")
-            interacaoMaxHoje = 3
             evento_aleatorio()
             renpy.jump("casapadre")
 
@@ -191,6 +193,14 @@ label start:
             personagens_dict[personagem].conversouHoje = True
             personagens_dict[personagem].progresso += 1
 
+        def contarMortos():
+            global personagens_list, personagens_dict
+            mortos = 0
+            for personagem in personagens_list:
+                if personagens_dict[personagem[1]].vivo == False:
+                    mortos += 1
+            return mortos
+
         """
         Adiciona uma pista à lista de pistas de um personagem específico.
         Após isso, notifica no formato "Pista adquirida: <Personagem> <pista>"
@@ -236,7 +246,7 @@ label start:
         def mostrar_personagem(personagem: str, emocao: str):
             global name_side
             name_side = "left" if personagem == "Padre" else "right"
-            renpy.show_screen("personagemEmocao", unidecode(personagem.lower()), emocao)
+            renpy.show_screen("personagemEmocao", personagem, emocao)
 
         def mostrar_botao(posicao: tuple, texto: str, jumpTo: str):
             renpy.show_screen("botao_passos", posicao, texto, jumpTo)
@@ -254,7 +264,7 @@ label start:
 label primeiracena:
     python:
         for personagem in personagens_list:
-            personagens_dict[personagem[1]] = Personagem(personagem[0], personagem[1], personagem[2], personagem[3], personagem[4])
+            personagens_dict[personagem[1]] = Personagem(personagem[0], personagem[1], personagem[2], personagem[3], personagem[4], personagem[5])
             personagens_dict[personagem[1]].conhecido = True # DEBUG, TIRAR
 
         personagens_dict["Bruxa"].conhecido = True
@@ -272,9 +282,6 @@ label primeiracena:
         personagens_dict["Vincent"].descricao = " É o responsável pela estalagem e taverna, que se chama \"A viúva sangrenta\"."
         personagens_dict["Seren"].descricao = "Tem cerca de 10 anos. Ela acredita ser culpada pela morte de sua mãe e se sente difícil de ser enxergada pelo pai. Seu tio, Vincent, é quem cuida dela."
         personagens_dict["Bruxa"].descricao = "A bruxa que está devastando a vila."
-    
-
-    jump casajoanaext
 
     $ renpy.movie_cutscene("images/cutscene_inicial.webm")
 
@@ -335,10 +342,7 @@ label casapadre:
     if interacao <= 0:
         scene bg casa padre int
         python:
-            mortos = 0
-            for personagem in personagens_list:
-                if personagens_dict[personagem[1]].vivo == False:
-                    mortos = mortos + 1
+            mortos = contarMortos()
             if mortos == 0:
                 renpy.say(pi, "O dia chegou ao fim...")
                 renpy.say(pi, "Vou ver o quadro na parede para revisar minhas anotações de hoje.")
@@ -431,27 +435,7 @@ label casasalvatoreint:
     call screen casaSalvatoreINT
 
 ############# Arruma posição dos personagens dentro do dialogo ###############################
-transform padre_left:
-    zoom 0.5
-    ypos 0.1
-    xanchor 0.5
-    xpos 350
-transform personagem_right:
-    zoom 0.5
-    ypos 0.1
-    xpos 0.5
-transform crianca_right:
-    zoom 1.6
-    ypos 250
-    xpos 0.5
-transform salvatore_right:
-    zoom 0.55
-    ypos 0.1
-    xpos 500
-transform joana_right:
-    zoom 0.55
-    ypos 0.1
-    xpos 770
+
 
 ######################################## CENAS QUE OCORREM NA TAVERNA #######################################################
 
@@ -871,7 +855,7 @@ label escolhas_lazaro:
                 jump casaLazaroint
 
 label meconte_lazaro:
-    $ mostrar_personagem("Lazaro", 'N')
+    $ mostrar_personagem("Lázaro", 'N')
     $ alterar_interacao(-1)
     l "Pode chegar mais perto…"
     l "O povo da vila me chama de leproso, ou só me conhecem como o cara estranho que mora quase fora da aldeia."
@@ -888,7 +872,7 @@ label meconte_lazaro:
         "E o que você acredita?":
             jump acredita_lazaro
 label acredita_lazaro:
-    $ mostrar_personagem("Lazaro", 'T')
+    $ mostrar_personagem("Lázaro", 'T')
     l "Eu sei que a verdade é outra. Fui esquecido por Deus…"
     $ mostrar_personagem("Padre", 'R')
     menu:
@@ -899,9 +883,9 @@ label acredita_lazaro:
             jump dor_lazaro       
 label afastou_lazaro:
     $ afastou_lazaro = True
-    $ mostrar_personagem("Lazaro", 'F')
+    $ mostrar_personagem("Lázaro", 'F')
     l "Procurei, sim. Por anos. Rezei até a garganta secar. E tudo o que ouvi foi o som da minha pele caindo."
-    $ mostrar_personagem("Lazaro", 'R')
+    $ mostrar_personagem("Lázaro", 'R')
     l "Se Deus está me testando... então por que ninguém mais sangra como eu?"
     l "Acho que ele me deixou, ou não se importa com um leproso como eu."
     $ mostrar_personagem("Padre", 'R')
@@ -917,7 +901,7 @@ label afastou_lazaro:
         jump salvatorevinda_lazaro
 label dor_lazaro:
     $ dor_lazaro = True
-    $ mostrar_personagem("Lazaro", 'N')
+    $ mostrar_personagem("Lázaro", 'N')
     l "Senti algo... Uma vez. Quando o Salvatore veio aqui com olhos de choro e mãos trêmulas. Mas não era piedade, era medo."
     l "Medo de que eu soubesse o que ele fez, ou de que eu ainda lembrasse…"
     $ adicionar_pista("Salvatore", "Foi no Lázaro com olhos de choro e mãos trêmulas, parecendo ter medo de algo")
@@ -934,16 +918,16 @@ label salvatorevinda_lazaro:
         "O que você sentiu?":
             jump sentiu_lazaro
 label sentiu_lazaro:
-    $ mostrar_personagem("Lazaro", 'F')
+    $ mostrar_personagem("Lázaro", 'F')
     l "Um calor estranho… Não fisico, mas emocional."
     l "Pela primeira vez em muito tempo, alguém olhou pra mim como uma pessoa que sabia de algo e não só como um doente."
-    $ mostrar_personagem("Lazaro", 'T')
+    $ mostrar_personagem("Lázaro", 'T')
     l "Mas esse sentimento veio com confusão, medo e culpa. Como se eu soubesse de mais e estivesse mascarando isso com febre e dor…"
     $ checar_interacao()
     jump casaLazaroint
 
 label salvatorefez_lazaro:
-    $ mostrar_personagem("Lazaro", 'N')
+    $ mostrar_personagem("Lázaro", 'N')
     $ alterar_interacao(-1)
     l "Aquela moça…"
     l "Aquelas crianças nascidas…"
@@ -953,14 +937,14 @@ label salvatorefez_lazaro:
         "Crianças? Que crianças?":
             jump criancas_lazaro
 label criancas_lazaro:
-    $ mostrar_personagem("Lazaro", 'T')
+    $ mostrar_personagem("Lázaro", 'T')
     l "Meu corpo dói ainda mais quando lembro disso…"
     l "Por favor, me deixe em paz…"
     $ checar_interacao()
     jump casaLazaroint
 
 label doenca_lazaro:
-    $ mostrar_personagem("Lazaro", 'N')
+    $ mostrar_personagem("Lázaro", 'N')
     $ alterar_interacao(-1)
     l "Já nem conto mais... Parei depois do segundo ano."
     l "A doença chegou devagar... Primeiro nas mãos, depois no rosto... E agora parece que está afetando por dentro da minha cabeça."
@@ -969,7 +953,7 @@ label doenca_lazaro:
     jump casaLazaroint
 
 label ontem_lazaro:
-    $ mostrar_personagem("Lazaro", 'N')
+    $ mostrar_personagem("Lázaro", 'N')
     $ alterar_interacao(-1)
     l "Eu... conversei com minha pele."
     l "Ela estava saindo de novo, então eu tentei convencê-la a ficar."
@@ -983,7 +967,7 @@ label ontem_lazaro:
         "Você não tem nenhuma pista de quem poderia estar por perto?":
             jump naoviu
 label naoviu:
-    $ mostrar_personagem("Lazaro", 'N')
+    $ mostrar_personagem("Lázaro", 'N')
     l "..."
     l "Quando olhei pela fresta, achei que tivesse visto algo."
     l "Era como um vulto... parecia alguém de estatura pequena...Mas... estava sem sombra."
@@ -1403,13 +1387,13 @@ label dialogo_bebado:
             p "Buongiorno…"
             jump falas_bebado
     else:
-        $ mostrar_personagem("Bebado", 'T')
+        $ mostrar_personagem("Bêbado", 'T')
         b "Não estou com vontade de conversar hoje..."
         jump casabebadoext 
 
 label falas_bebado:
     call hide_all_screens         
-    $ mostrar_personagem("Bebado", 'N')
+    $ mostrar_personagem("Bêbado", 'N')
     if personagens_dict["Bêbado"].conversouHoje == False:
         $ alterar_interacao(-1)
         if personagens_dict["Bêbado"].progresso == 0:
@@ -2015,20 +1999,6 @@ label ontem_william:
     jump casasalvatoreint
 
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
-
-label morteum:
-    scene bg casa padre 
-    python:
-        renpy.say(pi, "Ontem à noite eu matei " + matar_personagem + ".")
-        renpy.say(pi, "Todas as técnicas de exorcizar conhecidas não funcionaram.")
-        renpy.say(pi, "Imaginando que a bruxa estava tão infiltrada na pessoa que o exorcismo não funcionou, só me restou a fogueira como alternativa.")
-        renpy.say(pi, "Mas quando ele\(a\) parou de gritar, anunciando sua morte definitiva. Tudo na vila parecia igual... E a energia maligna ainda estava no ar...")
-        renpy.say(pi, "Foi ai que eu entendi que se tratava apenas de uma pessoa comum.")
-        renpy.say(pi, "A vila, me perdou pela autoridade à mim concedida por Deus, por conta da causa nobre de livrá-los desse terrível mostro que irá matá-los.")
-        renpy.say(pi, "Mas tomara que não tenha ninguém muito próximo dele\(a\) que não queira mais falar comigo.")
-        renpy.say(pi, "Que Deus a\(o\) tenha.")
-    jump casapadre
-    
 label noite:
     call screen pistas
 
@@ -2043,6 +2013,47 @@ label dialogo_bruxa: # Matou a Bruxa
     dev "No momento não é para essa funcionalidade estar funcionando, se você está vendo isso é um bug"
     return
 
+label morte1:
+    python:
+        genero = personagens_dict[matar_personagem].genero
+        pronome = "o" if genero == 'M' else 'a'
+        renpy.say(pi, f"Ontem à noite eu matei {pronome} {personagens_dict[matar_personagem].nomeConhecido}.")
+        renpy.say(pi, "Todas as técnicas de exorcizar conhecidas não funcionaram.")
+        renpy.say(pi, "Imaginando que a bruxa estava tão infiltrada na pessoa que o exorcismo não funcionou, só me restou a fogueira como alternativa.")
+        pronome = "ele" if genero == 'M' else "ela"
+        renpy.say(pi, f"Mas quando {pronome} parou de gritar, anunciando sua morte definitiva. Tudo na vila parecia igual... E a energia maligna ainda estava no ar...")
+        renpy.say(pi, "Foi ai que eu entendi que se tratava apenas de uma pessoa comum.")
+        renpy.say(pi, "A vila me perdoou pela autoridade concedida por Deus à mim. Graças à minha causa nobre de livrá-los desse terrível monstro que irá matá-los.")
+        pronome = "dele" if genero == 'M' else "dela"
+        renpy.say(pi, f"Mas tomara que não tenha ninguém muito próximo {pronome} que não queira mais falar comigo.")
+        if matar_personagem != personagens_dict[matar_personagem].nomeConhecido: # "matar_personagem" é sempre o nome real
+            renpy.say(pi, "Pelo menos descobri seu nome antes que as chamas apagassem sua vida...")
+            renpy.say(pi, f"{matar_personagem}.")
+            personagens_dict[matar_personagem].conhecer()
+        pronome = "o" if genero == 'M' else "a"
+        renpy.say(pi, f"Que Deus {pronome} tenha.")
+        if dia >= 8:
+            renpy.jump("final")
+        evento_aleatorio()
+        matar_personagem = None
+        renpy.jump("casapadre")
+    
+label morte2:
+    python:
+        genero = personagens_dict[matar_personagem].genero
+        pronome = "o" if genero == 'M' else 'a'
+        renpy.say(pi, f"Dessa vez foi {pronome} {personagens_dict[matar_personagem].nomeConhecido} que morreu pelas minhas mãos.")
+        renpy.say(pi, "Novamente, mais um inocente...")
+        if matar_personagem != personagens_dict[matar_personagem].nomeConhecido: # "matar_personagem" é sempre o nome real
+            renpy.say(pi, "Mais um nome que nunca responderá ao meu chamado novamente.")
+            renpy.say(pi, f"{matar_personagem}.")
+            personagens_dict[matar_personagem].conhecer()
+        renpy.say(pi, "Que Deus me perdoe pelos meus pecados, realizados pela causa nobre que é salvar esse povo.")
+        if dia >= 8:
+            renpy.jump("final")
+        evento_aleatorio()
+        matar_personagem = None
+        renpy.jump("casapadre")
 
 label expulso: # Matou 3 pessoas inocentes
     dev "Que pena! O padre foi expulso da vila por matar inocentes demais"
@@ -2050,10 +2061,7 @@ label expulso: # Matou 3 pessoas inocentes
 
 label final: # Passou do 7o dia sem matar a Bruxa e sem matar 3 pessoas inocentes
     python:
-        mortos = 0
-        for personagem in personagens_list:
-            if personagens_dict[personagem[1]].vivo == False:
-                mortos = mortos + 1
+        mortos = contarMortos()
         renpy.say(dev, f"Nesta campanha ocorreram {mortos} mortes pelas mãos do padre")
         renpy.say (dev, "Você não descobriu quem é a bruxa e todos os aldeões morreram.")
         renpy.say(dev, "Jogue novamente quando o jogo estiver finalizado para uma experiência completa.")
