@@ -1924,10 +1924,33 @@ image williamT = "personagens/william/william tristeza.png"
 
 screen personagemEmocao(nome, emocao):
     tag personagem
-    if nome != "padre":
+    if nome == "lazaro":
         add nome+emocao at personagem_right
-    else:
+    if nome == "vincent":
+        add nome+emocao at personagem_right
+    if nome == "margarida":
+        add nome+emocao at personagem_right       
+    if nome == "padre":
         add nome+emocao at padre_left
+    if nome == "holga":
+        add nome+emocao at personagem_right
+    if nome == "bartolomeu":
+        add nome+emocao at personagem_right
+    if nome == "bebado":
+        add nome+emocao at personagem_right
+    if nome == "agnes":
+        add nome+emocao at crianca_right
+    if nome == "joana":
+        add nome+emocao at joana_right
+    if nome == "salvatore":
+        add nome+emocao at salvatore_right
+    if nome == "seren":
+        add nome+emocao at personagem_right
+    if nome == "william":
+        add nome+emocao at personagem_right
+    if nome == "bruxa":
+        add nome+emocao at personagem_right
+        
 
 ############################################################### Esconde as telas ######################################################
 label hide_all_screens:

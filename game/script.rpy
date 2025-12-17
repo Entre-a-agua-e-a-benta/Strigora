@@ -41,6 +41,7 @@ define dev = Character("Strigora", color="#a88ab4")
 
 define msg = Character("Mensageiro", color="#FFFFFF")
 define hdc = Character("Homem da carta", color="#FFFFFF")
+ 
 
 # The game starts here.
 
@@ -116,7 +117,12 @@ label start:
             interacao = 3
             if matar_personagem != None:
                 personagens_dict[matar_personagem].vivo = False
-                renpy.notify("Matei " + matar_personagem)
+                if mortos == 1:
+                    renpy.jump("morteum")
+                if mortos == 2:
+                    renpy.say(pi, "Dessa vez foi " + matar_personagem + " que morreu pelas minhas mãos.")
+                    renpy.say(pi, "Novamente, mais um inocente...")
+                    renpy.say(pi, "Que Deus me perdoe pelos meus pecados, realizados pela causa nobre que é salvar esse povo.")
                 if matar_personagem == "Personagem que é a bruxa": # mudar aqui pra quem for a bruxa
                     renpy.jump("dialogo_bruxa")
                 if mortos >= 2: # Agora matou a 3a pessoa
@@ -267,6 +273,9 @@ label primeiracena:
         personagens_dict["Seren"].descricao = "Tem cerca de 10 anos. Ela acredita ser culpada pela morte de sua mãe e se sente difícil de ser enxergada pelo pai. Seu tio, Vincent, é quem cuida dela."
         personagens_dict["Bruxa"].descricao = "A bruxa que está devastando a vila."
     
+
+    jump casajoanaext
+
     $ renpy.movie_cutscene("images/cutscene_inicial.webm")
 
     $ personagens_dict["Salvatore"].conhecido = True
@@ -338,6 +347,7 @@ label casapadre:
                 renpy.say(pi, "Devo tomar mais cuidado, já matei 1 inocente. Uma hora a vila não vai mais me perdoar.")
             if mortos == 2:
                 renpy.say(pi, "Se eu matar mais alguém, tenho certeza que a vila não me perdoará.")
+       
     scene bg casa padre noite
     call screen casapadre
 
@@ -430,6 +440,18 @@ transform personagem_right:
     zoom 0.5
     ypos 0.1
     xpos 0.5
+transform crianca_right:
+    zoom 1.6
+    ypos 250
+    xpos 0.5
+transform salvatore_right:
+    zoom 0.55
+    ypos 0.1
+    xpos 500
+transform joana_right:
+    zoom 0.55
+    ypos 0.1
+    xpos 770
 
 ######################################## CENAS QUE OCORREM NA TAVERNA #######################################################
 
@@ -1994,6 +2016,19 @@ label ontem_william:
 
 ######################################### CENAS QUE OCORREM DURANTE A NOITE #######################################################
 
+label morteum:
+    scene bg casa padre 
+    python:
+        renpy.say(pi, "Ontem à noite eu matei " + matar_personagem + ".")
+        renpy.say(pi, "Todas as técnicas de exorcizar conhecidas não funcionaram.")
+        renpy.say(pi, "Imaginando que a bruxa estava tão infiltrada na pessoa que o exorcismo não funcionou, só me restou a fogueira como alternativa.")
+        renpy.say(pi, "Mas quando ele\(a\) parou de gritar, anunciando sua morte definitiva. Tudo na vila parecia igual... E a energia maligna ainda estava no ar...")
+        renpy.say(pi, "Foi ai que eu entendi que se tratava apenas de uma pessoa comum.")
+        renpy.say(pi, "A vila, me perdou pela autoridade à mim concedida por Deus, por conta da causa nobre de livrá-los desse terrível mostro que irá matá-los.")
+        renpy.say(pi, "Mas tomara que não tenha ninguém muito próximo dele\(a\) que não queira mais falar comigo.")
+        renpy.say(pi, "Que Deus a\(o\) tenha.")
+    jump casapadre
+    
 label noite:
     call screen pistas
 
@@ -2007,6 +2042,8 @@ label pistas:
 label dialogo_bruxa: # Matou a Bruxa
     dev "No momento não é para essa funcionalidade estar funcionando, se você está vendo isso é um bug"
     return
+
+
 label expulso: # Matou 3 pessoas inocentes
     dev "Que pena! O padre foi expulso da vila por matar inocentes demais"
     return
