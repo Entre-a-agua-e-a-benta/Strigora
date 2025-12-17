@@ -212,7 +212,8 @@ label start:
             global personagens_dict
             if pista not in personagens_dict[personagem].listaPistas:
                 personagens_dict[personagem].listaPistas.append(pista)
-                renpy.notify("Pista adquirida: " + personagens_dict[personagem].nomeConhecido + " " + pista[0].lower() + pista[1:])
+                renpy.call_screen("notificacao", personagens_dict[personagem].nomeConhecido + " " + pista[0].lower() + pista[1:])
+                # renpy.notify("Pista adquirida: " + personagens_dict[personagem].nomeConhecido + " " + pista[0].lower() + pista[1:])
  
         """
         Atualiza a lista de pistas para mostrar na tela de pistas de cada personagem.
@@ -2046,7 +2047,7 @@ label morte2:
         renpy.say(pi, "Novamente, mais um inocente...")
         if matar_personagem != personagens_dict[matar_personagem].nomeConhecido: # "matar_personagem" é sempre o nome real
             renpy.say(pi, "Mais um nome que nunca responderá ao meu chamado novamente.")
-            renpy.say(pi, f"{matar_personagem}.")
+            renpy.say(pi, f"{matar_personagem}...")
             personagens_dict[matar_personagem].conhecer()
         renpy.say(pi, "Que Deus me perdoe pelos meus pecados, realizados pela causa nobre que é salvar esse povo.")
         if dia >= 8:

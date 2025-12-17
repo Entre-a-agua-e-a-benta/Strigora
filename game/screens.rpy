@@ -2053,6 +2053,21 @@ screen pistas_personagem(personagem):
                 text falas_list[5]
                 text falas_list[6]
 
+screen notificacao(mensagem):
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xmaximum 960
+        vbox:
+            text "Pista Adquirida!" xalign 0.5 size 40 outlines [ (3, "#000000", 1, 1) ]
+            text mensagem
+            text ""
+            button:
+                xalign 0.5
+                text "Fechar"
+                action Return()
+
+
 # screen Movie(file):
 #     layer "background"
 #     add "[file]" xpos 0 ypos 0
