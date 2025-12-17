@@ -532,10 +532,9 @@ label esposa_vincent:
     $ mostrar_personagem("Vincent", 'T')
     v "Ela estava grávida… Foi um parto difícil, apenas ela e a parteira dentro do quarto…"
     v "Infelizmente ela não resistiu, mas deu a luz a uma garotinha… Isso faz 10 anos."
-    $ adicionar_pista("Bêbado", "Teve uma esposa que morreu no parto")
-    $ adicionar_pista("Bêbado", "Tem uma filha de 10 anos")
+    $ adicionar_pista("Bêbado", "Teve uma esposa que morreu no parto da filha.")
     v "Desde então ele vive nesse estado… Conspirando e dizendo que há culpados pela morte da esposa."
-    $ adicionar_pista("Bêbado", "Culpa alguém pela morte da esposa")
+    $ adicionar_pista("Bêbado", "Culpa alguém pela morte da esposa.")
     $ mostrar_personagem("Padre", 'T')
     menu:
         "E a criança? Onde ela está?":
@@ -547,7 +546,7 @@ label crianca_vincent:
     v "Eu cuido dela"
     $ mostrar_personagem("Vincent", 'T')
     v "Mas de um tempo para cá, ela parece doente. Ás vezes, fala coisa dormindo e acorda com febre alta. Eu tento ser como um pai para ela, mas mesmo assim acho que às vezes não sou o suficiente."
-    $ adicionar_fala("Seren", "Parece doente, às vezes, fala coisa dormindo e acorda com febre alta")
+    $ adicionar_pista("Seren", "Parece doente, às vezes, fala coisa dormindo e acorda com febre alta.")
     v "Pedirei para ela falar com o senhor."
     $ checar_interacao()
     jump tavernaint
