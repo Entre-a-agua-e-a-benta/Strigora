@@ -1,4 +1,4 @@
-interacaoMaxHoje = 4
-interacao = 3
-for i in range(interacaoMaxHoje, interacao, -1): # range(começa, termina (n incluso), passo)
-    print(i)
+from random import randint
+for i in range(50):
+    num = randint(1,3)
+    print(num)

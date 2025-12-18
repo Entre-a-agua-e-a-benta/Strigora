@@ -556,7 +556,11 @@ transform joana_right:
     zoom 0.55
     ypos 0.1
     xpos 770
-transform margarida_right:
+transform margarida_right:                    
     zoom 0.70
     ypos 0.1
     xpos 1100
+transform bruxa_right:
+    zoom 0.5
+    ypos -50
+    xpos 650

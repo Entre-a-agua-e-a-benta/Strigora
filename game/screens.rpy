@@ -1922,6 +1922,11 @@ image williamF = "personagens/william/william felicidade.png"
 image williamR = "personagens/william/william raiva.png"
 image williamT = "personagens/william/william tristeza.png"
 
+image bruxaN = "personagens/bruxa/bruxa neutra.png"
+image bruxaR = "personagens/bruxa/bruxa raiva.png"
+image bruxaC = "personagens/bruxa/bruxa capa.png"
+image bruxaI = "personagens/bruxa/bruxa insana.png"
+
 screen personagemEmocao(personagem, emocao):
     if personagem == "Padre":
         add unidecode(personagem).lower()+emocao at padre_left
