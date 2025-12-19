@@ -1761,7 +1761,7 @@ screen casaLazaroINT():
     tag passos
     use botao("botao_passos", 0.1, (1100, 900), "Sair da casa", "caminhoLazaro", False, True, "passos.mp3")
     if personagens_dict["Lázaro"].vivo:
-        use botao(personagens_dict["Lázaro"].imagem, 0.14, (500, 400), "Falar com o leproso", "dialogo_lazaro", False, clickSound="click.mp3")
+        use botao(personagens_dict["Lázaro"].imagem, 0.16, (1200, 200), "Falar com o leproso", "dialogo_lazaro", False, clickSound="click.mp3")
 
 ## Tela da frente da casa do salvatore
 screen caminhobebado_margarida():
@@ -2140,6 +2140,9 @@ screen pistas_personagem(personagem):
                 text falas_list[4]
                 text falas_list[5]
                 text falas_list[6]
+        else:
+            vbox:
+                text "Descrição do caso" outlines [ (3, "#FFFFFF", 1, 1) ] color "#000000" size 40
 
 
 screen textogrande(mensagem):

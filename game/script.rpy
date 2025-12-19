@@ -1060,6 +1060,7 @@ label escolhas_holga:
         "Boatos dizem que você viu essa tal bruxa, me fale mais sobre isso" if personagens_dict["Holga"].conversouHoje == False and personagens_dict["Holga"].progresso == 2:
             $ progredir("Holga")
             jump viubruxa_holga
+            
         "O que você fez ontem a noite?" if personagens_dict["Lázaro"].listaPerguntas[0] == False:
             $ personagens_dict["Lázaro"].listaPerguntas[0] = True
             jump ontem_holga

@@ -86,6 +86,7 @@ define config.has_voice = True
 
 default preferences.volume.sfx = 0.33
 
+define config.image_cache_size_mb = 10000
 
 ## Para permitir que o usuário reproduza um som de teste no canal de som ou
 ## voz, descomente a linha abaixo e use-a para definir um som de amostra a ser
