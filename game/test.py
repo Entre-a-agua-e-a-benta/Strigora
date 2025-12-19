@@ -1,4 +1,2 @@
-from random import randint
-for i in range(50):
-    num = randint(1,3)
-    print(num)
+for i in range(3, 5):
+    print(i)

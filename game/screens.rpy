@@ -1708,7 +1708,7 @@ screen tavernaext:
     tag passos
     use botao("botao_passos", 0.1, (740, 670), "Entrar no albergo", "tavernaint", True, True, "passos.mp3")
     use botao("botao_passos", 0.1, (150, 500), "Casa do bêbado", "casabebadoext", True, True, "passos.mp3")
-    use botao("botao_passos", 0.1, (1670, 900), "Casa da Holga", "casaholgaext", False, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (1670, 900), "Casa da irmã da Edla", "casaholgaext", False, True, "passos.mp3")
 
 ## Taverna interna
 screen tavernaint():
@@ -1928,7 +1928,7 @@ screen HUD():
                 $ imagem = imagePath + "interacao_bonus_disponivel"
             add imagem zoom zoomInteracao
 
-        for i in range(interacaoMaxHoje, interacao, -1): # Interações indisponíveis
+        for i in range(interacao+1, interacaoMaxHoje+1): # Interações indisponíveis
             if i >= 4:
                 $ imagem = imagePath + "interacao_bonus_indisponivel"
             else:
@@ -2036,11 +2036,11 @@ label hide_all_screens:
 
     hide screen pistas
     hide screen vincent_pistas
-
-    hide screen pistas
-    hide screen vincent_pistas
+    hide screen pistas_personagem
 
     hide screen botao
+    hide screen textogrande
+    hide screen notificacao
     return
 
 
@@ -2065,7 +2065,7 @@ style word_list is button:
 
 style word_list_text is text:
     size 45
-    hover_color "#2E1F34"            
+    hover_color "#5b526e"            
     outlines [ (3, "#FFFFFF", 1, 1) ]
     color "#000000"
 
@@ -2079,7 +2079,7 @@ screen pistas_personagem(personagem):
         xpos 70
         ypos 370
         vbox:
-            text "Informações encontradas:"
+            text "Informações encontradas" outlines [ (3, "#FFFFFF", 1, 1) ] color "#000000" size 40
             text pistas_list[0]
             text pistas_list[1]
             text pistas_list[2]
@@ -2109,7 +2109,7 @@ screen pistas_personagem(personagem):
         xpos 0.5
         ypos 70
         vbox:
-            text "Descrição do personagem:"
+            text "Descrição do personagem" outlines [ (3, "#FFFFFF", 1, 1) ] color "#000000" size 40
             text personagens_dict[personagem].descricao
 
     frame:
@@ -2132,7 +2132,7 @@ screen pistas_personagem(personagem):
         ypos 370
         if personagem != "Bruxa":
             vbox:
-                text "Falas de destaque:"
+                text "Falas de destaque" outlines [ (3, "#FFFFFF", 1, 1) ] color "#000000" size 40
                 text falas_list[0]
                 text falas_list[1]
                 text falas_list[2]
@@ -2162,7 +2162,7 @@ screen notificacao(titulo, mensagem):
             text ""
             button:
                 xalign 0.5
-                text "Fechar"
+                text "Fechar" hover_color "#5b526e"
                 hover_sound "audio/menu_hover.mp3"
                 activate_sound "audio/menu_close.mp3"
                 action Return()

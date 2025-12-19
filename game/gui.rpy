@@ -567,3 +567,7 @@ transform bruxa_right:
     zoom 0.5
     ypos -50
     xpos 650
+transform holga_right:
+    zoom 1.5
+    ypos 200
+    xpos 1100
