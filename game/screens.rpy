@@ -95,8 +95,11 @@ style frame:
 ## https://www.renpy.org/doc/html/screen_special.html#say
 
 screen say(who, what):
+    if not config.skipping and what: ## Stop sound playing when skipping
+        on 'hide' action Play('sound', 'click.mp3') ## Play sound when say screen is hidden
 
     window:
+    
         id "window"
 
         if who is not None:
@@ -214,7 +217,9 @@ screen choice(items):
 
     vbox:
         for i in items:
-            textbutton i.caption action i.action
+            textbutton i.caption:
+                activate_sound "audio/click.mp3"
+                action i.action
 
 
 style choice_vbox is vbox
@@ -254,13 +259,22 @@ screen quick_menu():
             yalign 1.0
 
             #textbutton _("Voltar") action Rollback()
-            textbutton _("Histórico") action ShowMenu('history')
+            textbutton _("Histórico"):
+                hover_sound "audio/menu_hover.mp3"
+                activate_sound "audio/menu_open.mp3"
+                action ShowMenu('history')
             #textbutton _("Pular") action Skip() alternate Skip(fast=True, confirm=True)
             textbutton _("Auto") action Preference("auto-forward", "toggle")
-            textbutton _("Menu") action ShowMenu('save')
+            textbutton _("Menu"):
+                hover_sound "audio/menu_hover.mp3"
+                activate_sound "audio/menu_open.mp3"
+                action ShowMenu('preferences')
             #textbutton _("Q.Salvar") action QuickSave()
             #textbutton _("Q. Carga") action QuickLoad()
-            textbutton _("Config") action ShowMenu('preferences')
+            textbutton _("Config"):
+                hover_sound "audio/menu_hover.mp3"
+                activate_sound "audio/menu_open.mp3"
+                action ShowMenu('help')
 
 
 ## Esse código garante que a tela quick_menu seja exibida no jogo, sempre que o
@@ -300,20 +314,29 @@ screen navigation:
             xpos 150
             yalign 0.6
 
-            textbutton _("Novo Jogo") action Start()
+            textbutton _("Novo Jogo"): 
+                hover_sound "audio/menu_hover.mp3"
+                activate_sound "audio/menu_open.mp3"
+                action Start()
 
         else:
 
             xpos gui.navigation_xpos
             yalign 0.6
 
-            textbutton _("Histórico") action ShowMenu("history")
+            textbutton _("Histórico"):
+                hover_sound "audio/menu_hover.mp3"
+                activate_sound "audio/menu_open.mp3"
+                action ShowMenu("history")
 
             #textbutton _("Salvar") action ShowMenu("save")
 
         #textbutton _("Carregar Jogo") action ShowMenu("load")
 
-        textbutton _("Configurações") action ShowMenu("preferences")
+        textbutton _("Configurações"):
+            hover_sound "audio/menu_hover.mp3"
+            activate_sound "audio/menu_open.mp3"
+            action ShowMenu("preferences")
 
         if _in_replay:
 
@@ -321,20 +344,37 @@ screen navigation:
 
         elif not main_menu:
 
-            textbutton _("Menu principal") action MainMenu()
+            textbutton _("Menu principal"):
+                hover_sound "audio/menu_hover.mp3"
+                activate_sound "audio/menu_open.mp3"
+                action MainMenu()
 
-        textbutton _("Sobre") action ShowMenu("about")
+        textbutton _("Sobre"):
+            hover_sound "audio/menu_hover.mp3"
+            activate_sound "audio/menu_open.mp3"
+            action ShowMenu("about")
+
+        textbutton _("Créditos"):
+            hover_sound "audio/menu_hover.mp3"
+            activate_sound "audio/menu_open.mp3"
+            action ShowMenu("creditomenu")
 
         if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
 
             ## A ajuda não é necessária ou relevante para dispositivos móveis.
-            textbutton _("Ajuda") action ShowMenu("help")
+            textbutton _("Ajuda"):
+                hover_sound "audio/menu_hover.mp3"
+                activate_sound "audio/menu_open.mp3"
+                action ShowMenu("help")
 
         if renpy.variant("pc"):
 
             ## O botão Sair é proibido no iOS e desnecessário no Android e na
             ## Web.
-            textbutton _("Sair") action Quit(confirm=not main_menu)
+            textbutton _("Sair"):
+                hover_sound "audio/menu_hover.mp3"
+                activate_sound "audio/menu_open.mp3"
+                action Quit(confirm=not main_menu)
 
 
 style navigation_button is gui_button
@@ -401,6 +441,19 @@ style main_menu_title:
 style main_menu_version:
     properties gui.text_properties("version")
 
+
+screen creditomenu():
+
+    tag menu
+
+    use game_menu(_("Creditos"), scroll="viewport"):
+
+        style_prefix "creditomenu"
+
+        vbox:
+            label "[config.name!t]"
+            if gui.creditomenu:
+                text "[gui.creditomenu!t]" xalign 0.5
 
 ## Tela do menu do jogo ########################################################
 ##
@@ -474,7 +527,8 @@ screen game_menu(title, scroll=None, yinitial=0.0, spacing=0):
 
     textbutton _("Voltar"):
         style "return_button"
-
+        hover_sound "audio/menu_hover.mp3"
+        activate_sound "audio/menu_close.mp3"
         action Return()
 
     label title
@@ -991,11 +1045,18 @@ screen help():
 
             hbox:
 
-                textbutton _("Teclado") action SetScreenVariable("device", "keyboard")
-                textbutton _("Mouse") action SetScreenVariable("device", "mouse")
+                textbutton _("Teclado"):
+                    hover_sound "audio/menu_hover.mp3"
+                    action SetScreenVariable("device", "keyboard")
+
+                textbutton _("Mouse"):
+                    hover_sound "audio/menu_hover.mp3"
+                    action SetScreenVariable("device", "mouse")
 
                 if GamepadExists():
-                    textbutton _("Controle de jogo") action SetScreenVariable("device", "gamepad")
+                    textbutton _("Controle de jogo"):
+                        hover_sound "audio/menu_hover.mp3"
+                        action SetScreenVariable("device", "gamepad")
 
             if device == "keyboard":
                 use keyboard_help
@@ -1105,7 +1166,9 @@ screen gamepad_help():
         label _("Botão Y/Top")
         text _("Oculta a interface do usuário.")
 
-    textbutton _("Calibrar") action GamepadCalibrate()
+    textbutton _("Calibrar"): 
+        hover_sound "audio/menu_hover.mp3"
+        action GamepadCalibrate()
 
 
 style help_button is gui_button
@@ -1171,8 +1234,14 @@ screen confirm(message, yes_action, no_action):
                 xalign 0.5
                 spacing 150
 
-                textbutton _("Sim") action yes_action
-                textbutton _("Não") action no_action
+                textbutton _("Sim"):
+                    hover_sound "audio/menu_hover.mp3"
+                    activate_sound "audio/menu_close"
+                    action yes_action
+                textbutton _("Não"): 
+                    hover_sound "audio/menu_hover.mp3"
+                    activate_sound "audio/menu_close"
+                    action no_action
 
     ## Clique com o botão direito do mouse e escape a resposta "não".
     key "game_menu" action no_action
@@ -1630,127 +1699,128 @@ screen texto_botao:
             text displayText
 
 #################################### Definindo imagens ##################################################
-image botao_passos = "botoes/pezinhos gulosos.png"
+image botao_passos_idle = "botoes/botao_passos_idle.png"
+image botao_passos_hover = "botoes/botao_passos_hover.png"
 
 ###################################################### Telas de lugares ###################################################
 #Tela da taverna ext
 screen tavernaext:
     tag passos
-    use botao("botao_passos", 0.5, (750, 750), "Entrar no albergo", "tavernaint")
-    use botao("botao_passos", 0.5, (150, 500), "Casa do bêbado", "casabebadoext")
-    use botao("botao_passos", 0.5, (1670, 900), "Casa da Holga", "casaholgaext", False)
+    use botao("botao_passos", 0.1, (740, 670), "Entrar no albergo", "tavernaint", True, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (150, 500), "Casa do bêbado", "casabebadoext", True, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (1670, 900), "Casa da Holga", "casaholgaext", False, True, "passos.mp3")
 
 ## Taverna interna
 screen tavernaint():
-    use botao("botao_passos", 0.5, (1800, 600), "Sair do albergo", "tavernaext")
-    use botao("botao_passos", 0.5, (150, 500), "Entrar no quarto", "casapadre")
+    use botao("botao_passos", 0.1, (1800, 600), "Sair do albergo", "tavernaext", True, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (150, 450), "Entrar no quarto", "casapadre", True, True, "passos.mp3")
     if personagens_dict["Vincent"].vivo:
-        use botao(personagens_dict["Vincent"].imagem, 0.10, (1250, 50), "Falar com o dono", "dialogo_vincent", False)
+        use botao(personagens_dict["Vincent"].imagem, 0.10, (1250, 50), "Falar com o dono", "dialogo_vincent", False, clickSound="click.mp3")
     if personagens_dict["Seren"].vivo and personagens_dict["Vincent"].progresso >= 2:
-        use botao(personagens_dict["Seren"].imagem, 0.3, (900, 500), "Falar com a garota", "dialogo_seren")
+        use botao(personagens_dict["Seren"].imagem, 0.4, (900, 500), "Falar com a garota", "dialogo_seren", clickSound="click.mp3")
     add "botoes/taverna balcao.png"
 
 screen casaSalvatoreINT():
     tag passos
-    use botao("botao_passos", 0.5, (150, 900), "Sair da casa", "caminhobebado_margarida")
+    use botao("botao_passos", 0.1, (150, 900), "Sair da casa", "caminhobebado_margarida", True, True, "passos.mp3")
     if personagens_dict["William"].vivo and personagens_dict["Salvatore"].progresso >= 2:
-        use botao(personagens_dict["William"].imagem, 0.18, (900, 200), "Falar com o garoto", "dialogo_william")
+        use botao(personagens_dict["William"].imagem, 0.18, (900, 200), "Falar com o garoto", "dialogo_william", clickSound="click.mp3")
 
 ###Tela da casa do bebado ext
 screen casabebado():
     tag passos
-    use botao("botao_passos", 0.5, (1700, 900), "Albergo", "tavernaext", False)
-    use botao("botao_passos", 0.5, (170, 900), "Casa do senhor", "caminhobebado_margarida", False)
+    use botao("botao_passos", 0.1, (1700, 900), "Albergo", "tavernaext", False, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (170, 900), "Casa do senhor", "caminhobebado_margarida", False, True, "passos.mp3")
     if personagens_dict["Bêbado"].vivo:
-        use botao(personagens_dict["Bêbado"].imagem, 0.14, (900, 350), "Falar com o bêbado", "dialogo_bebado")
+        use botao(personagens_dict["Bêbado"].imagem, 0.14, (900, 350), "Falar com o bêbado", "dialogo_bebado", clickSound="click.mp3")
 
 ## Tela da casa do padre interna
 screen casapadre():
     tag passos
     if interacao > 0:
-        use botao("botao_passos", 0.5, (1200, 900), "Sair do quarto", "tavernaint", False)
+        use botao("botao_passos", 0.1, (1200, 900), "Sair do quarto", "tavernaint", False, True, "passos.mp3")
     use botao("mural de pistas", 0.99, (845, 254), "Ver quadro de pistas", "noite")
 
 ## Tela da casa da curandeira externa
 screen casaMargaridaEXT():
     tag passos
-    use botao("botao_passos", 0.5, (1300, 950), "Casa do senhor", "caminhobebado_margarida")
-    use botao("botao_passos", 0.5, (90, 900), "Ponte", "caminhoLazaro")
+    use botao("botao_passos", 0.1, (1300, 900), "Casa do senhor", "caminhobebado_margarida", False, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (90, 900), "Ponte", "caminhoLazaro", False, True, "passos.mp3")
     if personagens_dict["Margarida"].vivo:
-        use botao(personagens_dict["Margarida"].imagem, 0.13, (1000, 500), "Falar com a curandeira", "dialogo_margarida")
+        use botao(personagens_dict["Margarida"].imagem, 0.13, (1000, 500), "Falar com a curandeira", "dialogo_margarida", False, clickSound="click.mp3")
 
 ## Tela da casa do Lázaro externa
 screen casaLazaroEXT():
     tag passos
-    use botao("botao_passos", 0.5, (1250, 900), "Casa da curandeira", "casamargaridaext")
-    use botao("botao_passos", 0.5, (1000, 300), "Entrar na casa do leproso", "casaLazaroint")
-    use botao("botao_passos", 0.5, (600, 900), "Casa da costureira", "casajoanaext")
+    use botao("botao_passos", 0.1, (1250, 900), "Casa da curandeira", "casamargaridaext", False, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (1000, 300), "Entrar na casa do leproso", "casaLazaroint", True, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (600, 900), "Casa da costureira", "casajoanaext", False, True, "passos.mp3")
 
 ## Tela da casa do Lázaro interna
 screen casaLazaroINT():
     tag passos
-    use botao("botao_passos", 0.5, (1100, 900), "Sair da casa", "caminhoLazaro", False)
+    use botao("botao_passos", 0.1, (1100, 900), "Sair da casa", "caminhoLazaro", False, True, "passos.mp3")
     if personagens_dict["Lázaro"].vivo:
-        use botao(personagens_dict["Lázaro"].imagem, 0.14, (500, 400), "Falar com o leproso", "dialogo_lazaro", False)  
+        use botao(personagens_dict["Lázaro"].imagem, 0.14, (500, 400), "Falar com o leproso", "dialogo_lazaro", False, clickSound="click.mp3")
 
 ## Tela da frente da casa do salvatore
 screen caminhobebado_margarida():
     tag passos
-    use botao("botao_passos", 0.5, (1600, 900), "Casa do bêbado", "casabebadoext")
-    use botao("botao_passos", 0.5, (90, 900), "Albergo", "tavernaext")
-    use botao("botao_passos", 0.5, (1000, 300), "Casa da curandeira", "casamargaridaext")
-    use botao("botao_passos", 0.5, (300, 300), "Casa do senhor", "casasalvatoreint")
+    use botao("botao_passos", 0.1, (1600, 900), "Casa do bêbado", "casabebadoext", False, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (90, 900), "Albergo", "tavernaext", False, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (1000, 300), "Casa da curandeira", "casamargaridaext", True, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (650, 400), "Casa do senhor", "casasalvatoreint", True, True, "passos.mp3")
     if personagens_dict["Salvatore"].vivo:
-        use botao(personagens_dict["Salvatore"].imagem, 0.12, (700, 320), "Falar com o senhor da vila", "dialogo_salvatore")
+        use botao(personagens_dict["Salvatore"].imagem, 0.12, (330, 400), "Falar com o senhor da vila", "dialogo_salvatore", clickSound="click.mp3")
 
 ## Holga
 screen casaHolgaEXT():
     tag passos
-    use botao("botao_passos", 0.5, (100, 900), "Albergo", "tavernaext")
-    use botao("botao_passos", 0.5, (1700, 900), "Monumento", "praca2")
+    use botao("botao_passos", 0.1, (100, 900), "Albergo", "tavernaext", False, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (1700, 900), "Monumento", "praca2", False, True, "passos.mp3")
     if personagens_dict["Holga"].vivo:
-        use botao(personagens_dict["Holga"].imagem, 0.5, (700, 420), "Falar com a a irmã da Edla", "dialogo_holga", False) 
+        use botao(personagens_dict["Holga"].imagem, 0.5, (700, 420), "Falar com a a irmã da Edla", "dialogo_holga", False, clickSound="click.mp3") 
 
 ## Praca 2
 screen praca2():
     tag passos
-    use botao("botao_passos", 0.5, (400, 500), "Casa da irmã da Edla", "casaholgaext")
-    use botao("botao_passos", 0.5, (500, 900), "Piazza", "praca1")
+    use botao("botao_passos", 0.1, (400, 500), "Casa da irmã da Edla", "casaholgaext", True, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (500, 900), "Piazza", "praca1", False, True, "passos.mp3")
     if personagens_dict["Agnes"].vivo:
-        use botao(personagens_dict["Agnes"].imagem, 0.55, (900, 400), "Falar com a pedinte", "dialogo_agnes", False)
+        use botao(personagens_dict["Agnes"].imagem, 0.55, (900, 400), "Falar com a pedinte", "dialogo_agnes", False, clickSound="click.mp3")
 
 screen praca1():
     tag passos
-    use botao("botao_passos", 0.5, (1000, 900), "Monumento", "praca2", False)
-    use botao("botao_passos", 0.5, (450, 650),   "Entrar na igreja", "igreja")
-    use botao("botao_passos", 0.5, (1200, 600), "Entrar na padaria", "padaria")
-    use botao("botao_passos", 0.5, (1600, 900), "Casa da costureira", "casajoanaext")
+    use botao("botao_passos", 0.1, (1000, 900), "Monumento", "praca2", False, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (460, 650),   "Entrar na igreja", "igreja", True, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (1250, 600), "Entrar na padaria", "padaria", True, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (1600, 900), "Casa da costureira", "casajoanaext", False, True, "passos.mp3")
 
 screen igrejaINT():
     tag passos
-    use botao("botao_passos", 0.5, (900, 870), "Piazza", "praca1", False)
+    use botao("botao_passos", 0.1, (900, 870), "Piazza", "praca1", False, True, "passos.mp3")
 
 screen padariaINT():
     tag passos
-    use botao("botao_passos", 0.5, (300, 900), "Piazza", "praca1", False)
+    use botao("botao_passos", 0.1, (300, 900), "Piazza", "praca1", False, True, "passos.mp3")
     if personagens_dict["Bartolomeu"].vivo:
-        use botao(personagens_dict["Bartolomeu"].imagem, 0.30, (1400, 300), "Falar com o padeiro", "dialogo_bartolomeu", False)
+        use botao(personagens_dict["Bartolomeu"].imagem, 0.30, (1400, 300), "Falar com o padeiro", "dialogo_bartolomeu", False, clickSound="click.mp3")
 
 screen casaJoanaEXT():
     tag passos
-    use botao("botao_passos", 0.5, (200, 900), "Piazza", "praca1")
-    use botao("botao_passos", 0.5, (350, 400), "Campagna", "plantacao")
-    use botao("botao_passos", 0.5, (1600, 900), "Ponte", "caminhoLazaro")
+    use botao("botao_passos", 0.1, (200, 900), "Piazza", "praca1", False, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (350, 400), "Campagna", "plantacao", True, True, "passos.mp3")
+    use botao("botao_passos", 0.1, (1600, 900), "Ponte", "caminhoLazaro", False, True, "passos.mp3")
     if personagens_dict["Joana"].vivo:
-        use botao(personagens_dict["Joana"].imagem, 0.11, (600, 470), "Falar com a costureira", "dialogo_joana")
+        use botao(personagens_dict["Joana"].imagem, 0.11, (600, 470), "Falar com a costureira", "dialogo_joana", False, clickSound="click.mp3")
 
 screen plantacao():
     tag passos
-    use botao("botao_passos", 0.5, (400, 910), "Casa da costureira", "casajoanaext", False)
+    use botao("botao_passos", 0.1, (400, 910), "Casa da costureira", "casajoanaext", False, True, "passos.mp3")
 
 ############################################################# FUNÇÂO BOTÂO ##############################################################
 
-screen botao(imagem, zoomBase, posicao, texto, jumpTo, textoEmBaixo=True):
+screen botao(imagem, zoomBase, posicao, texto, jumpTo, textoEmBaixo=True, temHover=False, clickSound=None):
     tag passos
     vbox:
         xanchor 0.5
@@ -1761,17 +1831,25 @@ screen botao(imagem, zoomBase, posicao, texto, jumpTo, textoEmBaixo=True):
         default displayText = ""
         if not textoEmBaixo:
             text displayText xalign 0.5 outlines [ ( 3, "#000005", 0, 0) ]
+        $ action_list = [SetLocalVariable("displayText", ""), Jump(jumpTo)]
+        if clickSound != None:
+            $ action_list.insert(1, Play("sound", clickSound))
         imagebutton:
             xalign 0.5
-            idle imagem
-            hover imagem
+            if temHover:
+                idle imagem + "_idle"
+                hover imagem + "_hover"
+            else:
+                idle imagem
+                hover imagem
+            
             at transform:
                 zoom zoomBase
                 on hover:
                     linear 0.05 zoom 1.1*zoomBase  # Zooms to 110% over 0.05 seconds
                 on idle:
                     linear 0.1 zoom zoomBase  # Returns to original size over 0.1 seconds
-            action [SetLocalVariable("displayText", ""), Jump(jumpTo)]
+            action action_list
 
             hovered SetLocalVariable("displayText", texto)
             unhovered SetLocalVariable("displayText", "")
@@ -1787,6 +1865,8 @@ screen botao_pistas(personagem, zoomBase, posicao):
             retrato = At(retrato, preto)
         elif personagem.vivo == False:
             retrato = At(retrato, preto_e_branco)
+        else:
+            retrato = At(retrato, sepia)
     
     imagebutton:
         xanchor 0.5
@@ -2010,6 +2090,9 @@ screen pistas_personagem(personagem):
         retrato = personagens_dict[personagem].retrato
         if personagens_dict[personagem].vivo == False:
             retrato = At(retrato, preto_e_branco)
+        else:
+            retrato = At(retrato, sepia)
+
 
     add retrato at zoom_retrato
 
@@ -2058,21 +2141,28 @@ screen pistas_personagem(personagem):
                 text falas_list[5]
                 text falas_list[6]
 
-screen notificacao(mensagem):
+
+screen textogrande(mensagem):
+    frame:
+        background None
+        xalign 0.5
+        ypos 300
+        xmaximum 1500
+        text mensagem xalign 0.5 size 60
+        text ""
+
+screen notificacao(titulo, mensagem):
     frame:
         xalign 0.5
         yalign 0.5
         xmaximum 960
         vbox:
-            text "Pista Adquirida!" xalign 0.5 size 40 outlines [ (3, "#000000", 1, 1) ]
+            text titulo xalign 0.5 size 40 outlines [ (3, "#000000", 1, 1) ]
             text mensagem
             text ""
             button:
                 xalign 0.5
                 text "Fechar"
+                hover_sound "audio/menu_hover.mp3"
+                activate_sound "audio/menu_close.mp3"
                 action Return()
-
-
-# screen Movie(file):
-#     layer "background"
-#     add "[file]" xpos 0 ypos 0

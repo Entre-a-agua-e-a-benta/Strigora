@@ -4,13 +4,14 @@
 default name_side = "left"
 
 default dia = 1 # Define dia incial
-default interacao = 3 # Define quantas interações pode ter
+default interacao = 1 # Define quantas interações começa
 default interacaoMaxHoje = 3 # Número max de interações no dia p/ HUD
 
 default modificadorEvento = 0 # Modificador de chance para eventos aleatórios
 
 default infoPersonagem = "" # Para o quadro de pistas
 default matar_personagem = None # Personagem que será morto na noite -> deixar None
+default numeroEvento = -1
 default musica_atual = "ambiencia_ext_geral.mp3"
 ## Variaveis do diálogo com o Lázaro
 default dor_lazaro = False
@@ -18,7 +19,6 @@ default afastou_lazaro = False
 # Variáveis do dialogo com william
 default naotinta_william = False
 default sombrass_william = False
-default numeroevento = 0
 
 ## Personagens
 define personagens_list = list()
@@ -43,14 +43,14 @@ define dev = Character("Strigora", color="#a88ab4")
 
 define msg = Character("Mensageiro", color="#FFFFFF")
 define hdc = Character("Homem da carta", color="#FFFFFF")
-define no = Character (None) 
+define no = Character(None, kind=nvl) 
 
 define dis = {"master" : Dissolve(1.0)}
 
 # The game starts here.
 
 label start:
-
+    $ _game_menu_screen = "help"
     init python:
         from unidecode import unidecode
         from random import randint
@@ -99,6 +99,17 @@ label start:
                             (v, "Vincent", 'M', primeira_fileira, 1, personagem_right),
                             (s, "Seren", 'F', segunda_fileira, 3, crianca_right),
                             (bx, "Bruxa", 'F', (0, 0), 1, bruxa_right)]
+
+        eventos_list = ["Algum problema ocorreu",
+                        "",
+                        "Perdi uma interação",
+                        "Os animais adoeceram... (chance maior de evento ruim na próxima noite)",
+                        "Momento de paz temporária",
+                        "A Bruxa permanece inativa",
+                        "O padre entra em conflito interno",
+                        "Missa comunitária (+2 interação)",
+                        "Dia promissor (+1 interação)",
+                        "Janta comunitária (+ chance de evento bom na próxima noite)"]
         
         def checar_interacao():
             global interacao
@@ -125,7 +136,7 @@ label start:
             if matar_personagem != None:
                 personagens_dict[matar_personagem].vivo = False
                 mortos = contarMortos()
-                if matar_personagem == "Personagem que é a bruxa": # mudar aqui pra quem for a bruxa
+                if matar_personagem == "William": # mudar aqui pra quem for a bruxa
                     renpy.jump("dialogo_bruxa")
                 if mortos == 1:
                     renpy.jump("morte1")
@@ -139,57 +150,26 @@ label start:
             renpy.jump("casapadre")
 
         def evento_aleatorio():
-            global interacao, modificadorEvento
+            global modificadorEvento, numeroEvento
             # Chance para cada evento (Ruim, Neutro, Bom)
             if modificadorEvento == 1: # Dia de sorte
-                chanceEventos = (20, 50, 30)
-            elif modificadorEvento == 0: # Dia normalS
+                chanceEventos = (10, 40, 50)
+            elif modificadorEvento == 0: # Dia normal
                 chanceEventos = (25, 50, 25)
             elif modificadorEvento == -1: # Dia de azar
-                chanceEventos = (30, 50, 20)
+                chanceEventos = (50, 40, 10)
             ## renpy.notify(f"chance atual de evento: {chanceEventos[0]}/{chanceEventos[1]}/{chanceEventos[2]}") # DEBUG, APAGAR!!!
 
-            evento = (randint(1, 100), randint(1, 3)) # (1~100, 1~3)
-            evento = (7, 2) # manipulando evento pra testes
-            if evento[0] <= chanceEventos[0]:  # Evento Ruim
-                if evento[1] == 1: # Impossibilitar falar com personagem aleatório
-                    personagem = personagens_dict[personagens_list[randint(0, len(personagens_list)-1)][0]]
-                    while personagem.vivo != True or personagem.nome == "Bruxa":
-                        personagem = personagens_dict[personagens_list[randint(0, len(personagens_list)-1)][0]]
-                    personagem.conversavel = False
-                    if personagem.nomeConhecido == personagem.nome:
-                        nomeDisplay = personagem.nomeConhecido
-                    else:
-                        artigo = 'o' if personagem.genero == 'M' else 'a'
-                        nomeDisplay = artigo + " " + personagem.nomeConhecido
-                    renpy.notify("O poço foi sabotado e " + nomeDisplay + " bebeu a agua. Não vou conseguir falar com " + nomeDisplay + "...")
-                elif evento[1] == 2: # Perder interação (-1 interação)
-                    numeroevento = 1
-                    renpy.call_in_new_context("telanotificacao")
-                    alterar_interacao(-1)
-                elif evento[1] == 3: # Animais adoecem (chance maior de evento ruim na próxima noite)
-                    renpy.notify("Os animais adoeceram... (chance maior de evento ruim na próxima noite)")
-                    modificadorEvento = -1
-            elif evento[0] <= chanceEventos[0] + chanceEventos[1]:  # Evento Neutro
-                if evento[1] == 1: # Momento de paz temporária
-                    renpy.notify("Momento de paz temporária")
-                elif evento[1] == 2: # A Bruxa permanece inativa
-                    renpy.notify("A Bruxa permanece inativa")
-                elif evento[1] == 3: # O padre entra em conflito interno
-                    renpy.notify("O padre entra em conflito interno")
-            elif evento[0] > 100 - chanceEventos[2]:
-                if evento[1] == 1:
-                    # Missa comunitária (+2 interação)
-                    renpy.notify("Missa comunitária (+2 interação)")
-                    interacaoMaxHoje = 5
-                    alterar_interacao(+2)
-                elif evento[1] == 2: # Dia promissor (+1 interação) - igual ao anterior
-                    renpy.notify("Dia promissor (+1 interação)")
-                    interacaoMaxHoje = 4
-                    alterar_interacao(+1)
-                elif evento[1] == 3: # Janta comunitária (+ chance de evento bom)
-                    renpy.notify("Janta comunitária (+ chance de evento bom na próxima noite)")
-                    modificadorEvento = 1
+            tipoEvento = randint(1, 100) # numero entre 1 e 100
+            if tipoEvento <= chanceEventos[0]:  # Evento Ruim
+                numeroEvento = randint(1, 3)
+                renpy.call_in_new_context("eventos")
+            elif tipoEvento <= chanceEventos[0] + chanceEventos[1]:  # Evento Neutro
+                numeroEvento = randint(4, 6)
+                renpy.call_in_new_context("eventos")
+            elif tipoEvento > 100 - chanceEventos[2]:
+                numeroEvento = randint(7, 9)
+                renpy.call_in_new_context("eventos")
         
         # Progride o diálogo de um personagem específico, aumentando seu progresso em 1 e marcando que já conversou hoje.
         def progredir(personagem: str):
@@ -216,7 +196,8 @@ label start:
             global personagens_dict
             if pista not in personagens_dict[personagem].listaPistas:
                 personagens_dict[personagem].listaPistas.append(pista)
-                renpy.call_screen("notificacao", personagens_dict[personagem].nomeConhecido + " " + pista[0].lower() + pista[1:])
+                renpy.play("notify.mp3")
+                renpy.call_screen("notificacao", "Pista Adquirida!", personagens_dict[personagem].nomeConhecido + " " + pista[0].lower() + pista[1:])
                 # renpy.notify("Pista adquirida: " + personagens_dict[personagem].nomeConhecido + " " + pista[0].lower() + pista[1:])
  
         """
@@ -238,6 +219,7 @@ label start:
             global personagens_dict
             if fala not in personagens_dict[personagem].listaFalas:
                 personagens_dict[personagem].listaFalas.append(fala)
+                renpy.play("notify.mp3")
                 renpy.notify("Falas de " + personagens_dict[personagem].nomeConhecido + ": " + fala)
         
         def atualizar_falas(personagem: str)->list:
@@ -261,6 +243,12 @@ label start:
             if musica != musica_atual:
                 renpy.music.play(musica)
                 musica_atual = musica
+
+        def texto_grande(texto: str, tempoDePause=3):
+            renpy.show_screen("textogrande", texto)
+            renpy.pause(tempoDePause)
+        
+
 
 #### $ adicionar_pista("Vincent", "Gosta de HOMENS") #### é assim que bota pista
 
@@ -288,7 +276,7 @@ label primeiracena:
         personagens_dict["Seren"].descricao = "Tem cerca de 10 anos. Ela acredita ser culpada pela morte de sua mãe e se sente difícil de ser enxergada pelo pai. Seu tio, Vincent, é quem cuida dela."
         personagens_dict["Bruxa"].descricao = "A bruxa que está devastando a vila."
 
-    jump creditos
+    jump noite 
 
     $ renpy.movie_cutscene("images/cutscene_inicial.webm")
 
@@ -450,13 +438,32 @@ label casasalvatoreint:
 label dialogo_vincent:
     call hide_all_screens
     if personagens_dict["Vincent"].conversavel:
-        if personagens_dict["Vincent"].conhecido == False: # Primeiro diálogo com Vincent
+        if personagens_dict["Seren"].morto:
+            $ mostrar_personagem("Vincent", 'T')
+            v "Ela era uma boa garota padre..."
+            v "A Seren... Era como uma filha pra mim..."
+            v "Não me perturbe mais."
+            jump tavernaint
+        elif personagens_dict["Bêbado"].morto:
+            $ mostrar_personagem("Vincent", 'T')
+            v "Meu irmão podia viver bêbado pela cidade ou até mesmo não cuidar tão bem da filha dele."
+            v "Mas ele não era assassino, padre."
+            v "Ele era alguém muito melhor do que você..."
+            jump tavernaint
+        elif personagens_dict["Lázaro"].morto:
+            $ mostrar_personagem("Vincent", 'T')
+            v "Eu culpava ele sem mesmo saber seu nome..."
+            v "Falava que ele fazia coisas más por sua doença infeliz..."
+            v "Preciso de um tempo pra refletir sobre minhas opiniões..."
+            jump tavernaint
+        elif personagens_dict["Vincent"].conhecido == False: # Primeiro diálogo com Vincent
             $ personagens_dict["Vincent"].conhecido = True
             $ mostrar_personagem("Padre", 'F')
             p "Buongiorno… Agradeço a hospitalidade, dizem que é perigoso ficar andando de noite por aí… Então me sinto agradecido por ter onde dormir…"
             $ mostrar_personagem("Padre", 'N')
             p "Agora…"
         jump escolhas_vincent
+    
     else:
         $ mostrar_personagem("Vincent", 'T')
         v "Não estou com vontade de conversar hoje..."
@@ -586,7 +593,19 @@ label padre_vincent:
 label dialogo_seren:
     call hide_all_screens
     if personagens_dict["Seren"].conversavel:
-        if personagens_dict["Seren"].conhecido == False:
+        if personagens_dict["Vincent"].morto:
+            $ mostrar_personagem("Seren", 'T')
+            s "O tio..."
+            s "O tio me deixava ficar atrás do balcão quando chovia..."
+            s "Eu amava o pão com mel que ele me dava pra comer..."
+            s "Por quê padre? Por quê você tirou ele de mim..."
+            jump tavernaint
+        elif personagens_dict["Bêbado"].morto:
+            $ mostrar_personagem("Seren", 'T')
+            s "Meu pai nunca mais vai poder olhar triste pra mim quando pensa que eu não to vendo..."
+            s "E eu também nunca vou conseguir alcançar o perdão dele..."
+            jump tavernaint
+        elif personagens_dict["Seren"].conhecido == False:
             $ personagens_dict["Seren"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
             p "Buongiorno, pequena. Deus lhe abençoe, eu gostaria de conversar um pouco com você."
@@ -713,7 +732,15 @@ label habitante_seren:
 label dialogo_margarida:
     call hide_all_screens
     if personagens_dict["Margarida"].conversavel:
-        if personagens_dict["Margarida"].conhecido == False:
+        if personagens_dict["Agnes"].morto:
+            $ mostrar_personagem("Margarida", 'T')
+            m "Pobre garota..."
+            m "Rejeitada por toda vila, vivia sem ter onde comer e dormir."
+            m "Enfim encontrou o descanso eterno... Assim como seus pais."
+            m "Que Deus a tenha, padre."
+            m "E que Ele te perdoe por esse fim trágico que o senhor deu a ela."
+            jump casamargaridaext  
+        elif personagens_dict["Margarida"].conhecido == False:
             $ personagens_dict["Margarida"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
             p "Buongio..."
@@ -986,7 +1013,15 @@ label naoviu:
 label dialogo_holga:
     call hide_all_screens
     if personagens_dict["Holga"].conversavel:
-        if personagens_dict["Holga"].conhecido == False:
+        if personagens_dict["Salvatore"].morto:
+            $ mostrar_personagem("Holga", 'T')
+            h "Ele sempre teve olhos pra ela..."
+            h "Ele nunca conversou muito comigo. A irmã sombra de olhos fundos e mãos ásperas..."
+            h "Mas foi o Salvatore que te chamou pra essa vila, padre."
+            h "Por quê o senhor duvidou dele?"
+            h "Ele que cuidava de todos e mantinha a ordem nessa vila, que Deus nos proteja agora. Sem ninguém pra nos acudir..."
+            jump casaholgaext
+        elif personagens_dict["Holga"].conhecido == False:
             $ personagens_dict["Holga"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
             p "Buongiorno"
@@ -1119,7 +1154,16 @@ label viubruxa_holga:
 label dialogo_bartolomeu:
     call hide_all_screens
     if personagens_dict["Bartolomeu"].conversavel:
-        if personagens_dict["Bartolomeu"].conhecido == False:
+        if personagens_dict["Agnes"].morto:
+            $ mostrar_personagem("Bartolomeu", 'T')
+            b "Senhor."
+            b "Pra quem eu irei realizar ações beneficentes agora?"
+            b "Como eu demonstrarei toda minha humildade sem ter à quem dar pão?"
+            $ mostrar_personagem("Bartolomeu", 'R')
+            b "Você me condenou padre."
+            b "Preciso pensar no que vou fazer agora."
+            jump padaria
+        elif personagens_dict["Bartolomeu"].conhecido == False:
             $ personagens_dict["Bartolomeu"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
             p "Buongiorno… pelas vestes, você deve ser o padeiro… "
@@ -1387,14 +1431,23 @@ label ontem7_bartolomeu:
 label dialogo_bebado:   
     call hide_all_screens
     if personagens_dict["Bêbado"].conversavel:
-        if personagens_dict["Bêbado"].conhecido == False:
+        if personagens_dict["Seren"].morto:
+            $ mostrar_personagem("Bêbado", 'T')
+            be "Agora a minha menina se foi também..."
+            jump casabebadoext
+        elif personagens_dict["Vincent"].morto:
+            $ mostrar_personagem("Bêbado", 'T')
+            be "Todos... Vão embora..."
+            be "Catarina... Vincent..."
+            jump casabebadoext
+        elif personagens_dict["Bêbado"].conhecido == False:
             $ personagens_dict["Bêbado"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
             p "Buongiorno…"
             jump falas_bebado
     else:
         $ mostrar_personagem("Bêbado", 'T')
-        b "Não estou com vontade de conversar hoje..."
+        be "Água... Estragada..."
         jump casabebadoext 
 
 label falas_bebado:
@@ -1435,7 +1488,18 @@ label falas_bebado:
 label dialogo_agnes:
     call hide_all_screens
     if personagens_dict["Agnes"].conversavel:
-        if personagens_dict["Agnes"].conhecido == False:
+        if personagens_dict["Bartolomeu"].morto:
+            $ mostrar_personagem("Agnes", 'T')
+            a "Ele me dava pão, padre."
+            a "Era velho e duro, mas ainda sim era pão..."
+            a "O que eu vou comer agora?"
+            jump praca2
+        elif if personagens_dict["Margarida"].morto:
+            $ mostrar_personagem("Agnes", 'T')
+            a "A Margarida era a única na vila que era gentil comigo..."
+            a "E agora não tem mais ninguém que se importa com a criança marcada..."
+            jump praca2
+        elif personagens_dict["Agnes"].conhecido == False:
             $ personagens_dict["Agnes"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
             p "Buongiorno, pequena criança."
@@ -1445,7 +1509,7 @@ label dialogo_agnes:
         jump escolhas_agnes
     else:
         $ mostrar_personagem("Agnes", 'T')
-        s "Não estou com vontade de conversar hoje..."
+        a "Não estou com vontade de conversar hoje..."
         jump praca2
 
 label escolhas_agnes:
@@ -1552,7 +1616,13 @@ label estranho_agnes:
 label dialogo_joana:
     call hide_all_screens
     if personagens_dict["Joana"].conversavel:
-        if personagens_dict["Joana"].conhecido == False:
+        if personagens_dict["Agnes"].morto:
+            $ mostrar_personagem("Joana", 'T')
+            j "No fim ela não era tão limpa ou marcada como eu pensava..."
+            j "Pelo menos não dessa forma..."
+            j "Que Deus nos perdoe, padre. Por levar a vida dessa pobre criança..."
+            jump casajoanaext
+        elif personagens_dict["Joana"].conhecido == False:
             $ personagens_dict["Joana"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
             p "Buongiorno… Espero que esteja bem…"
@@ -1689,12 +1759,21 @@ label bonecos_joana:
 label dialogo_salvatore:
     call hide_all_screens
     if personagens_dict["Salvatore"].conversavel:
-        if personagens_dict["Salvatore"].conhecido == False:
-            p "BUGADO"
+        if personagens_dict["Holga"].morto:
+            $ mostrar_personagem("Salvatore", 'T')
+            ss "A holga podia ser..."
+            ss "Exêntrica."
+            ss "Mas não era uma má pessoa."
+            $ mostrar_personagem("Salvatore", 'R')
+            ss "Você errou no seu julgamento padre."
+            ss "Faça seu trabalho direito na próxima."
+            jump caminhobebado_margarida
+        elif personagens_dict["Salvatore"].conhecido == False:
+            p "Buongiorno."
         jump escolhas_salvatore
     else:
         $ mostrar_personagem("Salvatore", 'T')
-        j "Não estou com vontade de conversar hoje..."
+        ss "Não estou com vontade de conversar hoje..."
         jump caminhobebado_margarida
 
 label escolhas_salvatore:
@@ -1856,7 +1935,13 @@ label suspeitofilho_salvatore:
 label dialogo_william:
     call hide_all_screens
     if personagens_dict["William"].conversavel:
-        if personagens_dict["William"].conhecido == False:
+        if personagens_dict["Salvatore"].morto:
+            $ mostrar_personagem("Salvatore", 'T')
+            w "Meu pai..."
+            w "Ele era tudo que eu tinha..."
+            w "O que será de mim agora? Com as pessoas ruins que ele se esforçava para me proteger lá fora..."
+            jump casasalvatoreint
+        elif personagens_dict["William"].conhecido == False:
             $ personagens_dict["William"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
             p "Buongiorno bambino."
@@ -1866,8 +1951,8 @@ label dialogo_william:
         jump escolhas_william
     else:
         $ mostrar_personagem("William", 'T')
-        j "Não estou com vontade de conversar hoje..."
-        jump caminhobebado_margarida
+        w "Não estou com vontade de conversar hoje..."
+        jump casasalvatoreint
 
 label escolhas_william:
     $ mostrar_personagem("Padre", 'N')
@@ -2018,97 +2103,100 @@ label pistas:
 label dialogo_bruxa: # Matou a Bruxa
     scene tela preta
     with dis
-    no "O Padre, impulsionado pela necessidade de ordem e respostas que sentia serem a chave para curar a aldeia, concentrou sua atenção no jovem William, acreditando que o menino escondia a verdadeira fonte do mal."
-    no "A cena do exorcismo, realizada no quarto silencioso de Salvatore, foi de uma tensão sufocante."
-    no "O Padre iniciou os ritos, sua voz ressoando contra a madeira da casa do Senhor Salvatore."
-    no "William, pálido e isolado, parecia mais assustado com a presença do Padre do que com qualquer mal que pudesse habitá-lo. O Padre confrontou o silêncio do garoto com orações."
-    no "Quando a voz do Padre elevou-se em comando, o corpo de William estremeceu. O padre aos poucos sentiu a presença recuar do corpo do garoto."
-    no "O Padre observou William, ele parecia exausto mas ao mesmo tempo parecia aliviado da tensão da possessão. No entanto, uma voz sibilante e seca, que não pertencia ao garoto, ressoou no quarto e logo se revelou a criatura por trás."
-    scene tela preta
+
+    python:
+        texto_grande("O Padre, impulsionado pela necessidade de ordem e respostas que sentia serem a chave para curar a aldeia, concentrou sua atenção no jovem William, acreditando que o menino escondia a verdadeira fonte do mal." )
+        texto_grande("A cena do exorcismo, realizada no quarto silencioso de Salvatore, foi de uma tensão sufocante.")
+        texto_grande("O Padre iniciou os ritos, sua voz ressoando contra a madeira da casa do Senhor Salvatore.")
+        texto_grande("William, pálido e isolado, parecia mais assustado com a presença do Padre do que com qualquer mal que pudesse habitá-lo. O Padre confrontou o silêncio do garoto com orações.")
+        texto_grande("Quando a voz do Padre elevou-se em comando, o corpo de William estremeceu. O padre aos poucos sentiu a presença recuar do corpo do garoto.")
+        texto_grande("O Padre observou William, ele parecia exausto mas ao mesmo tempo parecia aliviado da tensão da possessão. No entanto, uma voz sibilante e seca, que não pertencia ao garoto, ressoou no quarto e logo se revelou a criatura por trás.")
+   
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Bruxa", 'C') 
     bx "Parabéns, Padre! Você limpou o vaso, mas não arrancou a raiz."
     bx "E o que sou eu, senão um perfume, atraído para onde a terra já está podre?"
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Padre", 'R')
     p "Confesse seus crimes, mulher. A verdade pode aliviar seu espirito, mesmo que seu corpo já esteja condenado."
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Bruxa", 'I') 
     bx "Alma? Você fala como se soubesse o que é ter uma."
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Padre", 'R')
     p "Não ouse zombar do portador da voz de Deus neste estado, você mal tem forças para andar."
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Bruxa", 'N')
     bx "É verdade, minhas forças se vão…"
     bx "Mas não por causa desse sua oração patética. É o preço do que fiz."
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Padre", 'N')
     p "Finalmente admitindo o mal que causou a esse povo."
     $ mostrar_personagem("Padre", 'R')
     p "Que pacto fez? Para que demônio vendeu sua fé?"
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Bruxa", 'R')
     bx "Sempre demônios… Sempre pecados…"
     bx "Eu não entreguei a minha fé, padre. Entreguei a minha dor."
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Padre", 'R')
     p "Dor não justifica maldições, profanar corpos e acabar com vidas."
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Bruxa", 'I')
     bx "…"
     bx "Você fala como se fosse Santo…"
     bx "Mas eu vejo… Eu vejo o medo em sua voz. Você teme que ao me queimar, algo de mim fique…"
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Padre", 'R')
     p "O fogo purifica! Nada maligno sobrevive a ele."
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Bruxa", 'I')
     bx "Purifica?... Ou esconde?"
     $ mostrar_personagem("Bruxa", 'R')
     bx "O fogo é o melhor amigo de homens como você, que queimam o que não conseguem explicar…"
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Padre", 'R')
     p "Chega!"
     p "Amanhã, ao nascer do sol, você será levada à estaca."
     p "Use esta última noite para rezar…"
     p "Se ainda souber como…"
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Bruxa", 'N')
     bx "Eu não rezo, Padre…"
     bx "Eu vejo… Eu vi o que vai acontecer com essa aldeia depois que eu me for."
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Padre", 'N')
     p "Do que você está falando?"
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Bruxa", 'N')
     bx "Do menino…"
     bx "Do que habita nele quando dorme…"
     $ mostrar_personagem("Bruxa", 'I')
     bx "Ah se você soubesse…"
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Padre", 'N')
     p "Levem-a! E que Deus tenha piedade."
-    scene tela preta
+    scene bg casa salvatore
     with dis
     $ mostrar_personagem("Bruxa", 'C') 
     bx "Ele não terá."
-    return
+    jump creditos
 
 label morte1:
     python:
@@ -2179,33 +2267,70 @@ label expulso: # Matou 3 pessoas inocentes
     ss "Eu já havia falado quando chamei o senhor, padre, que eu queria respostas, não rezas ou palavras bonitas, muito menos um massacre na aldeaia que eu vi crescer."
     ss "Como o homem mais velho, que deve manter tudo sob controle, peço que se retire da vila imediatamente, e não volte a nos incomodar."
     ss "Vafanapoli."
-    return
+    jump creditos
 
 label final: # Passou do 7o dia sem matar a Bruxa e sem matar 3 pessoas inocentes
     python:
         mortos = contarMortos()
-        renpy.say(dev, f"Nesta campanha ocorreram {mortos} mortes pelas mãos do padre")
-        renpy.say (dev, "Você não descobriu quem é a bruxa e todos os aldeões morreram.")
-        renpy.say(dev, "Jogue novamente quando o jogo estiver finalizado para uma experiência completa.")
+        renpy.say(pi, f"Sete dias se passaram desde que cheguei nessa vila.")
+        if mortos == 0:
+            renpy.say(pi, "Não incriminei nenhum inocente.")
+            renpy.say(pi, "Mas também não os salvei...")
+        else:
+            plural = "pessoas foram" if mortos > 1 else "pessoa foi"
+            renpy.say(pi,f"{mortos} {plural}  para a fogueira por conta das minhas escolhas...")
+            renpy.say(pi, "Não que isso faça muita diferença agora...")
+        renpy.say(pi, "A noite de ontem foi...")
+        renpy.say(pi, "Difícil...")
+        renpy.say(pi, "Todos os aldeões começaram a falar naquela língua estranha... e em pouco tempo não sobrou mais nada deles além daquela carcaça vazia e corrompida que a bruxa largou.")
+        renpy.say(pi, "É hora de voltar e clamar à Deus por mais discernimento, para que eu possa caçá-la e não tenham mais vítmas como essa pobre vila...")
+        renpy.say(pi, "Talvez até procurar ajuda... Já que claramente não fui capaz de cumprir meu papel.")
+        renpy.say(pi, "Que o Senhor me guie e tenha piedade.")
+    jump creditos
+
+
+label eventos:
+    python:
+        mensagem = eventos_list[numeroEvento]
+        if numeroEvento == 1: # Personagem aleatório (exceto Bruxa) não conversável
+            personagem = personagens_dict[personagens_list[randint(0, len(personagens_list)-1)][1]]
+            while personagem.vivo != True or personagem.nome == "Bruxa":
+                personagem = personagens_dict[personagens_list[randint(0, len(personagens_list)-1)][1]]
+            personagem.conversavel = False # Faz o personagem aleatorizado não ser conversável por hoje
+            if personagem.nomeConhecido == personagem.nome:
+                nomeDisplay = personagem.nomeConhecido
+            else:
+                artigo = 'o' if personagem.genero == 'M' else 'a'
+                nomeDisplay = artigo + " " + personagem.nomeConhecido
+            mensagem = "O poço foi sabotado e " + nomeDisplay + " bebeu a agua. Não vou conseguir falar com " + nomeDisplay + "..."
+        elif numeroEvento == 2: # Perde interação
+            alterar_interacao(-1)
+        elif numeroEvento == 3: # Chance maior de evento ruim na próxima noite
+            modificadorEvento = -1
+        elif numeroEvento == 7: # +2 interações
+            interacaoMaxHoje = 5
+            alterar_interacao(+2)
+        elif numeroEvento == 8: # +1 interação
+            interacaoMaxHoje = 4
+            alterar_interacao(+1)
+        elif numeroEvento == 9: # Chance maior de evento bom na próxima noite
+            modificadorEvento = 1
+        renpy.play("notify.mp3")
+        renpy.call_screen("notificacao", "EVENTO", mensagem)
+        numeroEvento = 0
     return
 
 
-label telanotificacao:
-    python:
-        if numeroevento == 1:
-            renpy.call_screen(notificacao, "Evento aleatorio! perdi 1 interacao hoje!")
-
-
 init python:
-    credito = ('Roteiro', 'Vanessa Santos da Silva \n Gabriel Shiavoni'), ('Direção', 'Vanessa Santos da Silva \n Brunna Iwamura'), ('Direção de Arte', 'Cauã Lopes de Oliveira Santos \n Mel Marilac \n Luísa f. Esquiller '), ('Programação', 'Brunna Iwamura \n Enzo Emidio Ferreira \n Vanessa Santos da Silva'), ('Direção de som', 'Luísa F. Esquiller'), ('Produção', 'Enzo Dias') 
-    creditos_s = "{size=40}Créditos\n\n"
+    credito = ('Co-direção', 'Vanessa Santos da Silva & Brunna Iwamura'), ('Roteiro', 'Roteirista.........................Vanessa Santos da Silva \n Revisão de Roteiro.........................Gabriel Shiavoni \n Assistente.........................Leticia Maciel'),  ('Arte', 'Direção de Arte \n Design de personagem.........................Cauã Lopes de Oliveira Santos \n Design de cenário..........................Mel Marilac \n Design de HUD..........................Luísa f. Esquiller \n Assistentes \n João Vitor Rocha Meira & Ycaro Santos de Carvalho'), ('Programação', 'Direção de Programação..........................Brunna Iwamura \n Game Developer..........................Enzo Emidio Ferreira \n Assistente de Programação..........................Vanessa Santos da Silva \n Assistentes de Game Design \n Alexandre Martins da Silva \n Gabriel Schiavoni \n João Vítor "Jonny" de Paula Oliveira' ), ('Som', 'Direção de Som..........................Luísa F. Esquiller \n Assistente..........................Álefe Folha'), ('Produção', 'Enzo Dias')
+    creditos_s = "{size=70}Créditos\n"
     c1 = ''
     for c in credito:
         if not c1==c[0]:
             creditos_s += "\n{size=60}" + c[0] + "\n"
         creditos_s += "{size=40}" + c[1] + "\n"
         c1=c[0]
-    creditos_s += "\n\n{size=30} Projeto realizado para a disciplina de Hipermídia II em conjunto à Realização Audiovisual\n da Universidade Federal de São Carlos em 2025"
+    creditos_s += "\n\n{size=30} Projeto realizado para a disciplina de Hipermídia II em conjunto à Realização Audiovisual\n da Universidade Federal de São Carlos em 2025 \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" 
 
 #guardando as informações acima
 init:
@@ -2231,9 +2356,9 @@ label creditos:
     # hide finalnumero with dissolve
 
     #fazendo os creditos rolarem
-    show creditosfinais at Move((0.5, 1.8), (0.5, 0.0), credito_velocidade, repeat=False, bounce=False, xanchor="center", yanchor="bottom") with dissolve
+    show creditosfinais at Move((0.5, 1.8), (0.5, -1400), credito_velocidade, repeat=False, bounce=False, xanchor="center", yanchor=900) with dissolve
     pause(credito_velocidade)
-    scene bg tela preta
+    scene tela preta
     with dissolve
 
     #tela agradecendo

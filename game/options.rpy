@@ -37,6 +37,35 @@ Este jogo se passa durante a Inquisição, quando um padre caçador de bruxas é
 A equipe Strigora recomenda jogar esse jogo de forma contínua, para que a experiência e a imersão não sejam afetadas, por isso, o jogo não possui um sistema de salvamentos. Tenha certeza de possuir, em média, 20 minutos para iniciar a gameplay.
 """)
 
+define gui.creditomenu = _p("""{size=+15}{b}Co-Direção{/size}{/b}\n
+ Vanessa Santos da Silva & Brunna Iwamura\n
+ {size=+15}{b} Roteiro {/size}{/b} \n
+ {b}Roteirista:{/b}   Vanessa Santos da Silva \n 
+ {b}Revisão de Roteiro:{/b}   Gabriel Shiavoni \n 
+ {b}Assistente:{/b}   Leticia Maciel \n
+{size=+15} {b}Arte {/size}{/b} \n
+{b}Direção de Arte{/b} \n 
+{b}Design de personagem:{/b}   Cauã Lopes de Oliveira Santos \n 
+{b}Design de cenário:{/b}   Mel Marilac \n 
+{b}Design de HUD:{/b}   Luísa f. Esquiller \n 
+{b}Assistentes {/b}\n
+João Vitor Rocha Meira \n
+Ycaro Santos de Carvalho \n
+{size=+15} {b}Programação {/size}{/b} \n
+{b}Direção de Programação:{/b}   Brunna Iwamura \n 
+{b}Game Developer:{/b}   Enzo Emidio Ferreira \n 
+{b}Assistente de Programação:{/b}   Vanessa Santos da Silva \n
+{b}Assistentes de Game Design{/b} \n
+Alexandre Martins da Silva \n
+Gabriel Schiavoni \n
+João Vítor "Jonny" de Paula Oliveira \n 
+{size=+15}{b}Som {/size}{/b}\n
+{b}Direção de Som:{/b}   Luísa F. Esquiller \n 
+{b}Assistente:{/b}   Álefe Folha \n
+{size=+15}{b}Produção{/size}{/b} \n
+Enzo Dias
+ 
+ """)
 
 ## Um nome curto para o jogo usado para executáveis e diretórios na distribuição
 ## construída. Ele deve ser somente ASCII e não deve conter espaços, dois pontos
@@ -54,6 +83,8 @@ define build.name = "Strigora"
 define config.has_sound = True
 define config.has_music = True
 define config.has_voice = True
+
+default preferences.volume.sfx = 0.3
 
 
 ## Para permitir que o usuário reproduza um som de teste no canal de som ou

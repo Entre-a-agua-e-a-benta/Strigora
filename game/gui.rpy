@@ -38,7 +38,7 @@ define gui.idle_color = '#888888'
 define gui.idle_small_color = '#aaaaaa'
 
 ## A cor que é usada para botões e barras que passam pelo mouse.
-define gui.hover_color = '#4d4069'
+define gui.hover_color = '#5b526e'
 
 ## A cor usada em um botão de texto quando ele está selecionado, mas não
 ## focalizado. Um botão estará selecionado se for a tela atual ou o valor de
@@ -80,7 +80,7 @@ define gui.name_text_size = 45
 define gui.interface_text_size = 33
 
 ## O tamanho dos rótulos na interface de usuário do jogo.
-define gui.label_text_size = 40
+define gui.label_text_size = 50
 
 ## O tamanho do texto na tela de notificação.
 define gui.notify_text_size = 24
@@ -377,7 +377,7 @@ define gui.history_text_xalign = 0.5
 ## A tela do modo NVL exibe o diálogo falado pelos personagens do modo NVL.
 
 ## As bordas do plano de fundo da janela de plano de fundo do modo NVL.
-define gui.nvl_borders = Borders(0, 15, 0, 30)
+define gui.nvl_borders = Borders(0, 10, 0, 20)
 
 ## O número máximo de entradas do modo NVL que o Ren'Py exibirá. Quando mais
 ## entradas do que isso forem exibidas, a entrada mais antiga será removida.
@@ -385,34 +385,34 @@ define gui.nvl_list_length = 6
 
 ## A altura de uma entrada no modo NVL. Defina como None para que as entradas
 ## ajustem a altura dinamicamente.
-define gui.nvl_height = 173
+define gui.nvl_height = 115
 
 ## O espaçamento entre as entradas do modo NVL quando gui.nvl_height é Nenhum e
 ## entre as entradas do modo NVL e um menu do modo NVL.
-define gui.nvl_spacing = 15
+define gui.nvl_spacing = 10
 
 ## A posição, a largura e o alinhamento do rótulo que fornece o nome do
 ## caractere falante.
-define gui.nvl_name_xpos = 645
+define gui.nvl_name_xpos = 430
 define gui.nvl_name_ypos = 0
-define gui.nvl_name_width = 225
+define gui.nvl_name_width = 150
 define gui.nvl_name_xalign = 1.0
 
 ## A posição, a largura e o alinhamento do texto da caixa de diálogo.
-define gui.nvl_text_xpos = 675
-define gui.nvl_text_ypos = 12
-define gui.nvl_text_width = 885
+define gui.nvl_text_xpos = 450
+define gui.nvl_text_ypos = 8
+define gui.nvl_text_width = 590
 define gui.nvl_text_xalign = 0.0
 
 ## A posição, a largura e o alinhamento do texto nvl_thought (o texto dito pelo
 ## caractere nvl_narrator).
-define gui.nvl_thought_xpos = 360
+define gui.nvl_thought_xpos = 240
 define gui.nvl_thought_ypos = 0
-define gui.nvl_thought_width = 1170
+define gui.nvl_thought_width = 780
 define gui.nvl_thought_xalign = 0.0
 
 ## A posição dos botões de menu nvl.
-define gui.nvl_button_xpos = 675
+define gui.nvl_button_xpos = 450
 define gui.nvl_button_xalign = 0.0
 
 
@@ -528,6 +528,9 @@ transform preto_e_branco:
 
 transform preto:
     matrixcolor TintMatrix("#000000")
+
+transform sepia:
+    matrixcolor SepiaMatrix("#be914d")
 
 transform swap_red_and_green:
     matrixcolor Matrix([0.0, 1.0, 0.0, 0.0,
