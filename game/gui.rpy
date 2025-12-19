@@ -521,7 +521,7 @@ transform zoom_telapistas:
     on idle:
         linear 0.1 zoom 0.25  # Returns to original size over 0.1 seconds
 
-define config.mouse = {'default' : [('images/botoes/mouse.png', 0, 34)]}
+define config.mouse = {'default' : [('images/botoes/mouse.png', 0, 63)]}
 
 transform preto_e_branco:
     matrixcolor SaturationMatrix(0)

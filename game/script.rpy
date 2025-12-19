@@ -4,7 +4,7 @@
 default name_side = "left"
 
 default dia = 1 # Define dia incial
-default interacao = 1 # Define quantas interações começa
+default interacao = 3 # Define quantas interações começa
 default interacaoMaxHoje = 3 # Número max de interações no dia p/ HUD
 
 default modificadorEvento = 0 # Modificador de chance para eventos aleatórios
