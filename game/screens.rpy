@@ -1722,9 +1722,10 @@ screen tavernaint():
 
 screen casaSalvatoreINT():
     tag passos
-    use botao("botao_passos", 0.1, (150, 900), "Sair da casa", "caminhobebado_margarida", True, True, "passos.mp3")
-    if personagens_dict["William"].vivo and personagens_dict["Salvatore"].progresso >= 2:
+    use botao("botao_passos", 0.1, (150, 900), "Sair da casa", "caminhobebado_margarida", True, True, "passos.mp3", setFlag=("entroufundos", False))
+    if personagens_dict["William"].vivo and (personagens_dict["Salvatore"].progresso >= 2 or entroufundos == True):
         use botao(personagens_dict["William"].imagem, 0.18, (900, 200), "Falar com o garoto", "dialogo_william", clickSound="click.mp3")
+
 
 ###Tela da casa do bebado ext
 screen casabebado():
@@ -1739,7 +1740,7 @@ screen casapadre():
     tag passos
     if interacao > 0:
         use botao("botao_passos", 0.1, (1200, 900), "Sair do quarto", "tavernaint", False, True, "passos.mp3")
-    use botao("mural de pistas", 0.99, (845, 254), "Ver quadro de pistas", "noite")
+    use botao("mural de pistas", 0.99, (840, 260), "Ver quadro de pistas", "noite")
 
 ## Tela da casa da curandeira externa
 screen casaMargaridaEXT():
@@ -1772,6 +1773,9 @@ screen caminhobebado_margarida():
     use botao("botao_passos", 0.1, (650, 400), "Casa do senhor", "casasalvatoreint", True, True, "passos.mp3")
     if personagens_dict["Salvatore"].vivo:
         use botao(personagens_dict["Salvatore"].imagem, 0.12, (330, 400), "Falar com o senhor da vila", "dialogo_salvatore", clickSound="click.mp3")
+    if personagens_dict["Agnes"].listaPerguntas[2] == True:
+        use botao("botao_passos", 0.1, (750, 300), "Entrar pelos fundos", "casasalvatoreint_fundos", True, True, "passos.mp3")
+        
 
 ## Holga
 screen casaHolgaEXT():
@@ -1820,7 +1824,7 @@ screen plantacao():
 
 ############################################################# FUNÇÂO BOTÂO ##############################################################
 
-screen botao(imagem, zoomBase, posicao, texto, jumpTo, textoEmBaixo=True, temHover=False, clickSound=None):
+screen botao(imagem, zoomBase, posicao, texto, jumpTo, textoEmBaixo=True, temHover=False, clickSound=None, setFlag=None):
     tag passos
     vbox:
         xanchor 0.5
@@ -1834,6 +1838,8 @@ screen botao(imagem, zoomBase, posicao, texto, jumpTo, textoEmBaixo=True, temHov
         $ action_list = [SetLocalVariable("displayText", ""), Jump(jumpTo)]
         if clickSound != None:
             $ action_list.insert(1, Play("sound", clickSound))
+        if setFlag != None:
+            $ action_list.insert(1, SetVariable(setFlag[0], setFlag[1]))
         imagebutton:
             xalign 0.5
             if temHover:
@@ -2085,6 +2091,7 @@ screen pistas_personagem(personagem):
             text pistas_list[2]
             text pistas_list[3]
             text pistas_list[4]
+            text pistas_list[5]
 
     python:
         retrato = personagens_dict[personagem].retrato
@@ -2169,3 +2176,5 @@ screen notificacao(titulo, mensagem):
                 hover_sound "audio/menu_hover.mp3"
                 activate_sound "audio/menu_close.mp3"
                 action Return()
+init python:
+    config.rollback_enabled = False

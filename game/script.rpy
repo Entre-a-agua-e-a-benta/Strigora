@@ -19,6 +19,7 @@ default afastou_lazaro = False
 # Variáveis do dialogo com william
 default naotinta_william = False
 default sombrass_william = False
+default entroufundos = False
 
 ## Personagens
 define personagens_list = list()
@@ -145,7 +146,7 @@ label start:
                 if mortos >= 3 and dia <= 7: # Matou 3 pessoas antes do último dia
                     renpy.jump("expulso")
             if dia == 7:
-                renpy.say(pi, "Hoje é o último dia... Preciso exorcizar a Bruxa.")
+                renpy.call_in_new_context("ultimodia")
             elif dia >= 8:
                 renpy.jump("final")
             evento_aleatorio()
@@ -211,7 +212,7 @@ label start:
             list: Uma lista contendo as pistas do personagem (no momento são 5 no máximo para cada um).
         """
         def atualizar_pistas(personagem: str)->list:
-            pistas_list = ["", "", "", "", ""]
+            pistas_list = ["", "", "", "", "", ""]
             i = 0
             for pista in personagens_dict[personagem].listaPistas:
                 pistas_list[i] = pista
@@ -438,6 +439,10 @@ label casasalvatoreint:
     scene bg casa salvatore
     call screen casaSalvatoreINT
 
+label casasalvatoreint_fundos:
+    $ entroufundos = True
+    jump casasalvatoreint
+
 ############# Arruma posição dos personagens dentro do dialogo ###############################
 
 
@@ -568,7 +573,7 @@ label crianca_vincent:
     v "Eu cuido dela."
     $ mostrar_personagem("Vincent", 'T')
     v "Mas de um tempo para cá, ela parece doente. Ás vezes, fala coisa dormindo e acorda com febre alta. Eu tento ser como um pai para ela, mas mesmo assim acho que às vezes não sou o suficiente."
-    $ adicionar_pista("Seren", "Parece doente, às vezes, fala coisa dormindo e acorda com febre alta.")
+    $ adicionar_pista("Seren", "Ás vezes, fala coisa dormindo e acorda com febre alta.")
     v "Pedirei para ela falar com o senhor."
     $ checar_interacao()
     jump tavernaint
@@ -668,10 +673,10 @@ label incomoda_seren:
     s "Ele nunca disse que me ama, mas também nunca me culpou nem me olhou triste."
     $ mostrar_personagem("Seren", 'T')
     s "As vezes acontecem coisas estranhas a noite… Não é todo sonho que dói. Só os que parecem verdade."
-    $ adicionar_fala("Seren", "Ás vezes acontecem coisas estranhas a noite… Não é todo sonho que dói. Só os que parecem verdade.")
+    $ adicionar_fala("Seren", "Acontecem coisas estranhas a noite… Não é todo sonho que dói. Só os que parecem verdade.")
     $ mostrar_personagem("Padre", 'N')
     menu:
-        "Vcê tem tido sonhos estranhos?":
+        "Você tem tido sonhos estranhos?":
             jump sonhos_seren
         "Como são esses sonhos?":
             jump sonhos_seren
@@ -682,7 +687,7 @@ label sonhos_seren:
     s "No sonho, ando pelas ruas da aldeia com passos que não são meus… As mãos... as mãos que estendo são pequenas, como as minhas. Mas elas brilham. Como brasa acesa no escuro. E quando tocam algo, tudo escurece..."
     $ mostrar_personagem("Seren", 'T')
     s "E o que mais me assusta: há uma voz dentro de mim. Mas ela não fala comigo. Ela me usa… "
-    $ adicionar_pista("Seren", "No sonho, \"anda pelas ruas da aldeia com passos que não são seus e mãos que brilham como brasa acesa no escuro\" e há uma voz dentro dela que não fala com ela, mas a usa.")
+    $ adicionar_pista("Seren", "No sonho, \"anda pelas ruas da aldeia com passos que não são seus e mãos pequenas como as dela\" e há uma voz que não fala com ela, mas a usa.")
     s "Mas o pior é quando vejo ele… o menino com voz de mulher… Ele fala, mas a boca não mexe… Ele parece viver numa tristeza que me queima..."
     $ adicionar_fala("Seren", "\"Mas o pior é quando vejo ele… o menino com voz de mulher… Ele fala, mas a boca não mexe… Ele parece viver numa tristeza que me queima...\".")
     s "Quando acordo, a pele está quente como se eu tivesse corrido por horas. A febre queima atrás dos olhos, e minha garganta parece de vidro."
@@ -700,7 +705,7 @@ label sonhos_seren:
 label sonhoontem_seren:
     $ mostrar_personagem("Seren", 'N')
     s "Ontem… ontem no sonho eu estava em frente ao espelho de uma casa grande, e o menino estava dentro do espelho me olhando de volta. Só que, por um instante, os olhos dele eram os meus…"
-    $ adicionar_fala("Seren", "\"O menino estava dentro do espelho me olhando de volta. Só que, por um instante, os olhos dele eram os meus…\".")
+    $ adicionar_fala("Seren", "\"O menino estava dentro do espelho me olhando de volta. Por um instante, os olhos dele eram os meus…\".")
     $ mostrar_personagem("Padre", 'N')
     menu:
         "Conte mais sobre esse menino do sonho":
@@ -708,9 +713,9 @@ label sonhoontem_seren:
 label menino_seren:
     $ mostrar_personagem("Seren", 'N')
     s "Ele parece triste… Sempre me olha de um jeito estranho, como se me conhecesse."
-    $ adicionar_fala("Seren", "O menino do sonho \"Sempre me olha de um jeito estranho, como se me conhecesse\".")
+    $ adicionar_fala("Seren", "O menino do sonho \"Me olha de um jeito estranho, como se me conhecesse\".")
     s "Uma vez eu vi meu rosto no lugar do dele. Mas eu sei que não era eu… Eu estava olhando pra mim, mas eu era outra pessoa. Não sei explicar…"
-    $ adicionar_fala("Seren", "\"Uma vez eu vi meu rosto no lugar do \"menino do sonho\". Mas eu sei que não era eu… Eu estava olhando pra mim, mas eu era outra pessoa.\".")
+    $ adicionar_fala("Seren", "\"Uma vez eu vi meu rosto no lugar do \"menino do sonho\". Mas eu sei que não era eu… eu era outra pessoa.\".")
     $ checar_interacao()
     jump tavernaint
 
@@ -1060,7 +1065,7 @@ label escolhas_holga:
         "Boatos dizem que você viu essa tal bruxa, me fale mais sobre isso" if personagens_dict["Holga"].conversouHoje == False and personagens_dict["Holga"].progresso == 2:
             $ progredir("Holga")
             jump viubruxa_holga
-            
+
         "O que você fez ontem a noite?" if personagens_dict["Lázaro"].listaPerguntas[0] == False:
             $ personagens_dict["Lázaro"].listaPerguntas[0] = True
             jump ontem_holga
@@ -1098,8 +1103,8 @@ label continuacao_holga:
     h "Mas então, ela morreu na floresta. Sumiu. Sobraram apenas uns fiapos do vestido na beira do brejo..."
     h "E os galhos… quebrados, como se algo a tivesse arrastado para dentro da mata."
     h "Há quem diga que foi a bruxa."
-    h "Tudo o que ouvi foi a sua voz chamando por ajuda… mas… em uma língua… que não era a dela."
-    $ adicionar_pista("Bruxa", 'Fala e faz as vitimas falarem em uma língua estranha')
+    h "Tudo o que ouvi foi a sua voz chamando por ajuda… mas… em uma voz distorcida… que não era a dela."
+    $ adicionar_pista("Bruxa", 'Fala e faz as vitimas falarem em uma voz distorcida.')
     h "Os velhos dizem que foi castigo… Os jovens, murmuram que foi inveja..."
     h "Desde então sinto sua falta todos os dias."
     $ checar_interacao()
@@ -1556,6 +1561,10 @@ label escolhas_agnes:
             $ personagens_dict["Agnes"].listaPerguntas[1] = True
             jump estranho_agnes
 
+        "Você já falou com o filho do senhor?" if personagens_dict["Agnes"].listaPerguntas[0] == True and personagens_dict["Agnes"].listaPerguntas[2] == False:
+            $ personagens_dict["Agnes"].listaPerguntas[2] = True
+            jump william_agnes
+
         "Não perguntar nada":
             jump praca2
 
@@ -1623,6 +1632,7 @@ label janela_agnes:
     a "Estava escuro, mas a  escuridão não cobria tudo ali."
     a "A luz fraca do luar batia na vidraça."
     a "Eu vi o pequeno William. Ele estava deitado na cama, mas parecia acordado."
+    $ personagens_dict["William"].conhecer()
     $ checar_interacao()
     jump praca2
 
@@ -1637,6 +1647,22 @@ label estranho_agnes:
         a "O Vincent… ele me trata como um rato, fala de mim como se eu fosse um animal."
     $ mostrar_personagem("Agnes", 'F')
     a "A Margarida ainda é gentil comigo… pelo menos…"
+    $ checar_interacao()
+    jump praca2
+
+label william_agnes:
+    $ mostrar_personagem("Agnes", 'N')
+    $ alterar_interacao(-1)
+    a "O Salvatore nunca deixa ele sair de casa..."
+    a "Mas, já vi ele algumas vezes pela janela."
+    a "Como passo algumas noites no celeiro deles, sei como entrar lá."
+    $ mostrar_personagem("Padre", 'N')
+    menu:
+        "Consegue me levar até ele?":
+            jump levar_agnes
+label levar_agnes:
+    $ mostrar_personagem("Agnes", 'N')
+    a "É só ficar quieto e entrar, o Salvatore geralmente fica muito desatento e nem percebe."
     $ checar_interacao()
     jump praca2
 
@@ -1964,7 +1990,7 @@ label dialogo_william:
     call hide_all_screens
     if personagens_dict["William"].conversavel:
         if personagens_dict["Salvatore"].vivo == False:
-            $ mostrar_personagem("Salvatore", 'T')
+            $ mostrar_personagem("William", 'T')
             w "Meu pai..."
             w "Ele era tudo que eu tinha..."
             w "O que será de mim agora? Com as pessoas ruins que ele se esforçava para me proteger lá fora..."
@@ -2012,6 +2038,7 @@ label meconte_william:
     $ alterar_interacao(-1)
     w "Olá, eu sou o Wi… William."
     w "Só William."
+    $ personagens_dict["William"].conhecer()
     w "Tenho dez anos. Meu pai cuida da aldeia toda, mas ele diz que eu tenho que ficar em casa, porque ainda não entendo o que é certo."
     w "Ele nunca me deixa sair…"
     w "Papai diz que tem gente ruim lá fora. Gente que fala demais, que inventa coisas, que olha onde não deve…"
@@ -2133,7 +2160,7 @@ label dialogo_bruxa: # Matou a Bruxa
     scene tela preta
     with dis
     call hide_all_screens
-
+    hide screen HUD
     $ tocar_musica("tema.mp3")
 
     python:
@@ -2230,6 +2257,7 @@ label dialogo_bruxa: # Matou a Bruxa
     $ mostrar_personagem("Bruxa", 'C') 
     bx "Ele não terá."
     scene tela preta
+    stop music
     $ renpy.movie_cutscene("images/cutscene_final.webm")
 
     jump creditos
@@ -2279,6 +2307,8 @@ label morte2:
         renpy.jump("casapadre")
 
 label expulso: # Matou 3 pessoas inocentes
+    call hide_all_screens
+    hide screen HUD
     scene bg casa padre int
     python:
         genero = personagens_dict[matar_personagem].genero
@@ -2308,6 +2338,8 @@ label expulso: # Matou 3 pessoas inocentes
     jump creditos
 
 label final: # Passou do 7o dia sem matar a Bruxa e sem matar 3 pessoas inocentes
+    call hide_all_screens
+    hide screen HUD
     python:
         mortos = contarMortos()
         renpy.say(pi, f"Sete dias se passaram desde que cheguei nessa vila.")
@@ -2320,7 +2352,7 @@ label final: # Passou do 7o dia sem matar a Bruxa e sem matar 3 pessoas inocente
             renpy.say(pi, "Não que isso faça muita diferença agora...")
         renpy.say(pi, "A noite de ontem foi...")
         renpy.say(pi, "Difícil...")
-        renpy.say(pi, "Todos os aldeões começaram a falar naquela língua estranha... e em pouco tempo não sobrou mais nada deles além daquela carcaça vazia e corrompida que a bruxa largou.")
+        renpy.say(pi, "Todos os aldeões começaram a falar com aquela voz distorcida... e em pouco tempo não sobrou mais nada deles além daquela carcaça vazia e corrompida que a bruxa largou.")
         renpy.say(pi, "É hora de voltar e clamar à Deus por mais discernimento, para que eu possa caçá-la e não tenham mais vítmas como essa pobre vila...")
         renpy.say(pi, "Talvez até procurar ajuda... Já que claramente não fui capaz de cumprir meu papel.")
         renpy.say(pi, "Que o Senhor me guie e tenha piedade.")
@@ -2395,7 +2427,7 @@ label creditos:
     # hide finalnumero with dissolve
 
     #fazendo os creditos rolarem
-    show creditosfinais at Move((0.5, 1.8), (0.5, -1400), credito_velocidade, repeat=False, bounce=False, xanchor="center", yanchor=900) with dissolve
+    show creditosfinais at Move((0.5, 1.8), (0.5, -1700), credito_velocidade, repeat=False, bounce=False, xanchor="center", yanchor=900) with dissolve
     pause(credito_velocidade)
     scene tela preta
     with dissolve
@@ -2406,4 +2438,9 @@ label creditos:
     $ renpy.music.stop(fadeout=2)
     $ renpy.pause(2.0)
 
+    return
+
+label ultimodia:
+    scene bg casa padre int
+    pi "Hoje é o último dia... Preciso exorcizar a Bruxa."
     return

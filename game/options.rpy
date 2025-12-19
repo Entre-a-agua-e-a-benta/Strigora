@@ -34,7 +34,7 @@ O nome Strigora refere-se a um festival anual que ocorre em Triora, uma vila na 
 
 Este jogo se passa durante a Inquisição, quando um padre caçador de bruxas é enviado à vila isolada de Triora, na Itália, para investigar relatos de bruxaria. Em meio ao medo e à desconfiança, o jogador deve explorar o vilarejo, interagir com os moradores, realizar missões paralelas, reunir pistas e decidir quem acusar a cada noite.
 
-A equipe Strigora recomenda jogar esse jogo de forma contínua, para que a experiência e a imersão não sejam afetadas, por isso, o jogo não possui um sistema de salvamentos. Tenha certeza de possuir, em média, 20 minutos para iniciar a gameplay.
+A equipe Strigora recomenda jogar esse jogo de forma contínua, para que a experiência e a imersão não sejam afetadas, por isso, o jogo não possui um sistema de salvamentos. Tenha certeza de possuir, em média, 30 minutos para iniciar a gameplay.
 """)
 
 define gui.creditomenu = _p("""{size=+15}{b}Co-Direção{/size}{/b}\n
