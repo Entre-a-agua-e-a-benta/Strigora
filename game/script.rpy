@@ -279,8 +279,6 @@ label primeiracena:
         personagens_dict["Seren"].descricao = "Tem cerca de 10 anos. Ela acredita ser culpada pela morte de sua mãe e se sente difícil de ser enxergada pelo pai. Seu tio, Vincent, é quem cuida dela."
         personagens_dict["Bruxa"].descricao = "A bruxa que está devastando a vila."
 
-    jump tavernaint
-
     $ renpy.movie_cutscene("images/cutscene_inicial.webm")
 
     $ personagens_dict["Salvatore"].conhecido = True
