@@ -84,7 +84,7 @@ define config.has_sound = True
 define config.has_music = True
 define config.has_voice = True
 
-default preferences.volume.sfx = 0.3
+default preferences.volume.sfx = 0.33
 
 
 ## Para permitir que o usuário reproduza um som de teste no canal de som ou

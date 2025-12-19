@@ -100,7 +100,7 @@ label start:
                             (s, "Seren", 'F', segunda_fileira, 3, crianca_right),
                             (bx, "Bruxa", 'F', (0, 0), 1, bruxa_right)]
 
-        eventos_list = ["Algum problema ocorreu",
+        eventos_list = ["Algum problema ocorreu.",
                         "",
                         "Você não dormiu bem essa noite e se sente indisposto pra falar com as pessoas. (-1 interação)",
                         "Os animais da vila adoeceram... Parece ser um mal presságio. (chance maior de evento ruim na próxima noite)",
@@ -199,7 +199,7 @@ label start:
             global personagens_dict
             if pista not in personagens_dict[personagem].listaPistas:
                 personagens_dict[personagem].listaPistas.append("- " + pista)
-                renpy.play("notify.mp3", relative_volume=1.67)
+                renpy.play("notify.mp3", relative_volume=+17)
                 renpy.call_screen("notificacao", "Pista Adquirida!", personagens_dict[personagem].nomeConhecido + " " + pista[0].lower() + pista[1:])
                 # renpy.notify("Pista adquirida: " + personagens_dict[personagem].nomeConhecido + " " + pista[0].lower() + pista[1:])
  
@@ -222,7 +222,7 @@ label start:
             global personagens_dict
             if fala not in personagens_dict[personagem].listaFalas:
                 personagens_dict[personagem].listaFalas.append("- " + fala)
-                renpy.play("notify.mp3", relative_volume=1.67)
+                renpy.play("notify.mp3", relative_volume=+17)
                 renpy.notify("Falas de " + personagens_dict[personagem].nomeConhecido + ": " + fala)
         
         def atualizar_falas(personagem: str)->list:
@@ -475,7 +475,7 @@ label dialogo_vincent:
     
     else:
         $ mostrar_personagem("Vincent", 'T')
-        v "Não estou com vontade de conversar hoje..."
+        v "Não estou me sentindo bem para conversar hoje..."
         jump tavernaint
     
 label escolhas_vincent:
@@ -565,7 +565,7 @@ label crianca_vincent:
     $ mostrar_personagem("Vincent", 'N')
     v "A menina… Bom… Ela está viva, isso é mais do que posso dizer de muita gente…"
     $ mostrar_personagem("Vincent", 'F')
-    v "Eu cuido dela"
+    v "Eu cuido dela."
     $ mostrar_personagem("Vincent", 'T')
     v "Mas de um tempo para cá, ela parece doente. Ás vezes, fala coisa dormindo e acorda com febre alta. Eu tento ser como um pai para ela, mas mesmo assim acho que às vezes não sou o suficiente."
     $ adicionar_pista("Seren", "Parece doente, às vezes, fala coisa dormindo e acorda com febre alta.")
@@ -621,13 +621,13 @@ label dialogo_seren:
         jump escolhas_seren   
     else:
         $ mostrar_personagem("Seren", 'T')
-        s "Não estou com vontade de conversar hoje..."
+        s "A água tava muito ruim... não quero conversar sobre nada hoje..."
         jump tavernaint 
 
 label escolhas_seren:
     $ mostrar_personagem("Padre", 'N')
     menu:
-        "Me conte sobre você." if personagens_dict["Seren"].conversouHoje == False and personagens_dict["Seren"].progresso == 0:
+        "Me conte sobre você" if personagens_dict["Seren"].conversouHoje == False and personagens_dict["Seren"].progresso == 0:
             $ progredir("Seren")
             jump meconte_seren
         "Vejo que algo te incomoda. O que é?"if personagens_dict["Seren"].conversouHoje == False and personagens_dict["Seren"].progresso == 1:
@@ -659,13 +659,13 @@ label meconte_seren:
 label incomoda_seren:
     $ alterar_interacao(-1)
     $ mostrar_personagem("Seren", 'T')
-    s "Queria ser mais forte"
+    s "Queria ser mais forte."
     s "Às vezes eu finjo que não vejo quando meu pai me olha triste."
     s "Eu entendo pq ele me olha assim..."
     s "Ao menos ele bebe pra esquecer, mas eu lembro por nós dois. Lembro mesmo do que nunca vi…"
     $ mostrar_personagem("Seren", 'F')
     s "Ainda bem que o tio me dá pão, me dá coberta, e até me deixa ficar atrás do balcão quando chove."
-    s "Ele nunca disse que me ama, mas também nunca me culpou nem me olhou triste"
+    s "Ele nunca disse que me ama, mas também nunca me culpou nem me olhou triste."
     $ mostrar_personagem("Seren", 'T')
     s "As vezes acontecem coisas estranhas a noite… Não é todo sonho que dói. Só os que parecem verdade."
     $ adicionar_fala("Seren", "Ás vezes acontecem coisas estranhas a noite… Não é todo sonho que dói. Só os que parecem verdade.")
@@ -707,7 +707,7 @@ label sonhoontem_seren:
             jump menino_seren
 label menino_seren:
     $ mostrar_personagem("Seren", 'N')
-    s "Ele parece triste… Sempre me olha de um jeito estranho, como se me conhecesse"
+    s "Ele parece triste… Sempre me olha de um jeito estranho, como se me conhecesse."
     $ adicionar_fala("Seren", "O menino do sonho \"Sempre me olha de um jeito estranho, como se me conhecesse\".")
     s "Uma vez eu vi meu rosto no lugar do dele. Mas eu sei que não era eu… Eu estava olhando pra mim, mas eu era outra pessoa. Não sei explicar…"
     $ adicionar_fala("Seren", "\"Uma vez eu vi meu rosto no lugar do \"menino do sonho\". Mas eu sei que não era eu… Eu estava olhando pra mim, mas eu era outra pessoa.\".")
@@ -727,13 +727,19 @@ label ontem_seren:
 
 label habitante_seren:
     $ alterar_interacao(-1)
-    $ mostrar_personagem("Seren", 'N')
-    s "Tem a dona Margarida... Não que ela seja má, eu acho. Mas ela olha pras pessoas como se lesse o que tem dentro."
-    $ adicionar_pista("Margarida", "Olha pras pessoas como se lesse o que tem dentro.")
-    $ mostrar_personagem("Seren", 'R')
-    s "Um dia ela olhou pra mim, encostou a mão na minha testa e disse: \"Nem todo espelho mostra só o que é de fora\". Eu não entendi, mas me deu um arrepio."
-    $ adicionar_pista("Margarida", "Disse \"Nem todo espelho mostra só o que é de fora\" para Seren.")
-    $ adicionar_pista("Seren", "Escutou Margarida dizendo pra ela \"Nem todo espelho mostra só o que é de fora\".")
+    if personagens_dict["Margarida"].vivo == True:
+        $ mostrar_personagem("Seren", 'N')
+        s "Tem a dona Margarida... Não que ela seja má, eu acho. Mas ela olha pras pessoas como se lesse o que tem dentro."
+        $ adicionar_pista("Margarida", "Olha pras pessoas como se lesse o que tem dentro.")
+        $ mostrar_personagem("Seren", 'R')
+        s "Um dia ela olhou pra mim, encostou a mão na minha testa e disse: \"Nem todo espelho mostra só o que é de fora\". Eu não entendi, mas me deu um arrepio."
+        $ adicionar_pista("Margarida", "Disse \"Nem todo espelho mostra só o que é de fora\" para Seren.")
+        $ adicionar_pista("Seren", "Escutou Margarida dizendo pra ela \"Nem todo espelho mostra só o que é de fora\".")
+    else:
+        $ mostrar_personagem("Seren", 'T')
+        s "Eu achava a Margarida meio estranha."
+        s "Mas a gente viu que ela não era do má."
+        s "As vezes penso nela a noite."
     $ checar_interacao()
     jump tavernaint
 
@@ -763,7 +769,7 @@ label dialogo_margarida:
         jump escolhas_margarida
     else:
         $ mostrar_personagem("Margarida", 'T')
-        s "Não estou com vontade de conversar hoje..."
+        s "Não estou me sentindo bem conversar hoje..."
         jump casamargaridaext 
 
 label escolhas_margarida:
@@ -787,9 +793,9 @@ label escolhas_margarida:
 label meconte_margarida:
     $ mostrar_personagem("Margarida", 'N')
     $ alterar_interacao(-1)
-    m "Contar? o que? Porque faria isso? Já sei o que pensa. Sei o que todos pensam… "
+    m "Contar? O que? Porque faria isso? Já sei o que pensa. Sei o que todos pensam… "
     $ mostrar_personagem("Margarida", 'R')
-    m "Uma mulher sozinha , que mexe com o que não entendem, e já afiam a corda, já juntam lenha…"
+    m "Uma mulher sozinha, que mexe com o que não entendem, e já afiam a corda. Já juntam lenha…"
     m "Ignorantes…"
     m "Eles me chamam de contadora de histórias, como se eu fosse apenas isso."
     m "Eu tenho nome, me chamo Margarida."
@@ -806,7 +812,7 @@ label vila_margarida:
     m "Lidando? Hmpf… Não estão lidando. Estão se agarrando nas cruzes e nas culpas, como sempre fizeram. Fingem que rezam, mas trancam as portas antes do pôr do sol."
     $ mostrar_personagem("Margarida", 'T')
     m "Quando a terra começa a apodrecer, os ratos são os primeiros a fugir. Mas aqui? Aqui ninguém pode fugir. Este é o purgatório deles. Eles sussurram, acusam, rezam… mas ninguém realmente escuta."
-    m "Mas eu? eu escuto. E o que ouço é… medo. Medo, mais do que dor."
+    m "Mas eu? Eu escuto. E o que ouço é… medo. Medo, mais do que dor."
     m "A vila não está lidando… está esperando. Esperando que alguém sangre primeiro, para poder chamar de castigo, ou de milagre."
     $ checar_interacao()
     jump casamargaridaext
@@ -828,8 +834,8 @@ label historia_margarida:
     m "Dizem que, certa vez, uma mulher andava sozinha pela mata, cheia de dor e raiva do mundo. Chorava tanto que as árvores taparam os ouvidos. Foi quando encontrou um ninho, entre galhos partidos, com um choro que não era de ave nem de fera…"
     m "Lá dentro? Dois bebês, iguais… Como um espelho."
     $ adicionar_fala("Margarida", "Conta uma história de uma mulher que vivia na mata e encontrou dois bebês iguais como um espelho.")
-    m "Mas um tinha os olhos fechados e sorria dormindo. O outro tinha os olhos abertos… e não piscava… A mulher, sozinha no mundo, mesmo sabendo que não era seu,  levou um deles nos braços."
-    $ adicionar_fala("Margarida", "Em sua história \"Um tinha os olhos fechados e sorria o outro tinha olhos abertos e não piscava\" e a mulher \"levou um deles nos braços\".")
+    m "Mas um tinha os olhos fechados e sorria dormindo. O outro tinha os olhos abertos… e não piscava… A mulher, sozinha no mundo, mesmo sabendo que não era seu, levou um deles nos braços."
+    $ adicionar_fala("Margarida", "Em sua história \"Um tinha os olhos fechados e sorria, o outro tinha olhos abertos e não piscava,\" e a mulher \"levou um deles nos braços\".")
     m "Disse: \"É um sinal… O destino me escolheu.\"  Alimentou… deu nome… cobriu de orações. O outro bebê?… ficou. Nunca chorou. Nunca morreu. Só… ficou. Esperando."
     $ adicionar_fala("Margarida", "A mulher da história cuidou do bebê que levou, enquanto o outro \"Nunca chorou nem morreu. Só… ficou esperando.\".")
     m "Um dia… a criança levada perguntou: \"Quem é meu pai?\" E ela respondeu: \"Um homem… que não tem nome… e que não pode ser acordado.\"."
@@ -857,7 +863,7 @@ label doce_margarida:
     m "A língua acha gostoso, o corpo… não."
     m "Eu diria para ter cuidado com comida que lhe oferecerem, padre. Especialmente vindo de gente que sorri rápido demais."
     $ adicionar_fala("Margarida", "Eu diria para ter cuidado com comida que lhe oferecerem, padre. Especialmente vindo de gente que sorri rápido demais.")
-    m "O doce mata mais suavemente que a lâmina"
+    m "O doce mata mais suavemente que a lâmina."
     $ checar_interacao()
     jump casamargaridaext
 
@@ -869,11 +875,11 @@ label dialogo_lazaro:
             $ personagens_dict["Lázaro"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
             p "Buongiorno…"
-            p "Não sei a notícia chegou aqui, mas eu estou encarregado de achar o culpado pelas coisas que vem acontecendo na região, pensei que, mesmo doente, você talvez tivesse alguma informação para contribuir... ou, qo menos, algo interessante a dizer."
+            p "Não sei a notícia chegou aqui, mas eu estou encarregado de achar o culpado pelas coisas que vem acontecendo na região, pensei que, mesmo doente, você talvez tivesse alguma informação para contribuir... ou, ao menos, algo interessante a dizer."
         jump escolhas_lazaro
     else:
         $ mostrar_personagem("Lázaro", 'T')
-        s "Não estou com vontade de conversar hoje..."
+        s "Estou mais indisposto que o normal hoje, padre. Não quero conversar..."
         jump casaLazaroint 
 
 label escolhas_lazaro:
@@ -946,7 +952,7 @@ label dor_lazaro:
     $ mostrar_personagem("Lázaro", 'N')
     l "Senti algo... Uma vez. Quando o Salvatore veio aqui com olhos de choro e mãos trêmulas. Mas não era piedade, era medo."
     l "Medo de que eu soubesse o que ele fez, ou de que eu ainda lembrasse…"
-    $ adicionar_pista("Salvatore", "Foi no Lázaro com olhos de choro e mãos trêmulas, parecendo ter medo de algo")
+    $ adicionar_pista("Salvatore", "Foi no Lázaro com olhos de choro e mãos trêmulas, parecendo ter medo de algo.")
     if afastou_lazaro == False:
         $ mostrar_personagem("Padre", 'R')
         menu:
@@ -1012,8 +1018,8 @@ label naoviu:
     $ mostrar_personagem("Lázaro", 'N')
     l "..."
     l "Quando olhei pela fresta, achei que tivesse visto algo."
-    l "Era como um vulto... parecia alguém de estatura pequena...Mas... estava sem sombra."
-    $ adicionar_fala("Lázaro", "Um vulto que parecia alguém de estatura pequena e sem sombra")
+    l "Era como um vulto... parecia alguém de estatura pequena... Mas... estava sem sombra."
+    $ adicionar_fala("Lázaro", "Um vulto que parecia alguém de estatura pequena e sem sombra.")
     l "Tive medo... e fechei os olhos."
     $ checar_interacao()
     jump casaLazaroint
@@ -1033,13 +1039,13 @@ label dialogo_holga:
         elif personagens_dict["Holga"].conhecido == False:
             $ personagens_dict["Holga"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
-            p "Buongiorno"
+            p "Buongiorno."
             p "Holga, lamento sua perda, que Deus a tenha. Vou fazer de tudo para pegar a pessoa culpada pela morte de sua irmã."
             p "Me ajude, qualquer pista ou evidência é essencial!"
         jump escolhas_holga
     else:
         $ mostrar_personagem("Holga", 'T')
-        s "Não estou com vontade de conversar hoje..."
+        s "Não me sentindo bem para conversar hoje..."
         jump casaholgaext
 
 label escolhas_holga:
@@ -1088,9 +1094,9 @@ label sombra_holga:
             jump continuacao_holga
 label continuacao_holga:
     $ mostrar_personagem("Holga", 'T')
-    h "Mas então, ela morreu na floresta.  Sumiu. Sobraram apenas uns fiapos do vestido na beira do brejo..."
+    h "Mas então, ela morreu na floresta. Sumiu. Sobraram apenas uns fiapos do vestido na beira do brejo..."
     h "E os galhos… quebrados, como se algo a tivesse arrastado para dentro da mata."
-    h "Há quem diga que foi a bruxa"
+    h "Há quem diga que foi a bruxa."
     h "Tudo o que ouvi foi a sua voz chamando por ajuda… mas… em uma língua… que não era a dela."
     $ adicionar_pista("Bruxa", 'Fala e faz as vitimas falarem em uma língua estranha')
     h "Os velhos dizem que foi castigo… Os jovens, murmuram que foi inveja..."
@@ -1112,7 +1118,7 @@ label caso_holga:
     menu:
         "Eu te entendo… se precisar de algo ou descobrir mais alguma coisa, não tenha medo de falar comigo.":
             $ mostrar_personagem("Holga", 'F')
-            h "Tudo bem Padre (ela sorri). Pode deixar."
+            h "Tudo bem Padre. Pode deixar."
             $ checar_interacao()
             jump casaholgaext
         "Falando assim… parece que você não ficou triste com a morte de sua irmã.":
@@ -1147,14 +1153,14 @@ label viubruxa_holga:
     h "Ah, sim. Agora que Edla se foi, eu sou a lembrança viva do que sobrou, e todos, curiosamente, querem me ouvir."
     $ mostrar_personagem("Holga", 'N')
     h "Sim, eu vi algo. Mas se o senhor espera que eu descreva uma velha corcunda com verrugas e caldeirão, está buscando a história errada."
-    $ adicionar_pista("Bruxa", 'Não se parece com uma velha corcunda com verrugas e caldeirão')
+    $ adicionar_pista("Bruxa", 'Não se parece com uma velha corcunda com verrugas e caldeirão.')
     h "A bruxa de que falam... ela não tem rosto. Ela não se mostra."
-    $ adicionar_pista("Bruxa", 'Não tem rosto, não se mostra')
+    $ adicionar_pista("Bruxa", 'Não tem rosto, não se mostra.')
     h "O que eu vi foi algo pequeno. Uma criatura que se movia nas sombras, mas que não era uma sombra comum. Eu a vi perto da escuridão, onde os galhos quebrados ainda marcavam o local de onde Edla foi arrastada."
     $ adicionar_pista("Bruxa", 'Algo pequeno, uma criatura que se movia nas sombras.')
     h "Quando Edla morreu na floresta, tudo o que eu consegui ouvir foi ela chamando por ajuda, com aquela voz toda distorcida."
     h "E o que eu vi, Padre, foi o reflexo dessa voz, e ela esgueirava-se como se estivesse acostumada a fugir, ou a roubar."
-    $ adicionar_fala("Holga", '\" Tudo que consegui ouvir foi Edla chamando por ajuda com aquela voz distorcida e o que eu vi foi o reflexo daquela voz\"')
+    $ adicionar_fala("Holga", '\"Tudo que consegui ouvir foi Edla chamando por ajuda com aquela voz distorcida e o que eu vi foi o reflexo daquela voz.\"')
     h "O mal sempre ataca quem não pode se defender, mas o real monstro é a força que está por trás dessa brasa acesa."
     $ checar_interacao()
     jump casaholgaext
@@ -1183,11 +1189,13 @@ label dialogo_bartolomeu:
             b "Não tenho tempo para isso!"
             b "Tenho muitos pães pra fazer! Muitos pães!"
             $ mostrar_personagem("Padre", 'N')
-            p "Prometo que vai ser rápido"
+            p "Prometo que vai ser rápido."
         jump escolhas_bartolomeu
     else:
         $ mostrar_personagem("Bartolomeu", 'T')
-        b "Não estou com vontade de conversar hoje..."
+        b "Como irei trabalhar me sentindo tão indisposto?"
+        b "Che sculo!"
+        b "Não me perturbe hoje, padre..."
         jump padaria
 
 label escolhas_bartolomeu:
@@ -1200,6 +1208,7 @@ label escolhas_bartolomeu:
             $ personagens_dict["Bartolomeu"].conversouHoje = True
             jump ontem_bartolomeu
         "Algum habitante te parece estranho?" if personagens_dict["Bartolomeu"].listaPerguntas[1] == False and personagens_dict["Bartolomeu"].progresso == 0: ## vai desbloquear pergunta pra joana
+            $ progredir("Bartolomeu")
             $ personagens_dict["Bartolomeu"].listaPerguntas[1] = True
             jump habitante_bartolomeu
         "Não perguntar nada":
@@ -1218,24 +1227,24 @@ label meconte_bartolomeu:
             jump paos_bartolomeu
 label paos_bartolomeu:
     $ mostrar_personagem("Bartolomeu", 'R')
-    b "Não, claro que não"
+    b "Não, claro que não."
     $ mostrar_personagem("Bartolomeu", 'F')
     b "O que é bom precisa ser cobrado."
     b "É verdade que enquanto alguns pedintes juntam migalhas por aí, eu tenho fornadas."
     b "Enquanto o ferreiro vive cansado por moedas, eu acordo antes do sol e durmo com o tintilar de moedas no meu bolso — sem esforço, apenas vez ou outra ficando sujo de farinha… mas já me acostumei."
     $ mostrar_personagem("Padre", 'T')
     menu:
-        "Isso soa meio egoísta, com certeza devem sobrar pães do dia para entregar aos mais necessitados":
+        "Isso soa meio egoísta, com certeza devem sobrar pães do dia para entregar aos mais necessitados.":
             jump egoismo_bartolomeu
         "E não sobra nenhum pão no final do dia para ajudar esses pedintes?":
             jump egoismo_bartolomeu
 label egoismo_bartolomeu:
     $ mostrar_personagem("Bartolomeu", 'N')
-    b "  Sim, sobram. Mas eu tento deixá-los para venda o máximo de tempo possível… "
+    b " Sim, sobram. Mas eu tento deixá-los para venda o máximo de tempo possível… "
     $ mostrar_personagem("Bartolomeu", 'T')
     b "Não me orgulho… muito."
     $ mostrar_personagem("Bartolomeu", 'F')
-    b "Afinal, vez ou outra dou um pão amanhecido a uma menina de rua chorosa ou a um servo de olhos fundos"
+    b "Afinal, vez ou outra dou um pão amanhecido a uma menina de rua chorosa ou a um servo de olhos fundos."
     b "É tudo que tenho a eles."
     $ checar_interacao()
     jump padaria
@@ -1243,20 +1252,23 @@ label egoismo_bartolomeu:
 label habitante_bartolomeu:
     $ alterar_interacao(-1)
     $ mostrar_personagem("Bartolomeu", 'N')  
-    b "Nesta aldeia, o pão fala… Ele revela quem tem e quem precisa.  Sei de muitas coisas e já vi muitas coisas suspeitas."
-    b "Uma figura curiosa é aquela mulher que fica na praça contando histórias, Margarida. Ela fica lá durante o dia, mas vive rondando os campos ao entardecer."
-    b "Certa noite, notei que ela parou diante de minha padaria fechada. Sussurrou algo em latim, ou língua que não conheço, e deixou um saquinho de sal na porta."
-    $ mostrar_personagem("Bartolomeu", 'R')     
-    b "No dia seguinte, minha fornada queimou inteira, mesmo com o fogo baixo."
-    $ adicionar_pista("Margarida", "Falou em latim ou alguma língua estranha e deixou um saco de sal na porta da padaria, no dia seguinte a fornada inteira queimou")
-    b "Só voltou a sair direito depois que esfreguei um alho nas paredes, como a velha doente me aconselhou." 
-    b "Bruxaria? Não digo. Mas desde então, sempre deixo um pouco de massa crua perto da janela. Só por precaução."
-    $ mostrar_personagem("Bartolomeu", 'N') 
-    b "Uma outra vez, Vi dona Joana sussurrando para seus tecidos,  e também vi um corvo pousar na sua janela, e juro pelos santos que ele esperou ela terminar um bordado antes de voar."
-    b "Antes que me pergunte o que ela bordava, era um manto preto, com linhas vermelhas que dançavam como labaredas."
-    $ mostrar_personagem("Bartolomeu", 'T') 
-    b "Vendeu ao velho padre que dias depois foi dessa para melhor."
-    $ adicionar_pista("Joana", "Sussurra para os tecidos e foi vista pelo padeiro com um corvo na janela fazendo um manto que vendeu ao antigo padre que morreu dias depois")
+    b "Nesta aldeia, o pão fala… Ele revela quem tem e quem precisa. Sei de muitas coisas e já vi muitas coisas suspeitas."
+    if personagens_dict["Margarida"].vivo == True:
+        $ mostrar_personagem("Bartolomeu", 'N') 
+        b "Uma figura curiosa é aquela mulher que fica na praça contando histórias, Margarida. Ela fica lá durante o dia, mas vive rondando os campos ao entardecer."
+        b "Certa noite, notei que ela parou diante de minha padaria fechada. Sussurrou algo em latim, ou língua que não conheço, e deixou um saquinho de sal na porta."
+        $ mostrar_personagem("Bartolomeu", 'R')     
+        b "No dia seguinte, minha fornada queimou inteira, mesmo com o fogo baixo."
+        $ adicionar_pista("Margarida", "Falou em latim ou alguma língua estranha e deixou um saco de sal na porta da padaria, no dia seguinte a fornada inteira queimou.")
+        b "Só voltou a sair direito depois que esfreguei um alho nas paredes, como a velha doente me aconselhou." 
+        b "Bruxaria? Não digo. Mas desde então, sempre deixo um pouco de massa crua perto da janela. Só por precaução."
+    if personagens_dict["Joana"].vivo == True:
+        $ mostrar_personagem("Bartolomeu", 'N') 
+        b "Uma outra vez, Vi dona Joana sussurrando para seus tecidos, e também vi um corvo pousar na sua janela, e juro pelos santos que ele esperou ela terminar um bordado antes de voar."
+        b "Antes que me pergunte o que ela bordava, era um manto preto, com linhas vermelhas que dançavam como labaredas."
+        $ mostrar_personagem("Bartolomeu", 'T') 
+        b "Vendeu ao velho padre que dias depois foi dessa para melhor."
+        $ adicionar_pista("Joana", "Sussurra para os tecidos e foi vista pelo padeiro com um corvo na janela fazendo um manto que vendeu ao antigo padre que morreu dias depois.")
     $ mostrar_personagem("Bartolomeu", 'N') 
     b "Ainda assim, a vida segue."
     b "Faço meu trabalho, conto minhas moedas, e ouço as histórias da vila com uma orelha atenta e um sorriso humilde."
@@ -1319,15 +1331,20 @@ label coisas_bartolomeu:
         "Não.. Claro que não, por mais que seja estranho. Uma última coisa, você viu algo estranho durante essa sua saidinha?":
             jump estranhosaidinha_bartolomeu
 label estranhosaidinha_bartolomeu:
-    $ mostrar_personagem("Bartolomeu", 'N') 
-    b "Hmmm, teve uma coisa estranha sim."
-    b "Quando estava voltando do moinho, ao passar pela casa da costureira, Dona Joana, olhei de relance pela fresta de sua janela…"
-    b "Ela estava ajoelhada no chão, cercada por bonecos de pano sem rosto, eles formavam um círculo, e no meio deles havia uma fumaça, parecia ser incenso, ou alguma mistura que queimava lentamente."
-    $ adicionar_pista("Joana", "Foi vista pelo padeiro ajoelhada no chão sercada por bonecos de pano sem rosto, com alguma mistura queimando lentamente no meio deles.")
-    $ mostrar_personagem("Padre", 'N')
-    menu:
-        "Ela te viu?":
-            jump elaviu_bartolomeu
+    if personagens_dict["Joana"].vivo == True:
+        $ mostrar_personagem("Bartolomeu", 'N') 
+        b "Hmmm, teve uma coisa estranha sim."
+        b "Quando estava voltando do moinho, ao passar pela casa da costureira, Dona Joana, olhei de relance pela fresta de sua janela…"
+        b "Ela estava ajoelhada no chão, cercada por bonecos de pano sem rosto, eles formavam um círculo, e no meio deles havia uma fumaça, parecia ser incenso, ou alguma mistura que queimava lentamente."
+        $ adicionar_pista("Joana", "Foi vista pelo padeiro ajoelhada no chão sercada por bonecos de pano sem rosto, com alguma mistura queimando lentamente no meio deles.")
+        $ mostrar_personagem("Padre", 'N')
+        menu:
+            "Ela te viu?":
+                jump elaviu_bartolomeu
+    else:
+        $ mostrar_personagem("Bartolomeu", 'N') 
+        b "Não vi nada, padre."
+        jump padaria
 label elaviu_bartolomeu:
     $ mostrar_personagem("Bartolomeu", 'N') 
     b "Não sei ao certo… Estava escuro, na hora que percebi que ela ia virar, eu sai correndo."
@@ -1366,7 +1383,7 @@ label ferramentas_bartolomeu:
     $ mostrar_personagem("Bartolomeu", 'R')
     b "Oras... você sabe!"
     $ mostrar_personagem("Bartolomeu", 'N')
-    b "Uma espátula, lâminas, um rolo de massa"
+    b "Uma espátula, lâminas, um rolo de massa."
     $ mostrar_personagem("Bartolomeu", 'F')
     b "Tudo o que um bom padeiro como eu precisa para tornar suas obras ainda mais belas."
     $ checar_interacao()
@@ -1591,10 +1608,10 @@ label ontem_agnes:
     $ alterar_interacao(-1)
     a "Ontem… fiquei sentada perto do moinho até escurecer."
     a "Tinha um cheiro estranho no ar… como carne e fumaça."
-    a "Eu ia dormir ali mesmo, mas ouvi alguém andando no mato. Me escondi. Então eu vi uma sombra arrastando uma coisa grande…algo pesado."
+    a "Eu ia dormir ali mesmo, mas ouvi alguém andando no mato. Me escondi. Então eu vi uma sombra arrastando uma coisa grande… algo pesado."
     a "Depois, sumiu no meio da plantação."
-    a "No fim eu acabei dormindo atrás das tábuas do curral abandonado. É frio, mas é seco."
     $ adicionar_fala("Agnes", 'Vi uma sombra perto do moinho arrastando algo pesado.')
+    a "No fim, eu acabei dormindo atrás das tábuas do curral abandonado. É frio, mas é seco."
     a "Antes de sair de lá, eu olhei para dentro da casa, bem na direção da janela do quarto do filho do Senhor. Eu fiquei ali, parada. Observando. Por um bom tempo…"
     $ mostrar_personagem("Padre", 'N')
     menu:
@@ -1614,7 +1631,9 @@ label estranho_agnes:
     a "Todos são estranhos quando estão sozinhos."
     $ mostrar_personagem("Agnes", 'R')
     a "Tem gente que finge ser boa. O padeiro é um deles… mas ele ao menos me da pão as vezes."
-    a "O Vincent… ele me trata como um rato, fala de mim como se eu fosse um animal."
+    if personagens_dict["Vincent"].vivo == True:
+        $ mostrar_personagem("Agnes", 'R')
+        a "O Vincent… ele me trata como um rato, fala de mim como se eu fosse um animal."
     $ mostrar_personagem("Agnes", 'F')
     a "A Margarida ainda é gentil comigo… pelo menos…"
     $ checar_interacao()
@@ -1656,7 +1675,8 @@ label escolhas_joana:
             $ personagens_dict["Joana"].listaPerguntas[2] = True
             jump habitante_joana
 
-        "Questionar sobre o corvo" if personagens_dict["Bartolomeu"].conversouHoje == False and personagens_dict["Bartolomeu"].progresso == 1:
+        "Questionar sobre o corvo" if personagens_dict["Joana"].listaPerguntas[3] == False and personagens_dict["Bartolomeu"].progresso == 1:
+            $ personagens_dict["Joana"].listaPerguntas[3] = True
             $ progredir("Bartolomeu")
             jump corvo_joana
 
@@ -1681,9 +1701,9 @@ label meconte_joana:
             jump passaros_joana
 label passaros_joana:
     $ mostrar_personagem("Joana", 'R')
-    j "Pássaros? não."
+    j "Pássaros? Não."
     $ mostrar_personagem("Joana", 'N')
-    j "Acabei fazendo amizade com um corvo. Ele sempre vem ao cair da tarde.  Agora, ele espera. Me observa como se soubesse quando termino um bordado…"
+    j "Acabei fazendo amizade com um corvo. Ele sempre vem ao cair da tarde. Agora, ele espera. Me observa como se soubesse quando termino um bordado…"
     $ adicionar_fala("Joana", "\"Fiz amizade com um corvo. Ele sempre vem ao cair da tarde.\"")
     $ mostrar_personagem("Joana", 'T')
     j "É como se ele reconhecesse o fim de alguma coisa…"
@@ -1695,7 +1715,7 @@ label passaros_joana:
 label ontem_joana:
     $ mostrar_personagem("Joana", 'N')
     $ alterar_interacao(-1)
-    j "Eu estava aqui em casa. Fazia alguns bonecos que servem como proteção para as mulheres da aldeia que ainda estão vivas… mas também representam aquelas que já partiram. Estou fazendo isso todos os dias atualmente"
+    j "Eu estava aqui em casa. Fazia alguns bonecos que servem como proteção para as mulheres da aldeia que ainda estão vivas… mas também representam aquelas que já partiram. Estou fazendo isso todos os dias atualmente."
     $ mostrar_personagem("Joana", 'T')
     j "Uso sobras de tecidos de pessoas que já não estão entre nós. Eu tenho esse problema… não consigo me desfazer, jogar fora uma memória de quem já se foi."
     j "Não me leve a mal por isso mas, ontem, eu fazia um tipo de ritual que eu mesma inventei: coloquei os bonecos em círculos, para que a ausência de cada um fizesse companhia ao meu próprio vazio…"
@@ -1727,7 +1747,7 @@ label habitante_joana:
     $ mostrar_personagem("Joana", 'N')
     j "Foi ontem ao entardecer… Eu estava com pressa, porque está perigoso ficar fora de casa quando a noite cai… Mas, voltando do poço com um balde d'água, passei em frente à porta dos fundos da casa do senhor Salvatore…"
     j "Vi uma sombra pequena se esgueirando pelo celeiro…"
-    j "Me aproximei devagar… e lá estava ela: a pequena Agnes…Parecia ter quebrado a tranca de uma caixa de mantimentos… estava com um punhado de frutas secas nas mãos… claramente roubando…"
+    j "Me aproximei devagar… e lá estava ela: a pequena Agnes… Parecia ter quebrado a tranca de uma caixa de mantimentos… estava com um punhado de frutas secas nas mãos… claramente roubando…"
     j "Mas não era só isso…"
     j "Antes de sair, ela olhou para dentro da casa,  bem na direção da janela do quarto do filho do senhor… "
     j "E ficou ali, parada, observando… por um bom tempo. Não sei se ela viu algo… ou se queria ser vista…"
@@ -1755,7 +1775,7 @@ label corvo_joana:
     $ alterar_interacao(-1)
     j "Ele sempre me encontra… mesmo quando mudo de lugar."
     j "Não sei se é o mesmo de anos atrás, ou se são muito… iguais."
-    j "Acho que ele vem recolher as últimas histórias da aldeia, como se fossem fios soltos que só ele sabe tecer"
+    j "Acho que ele vem recolher as últimas histórias da aldeia, como se fossem fios soltos que só ele sabe tecer."
     $ checar_interacao()
     jump casajoanaext
 
@@ -1779,7 +1799,7 @@ label dialogo_salvatore:
         jump escolhas_salvatore
     else:
         $ mostrar_personagem("Salvatore", 'T')
-        ss "Não estou com vontade de conversar hoje..."
+        ss "Não estou me sentindo bem para conversar hoje..."
         jump caminhobebado_margarida
 
 label escolhas_salvatore:
@@ -1958,7 +1978,7 @@ label dialogo_william:
         jump escolhas_william
     else:
         $ mostrar_personagem("William", 'T')
-        w "Não estou com vontade de conversar hoje..."
+        w "Minha barriga dói... A água tava muito esquisita ontem..."
         jump casasalvatoreint
 
 label escolhas_william:
@@ -1975,7 +1995,7 @@ label escolhas_william:
             $ progredir("William") 
             jump cabelo_william
 
-        "O que você faz enquanto está sozinho?"if personagens_dict["William"].listaPerguntas[1] == False:
+        "O que você faz enquanto está sozinho?" if personagens_dict["William"].listaPerguntas[1] == False:
             $ personagens_dict["William"].listaPerguntas[1] = True
             jump sozinho_william
 
@@ -1993,7 +2013,7 @@ label meconte_william:
     w "Só William."
     w "Tenho dez anos. Meu pai cuida da aldeia toda, mas ele diz que eu tenho que ficar em casa, porque ainda não entendo o que é certo."
     w "Ele nunca me deixa sair…"
-    w "Papai  diz que tem gente ruim lá fora. Gente que fala demais, que inventa coisas, que olha onde não deve…"
+    w "Papai diz que tem gente ruim lá fora. Gente que fala demais, que inventa coisas, que olha onde não deve…"
     w "Ele diz que é melhor eu ficar quieto, que criança que escuta demais acaba ouvindo o que não devia…"
     $ mostrar_personagem("Padre", 'N')
     menu:
