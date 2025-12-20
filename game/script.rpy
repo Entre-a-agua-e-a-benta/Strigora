@@ -245,7 +245,7 @@ label start:
         def tocar_musica(musica: str):
             global musica_atual
             if musica != musica_atual:
-                renpy.music.play(musica)
+                renpy.music.play(musica, loop=True)
                 musica_atual = musica
 
         def texto_grande(texto: str, tempoDePause=10):
@@ -666,7 +666,7 @@ label incomoda_seren:
     $ mostrar_personagem("Seren", 'T')
     s "Queria ser mais forte."
     s "Às vezes eu finjo que não vejo quando meu pai me olha triste."
-    s "Eu entendo pq ele me olha assim..."
+    s "Eu entendo porque ele me olha assim..."
     s "Ao menos ele bebe pra esquecer, mas eu lembro por nós dois. Lembro mesmo do que nunca vi…"
     $ mostrar_personagem("Seren", 'F')
     s "Ainda bem que o tio me dá pão, me dá coberta, e até me deixa ficar atrás do balcão quando chove."
@@ -845,7 +845,7 @@ label historia_margarida:
     $ adicionar_fala("Margarida", "A mulher da história cuidou do bebê que levou, enquanto o outro \"Nunca chorou nem morreu. Só… ficou esperando.\".")
     m "Um dia… a criança levada perguntou: \"Quem é meu pai?\" E ela respondeu: \"Um homem… que não tem nome… e que não pode ser acordado.\"."
     m "Desde então… dizem… a corça de três olhos ronda a aldeia… procurando seu parente perdido. E a criança… ah… ela ainda vive entre nós… Só não sabe… quem… é."
-    $ adicionar_fala("Margarida", "Desde sua história \"A corça de três olhos ronda a aldeia… procurando seu parente perdido. E a criança… ah… ela ainda vive entre nós… Só não sabe… quem… é.\"")
+    $ adicionar_fala("Margarida", "Desde a história \"A corça de três olhos ronda a aldeia… procurando seu parente perdido. E a criança… ah… ela ainda vive entre nós… Só não sabe… quem… é.\"")
     $ checar_interacao()
     jump casamargaridaext
 
@@ -880,7 +880,7 @@ label dialogo_lazaro:
             $ personagens_dict["Lázaro"].conhecido = True
             $ mostrar_personagem("Padre", 'N')
             p "Buongiorno…"
-            p "Não sei a notícia chegou aqui, mas eu estou encarregado de achar o culpado pelas coisas que vem acontecendo na região, pensei que, mesmo doente, você talvez tivesse alguma informação para contribuir... ou, ao menos, algo interessante a dizer."
+            p "Não sei se a notícia chegou aqui, mas eu estou encarregado de achar o culpado pelas coisas que vem acontecendo na região, pensei que, mesmo doente, você talvez tivesse alguma informação para contribuir... ou, ao menos, algo interessante a dizer."
         jump escolhas_lazaro
     else:
         $ mostrar_personagem("Lázaro", 'T')
@@ -1576,7 +1576,7 @@ label meconte_agnes:
     $ mostrar_personagem("Agnes", 'T')
     a "Tenho 12 anos e ninguém quis me abrigar. A maioria aqui passa por mim e finge que eu não existo."
     a "Eu durmo onde dá… Celeiro do Senhor Salvatore, às vezes o sótão da taverna, uma vez até na igreja, mas o padre antigo me expulsou."
-    a "Antes, eu pegava uns grãos escondido do celeiro, mas agora… até lá mal tem o que comer."
+    a "Antes, eu pegava uns grãos escondidos no celeiro, mas agora… até lá mal tem o que comer."
     a "Talvez o universo esteja cobrando. Talvez ele saiba que nunca dividiram o suficiente."
     $ mostrar_personagem("Agnes", 'R')
     a "Eu não entendo por que alguns têm tanto… e outros nem um pedaço de pão."
@@ -2112,10 +2112,11 @@ label cabelo_william:
     $ mostrar_personagem("William", 'F')
     w "Finalmente meu pai deixou eu falar com alguém."
     w "Meu cabelo não é dessa cor. É tinta."
-    w "Toda vez que começa a clarear, papai chama o homem que pinta."
+    w "Toda vez que começa a escurecer, papai chama o homem que clareia."
+    w "Não é muito, pra não ser tão aparente que é pintado."
     $ mostrar_personagem("William", 'T')
     w "Diz que é perigoso eu parecer com… alguém. Ele nunca fala quem."
-    $ adicionar_fala("William", "\"Meu pai diz que é perigoso eu parecer com alguém, por isso pinta meu cabelo sempre que ele começa a clarear.\"") 
+    $ adicionar_fala("William", "\"Meu pai diz que é perigoso eu parecer com alguém, por isso chama um homem pra clarear um pouco.\"") 
     $ mostrar_personagem("William", 'R')
     w "Eu também não pergunto. Quando perguntei, ele ficou bravo, e me deixou de castigo por dois dias…"
     $ mostrar_personagem("William", 'T')
