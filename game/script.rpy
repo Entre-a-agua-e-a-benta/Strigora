@@ -25,18 +25,18 @@ default entroufundos = False
 define personagens_list = list()
 define personagens_dict = dict()
 define pi = Character("Padre", what_italic=True, color="#FFFFFF") ## O PADRE QUANDO ESTÁ PENSANDO
-define p =  Character("Padre", color="#522c36")
+define p =  Character("Padre", color="#5c2636")
 define v = Character("Dono do Albergo", color="#ddc0a4") ## DONO DA ESTALAGEM/TAVERNA
-define s = Character("Filha do bêbado") ## CRIANÇA GEMEA FILHA DO BEBADO
+define s = Character("Filha do bêbado", color="#9b2727") ## CRIANÇA GEMEA FILHA DO BEBADO
 define m = Character("Curandeira", color="#865662") ## Curandeira
-define l = Character("Leproso", color="#aa3c2e") ## Leproso
+define l = Character("Leproso", color="#a16636") ## Leproso
 define h = Character("Irmã da Edla", color="#51496d")
 define b = Character("Padeiro", color="#874123") ## PADEIRO
 define be = Character("Bêbado", color="#5a453b")
 define ss = Character("Senhor da vila", color="#fed047") ## Senhor Salvatore
 define j = Character("Costureira", color="#7f8c9b") ## Costureira
-define a = Character("Pedinte") ## Criança pedinte
-define w = Character("Filho do senhor") ## Criança William
+define a = Character("Pedinte", color="#da5c3c") ## Criança pedinte
+define w = Character("Filho do senhor", color="#1d7d44") ## Criança William
 
 define bx = Character("Bruxa")
 
@@ -806,7 +806,7 @@ label meconte_margarida:
     m "Eu tenho nome, me chamo Margarida."
     $ personagens_dict["Margarida"].conhecer()
     m "Eles não se lembram das pessoas que salvei. Já vi mais gente morrer do que você viu nascer. Sei quando a terra adoece, quando o vento muda de cheiro, quando a mão treme antes mesmo de tocar na porta."
-    $ adicionar_pista("Margarida", "Fala que ela mesma \"Sabe quando a terra adoece, quando o vento muda de cheiro, quando a mão treme antes mesmo de tocar na porta.\".")
+    $ adicionar_pista("Margarida", "Fala que ela \"Sabe quando a terra adoece, quando o vento muda de cheiro, quando a mão treme antes mesmo de tocar na porta.\".")
     m "Mas não me olhe assim, eu não mexo com os mortos e nem falo com sombras. Só aprendi a ouvir o que ninguém mais quer escutar. A Natureza."
     $ mostrar_personagem("Padre", 'T')
     menu:
@@ -1968,7 +1968,7 @@ label suspeito_salvatore:
     ss "Como se algo leve… arrastasse peso atrás de si."
     ss "Os homens dizem que é só um animal."
     ss "Animais não abrem portas, Padre."
-    $ adicionar_fala("Salvatore", '\"Há pegadas pequenas e profundas perto do celeiro, homens dizem que é so um animal, mas animais não abrem portas.\"')
+    $ adicionar_fala("Salvatore", '\"Há pegadas pequenas e profundas perto do celeiro, homens dizem que é só um animal, mas animais não abrem portas.\"')
     $ mostrar_personagem("Padre", 'N')
     menu:
         "Seu filho notou algo estranho?":
@@ -2084,8 +2084,8 @@ label tinta_william:
             "Essas sombras... o que eram?":
                 jump sombras_william
     else:
-        jump casasalvatoreint
         $ checar_interacao()
+        jump casasalvatoreint
 label sombras_william:
     $ sombrass_william = True
     $ mostrar_personagem("William", 'N')
@@ -2094,7 +2094,7 @@ label sombras_william:
     w "Tinha uma maior, parecia importante… "
     $ mostrar_personagem("William", 'T')
     w "As outras menores pareciam curvadas, como se procurassem algo no chão."
-    $ adicionar_fala("William", '\"Outro dia vi umas sombras paradas no primeiro andar, uma delas era maior e parecia importante, elas estavam curvadas procurando algo no chão\"')
+    $ adicionar_fala("William", '\"Outro dia vi umas sombras paradas no primeiro andar, uma delas era maior e parecia importante, elas estavam curvadas procurando algo no chão.\"')
     w "Não quero falar muito sobre…"
     if naotinta_william == False:
         $ mostrar_personagem("Padre", 'N')
@@ -2102,8 +2102,8 @@ label sombras_william:
             "Porque um balde de tinta?":
                 jump tinta_william   
     else:
-        jump casasalvatoreint    
         $ checar_interacao()
+        jump casasalvatoreint     
 
 label cabelo_william:
     $ mostrar_personagem("William", 'N')
@@ -2319,21 +2319,27 @@ label expulso: # Matou 3 pessoas inocentes
             personagens_dict[matar_personagem].conhecer()
         renpy.say(pi, "Quando o último suspiro foi dado, percebi que a vila inteira manteve-se afastada de mim, como se tivessem nojo.")
         renpy.say(pi, f"Até mesmo aqueles que não se importavam com {pronome} {matar_personagem} se mostraram hostis comigo.")
-    scene bg casa padre int
-    $ mostrar_personagem("Salvatore", 'N')
-    ss "Buongiorno padre."
-    ss "Ontem foi uma noite..."
-    $ mostrar_personagem("Salvatore", 'T')
-    ss "Intensa."
-    $ mostrar_personagem("Salvatore", 'R')
-    ss "Receio que a vila esteja um pouco insatisfeita com a sua atuação."
-    ss "Na verdade, todos estamos."
-    ss "Eu lhe chamei a nossa vila pois era seu dever encontrar a bruxa. Pela ordem!"
-    ss "Stronzo."
-    ss "Além de não realizar seu dever, assolou nossa vila em luto. Matando nosso povo e deixando-nos à mercê da bruxa."
-    ss "Eu já havia falado quando chamei o senhor, padre, que eu queria respostas, não rezas ou palavras bonitas, muito menos um massacre na aldeia que eu vi crescer."
-    ss "Como o homem mais velho, que deve manter tudo sob controle, peço que se retire da vila imediatamente, e não volte a nos incomodar."
-    ss "Vafanapoli."
+    if personagens_dict["Salvatore"].vivo == True:
+        scene bg casa padre int
+        $ mostrar_personagem("Salvatore", 'N')
+        ss "Buongiorno padre."
+        ss "Ontem foi uma noite..."
+        $ mostrar_personagem("Salvatore", 'T')
+        ss "Intensa."
+        $ mostrar_personagem("Salvatore", 'R')
+        ss "Receio que a vila esteja um pouco insatisfeita com a sua atuação."
+        ss "Na verdade, todos estamos."
+        ss "Eu lhe chamei a nossa vila pois era seu dever encontrar a bruxa. Pela ordem!"
+        ss "Stronzo."
+        ss "Além de não realizar seu dever, assolou nossa vila em luto. Matando nosso povo e deixando-nos à mercê da bruxa."
+        ss "Eu já havia falado quando chamei o senhor, padre, que eu queria respostas, não rezas ou palavras bonitas, muito menos um massacre na aldeia que eu vi crescer."
+        ss "Como o homem mais velho, que deve manter tudo sob controle, peço que se retire da vila imediatamente, e não volte a nos incomodar."
+        ss "Vafanapoli."
+    else:
+        scene bg casa padre int
+        pi "Todos os aldeões exigiram que eu me retirasse dessa vila pra sempre."
+        pi "Então só me resta arrumar minhas coisas e partir de volta à minha terra."
+        pi "Que Deus me perdoe pelas vidas tiradas erroneamente."
     jump creditos
 
 label final: # Passou do 7o dia sem matar a Bruxa e sem matar 3 pessoas inocentes
@@ -2351,7 +2357,7 @@ label final: # Passou do 7o dia sem matar a Bruxa e sem matar 3 pessoas inocente
             renpy.say(pi, "Não que isso faça muita diferença agora...")
         renpy.say(pi, "A noite de ontem foi...")
         renpy.say(pi, "Difícil...")
-        renpy.say(pi, "Todos os aldeões começaram a falar com aquela voz distorcida... e em pouco tempo não sobrou mais nada deles além daquela carcaça vazia e corrompida que a bruxa largou.")
+        renpy.say(pi, "Todos os aldeões começaram a falar com aquela voz distorcida... e em pouco tempo não sobrou mais nada deles além daquelas carcaças vazias e corrompidas que a bruxa largou.")
         renpy.say(pi, "É hora de voltar e clamar à Deus por mais discernimento, para que eu possa caçá-la e não tenham mais vítmas como essa pobre vila...")
         renpy.say(pi, "Talvez até procurar ajuda... Já que claramente não fui capaz de cumprir meu papel.")
         renpy.say(pi, "Que o Senhor me guie e tenha piedade.")
