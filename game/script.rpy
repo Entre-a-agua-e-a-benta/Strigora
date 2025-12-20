@@ -1280,8 +1280,10 @@ label habitante_bartolomeu:
     b "Faço meu trabalho, conto minhas moedas, e ouço as histórias da vila com uma orelha atenta e um sorriso humilde."
     $ mostrar_personagem("Bartolomeu", 'F')   
     b "Dizem que a humildade é virtude dos santos, e eu sou quase um, não?"
+    $ adicionar_pista("Bartolomeu", 'Se esforça para parecer santo.')
     b "Dou pão, escuto confissões em troca de farinha, e não conto a ninguém que foi o filho do ferreiro quem roubou da feira ou que a lavadeira fala com os ratos."
     b "Todos têm pecados, mas poucos têm pão."
+    $ adicionar_fala("Bartolomeu", 'Todos têm pecados, mas poucos têm pão.')
     $ checar_interacao()
     jump padaria
 
