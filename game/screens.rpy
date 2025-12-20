@@ -2150,7 +2150,8 @@ screen pistas_personagem(personagem):
         else:
             vbox:
                 text "Descrição do caso" outlines [ (3, "#FFFFFF", 1, 1) ] color "#000000" size 40
-
+                text "Recebi uma carta do senhor Salvatore me chamando para vir para esta vila. Ele disse que este lugar está sob um mau agouro e tem certeza que é feitiçaria. Ele comentou que a vítima mais recente dessa bruxa foi Edla, a irmã de Holga. Além disso, na noite da morte de Edla, ouviu sua voz distorcida dizendo que em 7 dias a bruxa irá devastar toda a vila."
+                text "Não sei que tipo de bruxa é essa. Não sei se o caso se trata de uma posessão, ou de uma bruxa vivendo entre os humanos."
 
 screen textogrande(mensagem):
     frame:

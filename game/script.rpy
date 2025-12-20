@@ -835,10 +835,10 @@ label ontem_margarida:
 label historia_margarida:
     $ mostrar_personagem("Margarida", 'N')
     $ alterar_interacao(-1)
-    m "Já ouviu a história da corça de três olhos? Não? Então sente e escute, ou vá embora de vez…"
+    m "Já ouviu a lenda da corça de três olhos? Não? Então sente e escute, ou vá embora de vez…"
     m "Dizem que, certa vez, uma mulher andava sozinha pela mata, cheia de dor e raiva do mundo. Chorava tanto que as árvores taparam os ouvidos. Foi quando encontrou um ninho, entre galhos partidos, com um choro que não era de ave nem de fera…"
     m "Lá dentro? Dois bebês, iguais… Como um espelho."
-    $ adicionar_fala("Margarida", "Conta uma história de uma mulher que vivia na mata e encontrou dois bebês iguais como um espelho.")
+    $ adicionar_fala("Margarida", "Conta a lenda de uma mulher que vivia na mata e encontrou dois bebês iguais como um espelho.")
     m "Mas um tinha os olhos fechados e sorria dormindo. O outro tinha os olhos abertos… e não piscava… A mulher, sozinha no mundo, mesmo sabendo que não era seu, levou um deles nos braços."
     $ adicionar_fala("Margarida", "Em sua história \"Um tinha os olhos fechados e sorria, o outro tinha olhos abertos e não piscava,\" e a mulher \"levou um deles nos braços\".")
     m "Disse: \"É um sinal… O destino me escolheu.\"  Alimentou… deu nome… cobriu de orações. O outro bebê?… ficou. Nunca chorou. Nunca morreu. Só… ficou. Esperando."
@@ -1805,8 +1805,6 @@ label corvo_joana:
     j "Acho que ele vem recolher as últimas histórias da aldeia, como se fossem fios soltos que só ele sabe tecer."
     $ checar_interacao()
     jump casajoanaext
-
-
 
 ######################################## CENAS Salvatore ########################################
 label dialogo_salvatore:

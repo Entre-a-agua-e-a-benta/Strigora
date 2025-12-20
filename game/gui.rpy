@@ -362,7 +362,7 @@ define gui.history_spacing = 0
 ## caractere falante.
 define gui.history_name_xpos = 0.5
 define gui.history_name_ypos = 0
-define gui.history_name_width = 233
+define gui.history_name_width = 500
 define gui.history_name_xalign = 0.5
 
 ## A posição, a largura e o alinhamento do texto da caixa de diálogo.
