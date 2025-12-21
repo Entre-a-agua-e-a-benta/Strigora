@@ -2467,7 +2467,7 @@ init python:
             creditos_s += "\n{size=60}" + c[0] + "\n"
         creditos_s += "{size=40}" + c[1] + "\n"
         c1=c[0]
-    creditos_s += "\n\n{size=30} Projeto realizado para a disciplina de Hipermídia II em conjunto à Realização Audiovisual\n da Universidade Federal de São Carlos em 2025 \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" 
+    creditos_s += "\n\n{size=30} Projeto realizado para a disciplina de Hipermídia II em conjunto à Realização Audiovisual\n da Universidade Federal de São Carlos, em 2025 \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" 
 
 #guardando as informações acima
 init:

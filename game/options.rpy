@@ -35,6 +35,8 @@ O nome Strigora refere-se a um festival anual que ocorre em Triora, uma vila na 
 Este jogo se passa durante a Inquisição, quando um padre caçador de bruxas é enviado à vila isolada de Triora, na Itália, para investigar relatos de bruxaria. Em meio ao medo e à desconfiança, o jogador deve explorar o vilarejo, interagir com os moradores, realizar missões paralelas, reunir pistas e decidir quem acusar a cada noite.
 
 A equipe Strigora recomenda jogar esse jogo de forma contínua, para que a experiência e a imersão não sejam afetadas, por isso, o jogo não possui um sistema de salvamentos. Tenha certeza de possuir, em média, 30 minutos para iniciar a gameplay.
+
+Este projeto foi realizado para a disciplina de Hipermídia II em conjunto à Realização Audiovisual da Universidade Federal de São Carlos, em 2025.
 """)
 
 define gui.creditomenu = _p("""{size=+15}{b}Co-Direção{/size}{/b}\n
@@ -62,9 +64,9 @@ João Vítor "Jonny" de Paula Oliveira \n
 {size=+15}{b}Som {/size}{/b}\n
 {b}Direção de Som:{/b}   Luísa F. Esquiller \n 
 {b}Assistente:{/b}   Álefe Folha \n
-{size=+15}{b}Dublagem {/size}{/b}
-{b}Senhor Salvatore:{/b}    Cauã Lopes de Oliveira Santos
-{b}Bruxa:{/b}    Lívia Soares
+{size=+15}{b}Dublagem {/size}{/b} \n
+{b}Senhor Salvatore:{/b}    Cauã Lopes de Oliveira Santos \n
+{b}Bruxa:{/b}    Lívia Soares\n
 {size=+15}{b}Produção{/size}{/b} \n
 Enzo Dias
  
