@@ -62,6 +62,9 @@ João Vítor "Jonny" de Paula Oliveira \n
 {size=+15}{b}Som {/size}{/b}\n
 {b}Direção de Som:{/b}   Luísa F. Esquiller \n 
 {b}Assistente:{/b}   Álefe Folha \n
+{size=+15}{b}Dublagem {/size}{/b}
+{b}Senhor Salvatore:{/b}    Cauã Lopes de Oliveira Santos
+{b}Bruxa:{/b}    Lívia Soares
 {size=+15}{b}Produção{/size}{/b} \n
 Enzo Dias
  

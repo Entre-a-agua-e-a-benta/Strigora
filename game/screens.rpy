@@ -1716,7 +1716,7 @@ screen tavernaint():
     use botao("botao_passos", 0.1, (150, 450), "Entrar no quarto", "casapadre", True, True, "passos.mp3")
     if personagens_dict["Vincent"].vivo:
         use botao(personagens_dict["Vincent"].imagem, 0.10, (1250, 50), "Falar com o dono", "dialogo_vincent", False, clickSound="click.mp3")
-    if personagens_dict["Seren"].vivo and personagens_dict["Vincent"].progresso >= 2:
+    if personagens_dict["Seren"].vivo and liberarseren == True:
         use botao(personagens_dict["Seren"].imagem, 0.4, (900, 500), "Falar com a garota", "dialogo_seren", clickSound="click.mp3")
     add "botoes/taverna balcao.png"
 

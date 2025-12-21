@@ -21,6 +21,8 @@ default naotinta_william = False
 default sombrass_william = False
 default entroufundos = False
 
+default liberarseren = False
+
 ## Personagens
 define personagens_list = list()
 define personagens_dict = dict()
@@ -492,6 +494,10 @@ label escolhas_vincent:
         "O que aconteceu com a esposa do seu irmão?" if personagens_dict["Vincent"].conversouHoje == False and personagens_dict["Vincent"].progresso == 1:
             $ progredir("Vincent")
             jump esposa_vincent
+        
+        "Seu irmão comentou que só você consegue achar a filha dele. Eu poderia falar com ela?" if personagens_dict["Bêbado"].listaPerguntas[0] == True and liberarseren == False:
+            $ liberarseren = True
+            jump seren_vincent
 
         "Você conhecia bem o antigo padre?" if personagens_dict["Vincent"].listaPerguntas[0] == False:
             $ personagens_dict["Vincent"].listaPerguntas[0] = True
@@ -562,10 +568,17 @@ label esposa_vincent:
     $ adicionar_pista("Bêbado", "Teve uma esposa que morreu no parto da filha.")
     v "Desde então ele vive nesse estado… Conspirando e dizendo que há culpados pela morte da esposa."
     $ adicionar_pista("Bêbado", "Culpa alguém pela morte da esposa.")
-    $ mostrar_personagem("Padre", 'T')
-    menu:
-        "E a criança? Onde ela está?":
-            jump crianca_vincent
+    if liberarseren == False:
+        $ mostrar_personagem("Padre", 'T')
+        menu:
+            "E a criança? Onde ela está?":
+                jump crianca_vincent
+    else:
+        $ mostrar_personagem("Vincent", 'T')
+        v "A menina, de um tempo para cá, ela parece doente. Ás vezes, fala coisa dormindo e acorda com febre alta. Eu tento ser como um pai para ela, mas mesmo assim acho que às vezes não sou o suficiente."
+        $ adicionar_pista("Seren", "Ás vezes, fala coisa dormindo e acorda com febre alta.")
+        $ checar_interacao()
+        jump tavernaint
 label crianca_vincent:
     $ mostrar_personagem("Vincent", 'N')
     v "A menina… Bom… Ela está viva, isso é mais do que posso dizer de muita gente…"
@@ -575,6 +588,7 @@ label crianca_vincent:
     v "Mas de um tempo para cá, ela parece doente. Ás vezes, fala coisa dormindo e acorda com febre alta. Eu tento ser como um pai para ela, mas mesmo assim acho que às vezes não sou o suficiente."
     $ adicionar_pista("Seren", "Ás vezes, fala coisa dormindo e acorda com febre alta.")
     v "Pedirei para ela falar com o senhor."
+    $ liberarseren = True
     $ checar_interacao()
     jump tavernaint
 
@@ -601,6 +615,17 @@ label padre_vincent:
         "Espero que sim. Espero que minha fé seja suficiente para me manter de pé… e talvez salvar quem ainda resta.":
             $ checar_interacao()
             jump tavernaint
+
+label seren_vincent:
+    $ alterar_interacao(-1)
+    $ mostrar_personagem("Vincent", 'F')
+    v "CLaro padre."
+    v "Ela geralmente fica aqui nos fundos do meu Albergo."
+    v "Eu chamo ele de \"A Viúva Sangrenta\"."
+    v "Ela gosta de estar aqui e comer pão com mel."
+    v "Vou pedir pra ela vir falar com o senhor."
+    $ checar_interacao()
+    jump tavernaint
 
 
 ######################################## CENAS SEREN #######################################################
@@ -738,7 +763,6 @@ label habitante_seren:
         $ adicionar_pista("Margarida", "Olha pras pessoas como se lesse o que tem dentro.")
         $ mostrar_personagem("Seren", 'R')
         s "Um dia ela olhou pra mim, encostou a mão na minha testa e disse: \"Nem todo espelho mostra só o que é de fora\". Eu não entendi, mas me deu um arrepio."
-        $ adicionar_pista("Margarida", "Disse \"Nem todo espelho mostra só o que é de fora\" para Seren.")
         $ adicionar_pista("Seren", "Escutou Margarida dizendo pra ela \"Nem todo espelho mostra só o que é de fora\".")
     else:
         $ mostrar_personagem("Seren", 'T')
@@ -857,7 +881,6 @@ label estranho_margarida:
     m "Mas se quer algo concreto… ontem encontrei um rastro de cheiro doce na trilha norte."
     m "Como açúcar… açúcar caro."
     m "Não era de criança brincando, posso garantir. E não é a primeira vez que esse cheiro aparece depois de um corpo cair doente."
-    $ adicionar_pista("Bruxa", "Tem cheiro doce como açúcar caro")
     $ mostrar_personagem("Padre", 'N')
     menu:
         "Doce? Como assim?":
@@ -1498,8 +1521,11 @@ label falas_bebado:
             be "Uma tarefa simples… ela ainda estaria aqui se não fosse isso"
         if personagens_dict["Bêbado"].progresso == 2:
             be "A irmã da Catarina nunca mais veio sequer nos visitar…"
-        if personagens_dict["Bêbado"].progresso == 3:
-            be "Porque… porque deixou tudo para trás? Tudo que te fazia especial… E eu não pude dar a vida que ela merecia…"
+            $ adicionar_fala("Bêbado", "A irmã da Catarina nunca mais veio sequer nos visitar…")
+        if personagens_dict["Bêbado"].progresso == 3 and personagens_dict["Bêbado"].listaPerguntas[0] == False: 
+            $ personagens_dict["Bêbado"].listaPerguntas[0] = True
+            be "Minha menina só aparece quando meu irmão chama..."
+            be "Ele que cuida dela... Eu não aguento... olhar..."
         if personagens_dict["Bêbado"].progresso == 4:
             be "Uma aldeia doente, morrendo. Mas minha menina está pior. Febre… todo dia"
             $ adicionar_fala("Bêbado", "Minha menina está pior. Febre… todo dia")
@@ -1733,7 +1759,7 @@ label passaros_joana:
     j "Pássaros? Não."
     $ mostrar_personagem("Joana", 'N')
     j "Acabei fazendo amizade com um corvo. Ele sempre vem ao cair da tarde. Agora, ele espera. Me observa como se soubesse quando termino um bordado…"
-    $ adicionar_fala("Joana", "\"Fiz amizade com um corvo. Ele sempre vem ao cair da tarde.\"")
+    $ adicionar_pista("Joana", "\"Fez amizade com um corvo que sempre vem ao cair da tarde.\"")
     $ mostrar_personagem("Joana", 'T')
     j "É como se ele reconhecesse o fim de alguma coisa…"
     $ mostrar_personagem("Joana", 'N')
@@ -1753,6 +1779,7 @@ label ontem_joana:
     $ adicionar_fala("Joana", "\"No centro, coloquei uma mistura de erva-doce e alecrim queimado sobre carvão, para purificar o ambiente, enquanto fazia uma reza cantada que aprendi com minha avó…\"")
     j "Não tem nenhuma má intenção por trás…"
     j "Ontem também tentei fazer algum tipo de cabelo para os bonecos… então cortei um pouco do meu próprio cabelo… Queria que eles ficassem mais bonitos…"
+    $ adicionar_pista("Joana", 'Fez um ritual estranho com bonecos.')
     $ adicionar_fala("Joana", "\"Ontem também tentei fazer algum tipo de cabelo para os bonecos… então cortei um pouco do meu próprio… Queria que eles ficassem mais bonitos…\"")
     $ mostrar_personagem("Padre", 'N')
     menu:
@@ -1835,6 +1862,7 @@ label escolhas_salvatore:
         "Pode me contar um pouco mais sobre o que está acontecendo aqui?" if personagens_dict["Salvatore"].listaPerguntas[0] == False: 
             $ personagens_dict["Salvatore"].listaPerguntas[0] = True
             jump acontecendo_salvatore
+
         "Tem algo a dizer sobre o último caso?" if personagens_dict["Salvatore"].conversouHoje == False and personagens_dict["Salvatore"].progresso == 0:
             $ progredir("Salvatore")
             jump algomais_salvatore
@@ -1842,9 +1870,17 @@ label escolhas_salvatore:
             $ progredir("Salvatore") ##Desbloqueia falar com o william
             jump filho_salvatore
 
+        "O Lázaro me contou de uma vez que o senhor passou por lá." if personagens_dict["Lázaro"].progresso == 2 and personagens_dict["Salvatore"].listaPerguntas[3] == False:
+            $ personagens_dict["Salvatore"].listaPerguntas[3] = True
+            jump lazaro_salvatore
+
         "O que você fez ontem a noite?" if personagens_dict["Salvatore"].listaPerguntas[1] == False: 
             $ personagens_dict["Salvatore"].listaPerguntas[1] = True
             jump ontem_salvatore
+
+        "William me contou sobre uma tinta para cabelo. Pra que ela serve?" if personagens_dict["William"].progresso == 1 and personagens_dict["Salvatore"].listaPerguntas[2] == False:
+            $ personagens_dict["Salvatore"].listaPerguntas[2] = True
+            jump cabelo_salvatore
 
         "Você encontrou algo suspeito nesses últimos dias?" if personagens_dict["Salvatore"].conversouHoje == False and personagens_dict["Salvatore"].progresso == 2:
             $ progredir("Salvatore")
@@ -1984,6 +2020,32 @@ label suspeitofilho_salvatore:
     $ checar_interacao()
     jump caminhobebado_margarida
 
+label lazaro_salvatore:
+    $ mostrar_personagem("Salvatore", 'R')
+    $ alterar_interacao(-1) 
+    ss "O q-que ele falou?"
+    ss "Isso é algum tipo de acusação?"
+    $ mostrar_personagem("Padre", 'N')
+    menu:
+        "Não estou te acusando. Quero apenas entender quem são essas crianças nascidas que ele comentou.":
+            jump nervoso_salvatore
+label nervoso_salvatore:
+    $ mostrar_personagem("Salvatore", 'R')
+    ss "Não tem criança nenhuma!"
+    ss "O William é meu filho!"
+    ss "Nâo quero falar sobre isso."
+    $ checar_interacao()
+    jump caminhobebado_margarida
+
+label cabelo_salvatore:
+    $ mostrar_personagem("Salvatore", 'F')
+    $ alterar_interacao(-1) 
+    ss "Você sabe... as crianças não sabem o que é melhor pra elas."
+    ss "Eu sei, padre. Por isso dou a atenção devida ao cabelo dele. Pelo seu bem..."
+    $ mostrar_personagem("Salvatore", 'R')
+    ss "Por favor, não questione minhas escolhas como pai."
+    $ checar_interacao()
+    jump caminhobebado_margarida
 
 ################################################### CENAS DO WILLIAM ####################################################################
 label dialogo_william:
@@ -2068,7 +2130,7 @@ label estranho_william:
     w "Espalhou tudo pelo chão. Papai ficou bravo. Mandou eu subir correndo, disse que eu não podia ver quem estava ali."
     $ adicionar_pista("Salvatore", 'Disse ao William que não podia ver quem estava em sua casa quando ele viu as sombras.')
     w "No outro dia, eu vi umas pegadas pretas perto da porta. Devem ter sido minhas… mas às vezes acho que não."
-    $ adicionar_fala("William", '\"No dia após as sombras, vi pegadas perto da porta que não sei se são minhas\'')
+    $ adicionar_fala("William", '\"No dia após as sombras, vi pegadas perto da porta. Devem ter sido minhas… mas às vezes acho que não.\"')
     $ mostrar_personagem("Padre", 'N')
     menu:
         "Porque um balde de tinta?":
@@ -2113,12 +2175,12 @@ label cabelo_william:
     w "Tudo bem... eu gosto de você padre."
     $ mostrar_personagem("William", 'F')
     w "Finalmente meu pai deixou eu falar com alguém."
-    w "Meu cabelo não é dessa cor. É tinta."
+    w "Meu cabelo não é exatamente desse tom. É tinta."
     w "Toda vez que começa a escurecer, papai chama o homem que clareia."
     w "Não é muito, pra não ser tão aparente que é pintado."
     $ mostrar_personagem("William", 'T')
     w "Diz que é perigoso eu parecer com… alguém. Ele nunca fala quem."
-    $ adicionar_fala("William", "\"Meu pai diz que é perigoso eu parecer com alguém, por isso chama um homem pra clarear um pouco.\"") 
+    $ adicionar_fala("William", "\"Meu pai diz que é perigoso eu parecer com alguém, por isso chama um homem pra clarear meu cabelo um pouco.\"") 
     $ mostrar_personagem("William", 'R')
     w "Eu também não pergunto. Quando perguntei, ele ficou bravo, e me deixou de castigo por dois dias…"
     $ mostrar_personagem("William", 'T')
@@ -2260,8 +2322,7 @@ label dialogo_bruxa: # Matou a Bruxa
     scene tela preta
     stop music
     $ renpy.movie_cutscene("images/cutscene_final.webm")
-
-    jump creditos
+    return
 
 label morte1:
     scene bg casa padre int
@@ -2365,7 +2426,6 @@ label final: # Passou do 7o dia sem matar a Bruxa e sem matar 3 pessoas inocente
         renpy.say(pi, "Que o Senhor me guie e tenha piedade.")
     jump creditos
 
-
 label eventos:
     python:
         #numeroEvento = 7 # DEBUG MANIPULAR EVENTO, TIRAR
@@ -2398,9 +2458,8 @@ label eventos:
         numeroEvento = 0
     return
 
-
 init python:
-    credito = ('Co-direção', 'Vanessa Santos da Silva & Brunna Iwamura'), ('Roteiro', 'Roteirista.........................Vanessa Santos da Silva \n Revisão de Roteiro.........................Gabriel Shiavoni \n Assistente.........................Leticia Maciel'),  ('Arte', 'Direção de Arte \n Design de personagem.........................Cauã Lopes de Oliveira Santos \n Design de cenário..........................Mel Marilac \n Design de HUD..........................Luísa f. Esquiller \n Assistentes \n João Vitor Rocha Meira & Ycaro Santos de Carvalho'), ('Programação', 'Direção de Programação..........................Brunna Iwamura \n Game Developer..........................Enzo Emidio Ferreira \n Assistente de Programação..........................Vanessa Santos da Silva \n Assistentes de Game Design \n Alexandre Martins da Silva \n Gabriel Schiavoni \n João Vítor "Jonny" de Paula Oliveira' ), ('Som', 'Direção de Som..........................Luísa F. Esquiller \n Assistente..........................Álefe Folha'), ('Produção', 'Enzo Dias')
+    credito = ('Co-direção', 'Vanessa Santos da Silva & Brunna Iwamura'), ('Roteiro', 'Roteirista.........................Vanessa Santos da Silva \n Revisão de Roteiro.........................Gabriel Shiavoni \n Assistente.........................Leticia Maciel'),  ('Arte', 'Direção de Arte \n Design de personagem.........................Cauã Lopes de Oliveira Santos \n Design de cenário..........................Mel Marilac \n Design de HUD..........................Luísa f. Esquiller \n Assistentes \n João Vitor Rocha Meira & Ycaro Santos de Carvalho'), ('Programação', 'Direção de Programação..........................Brunna Iwamura \n Game Developer..........................Enzo Emidio Ferreira \n Assistente de Programação..........................Vanessa Santos da Silva \n Assistentes de Game Design \n Alexandre Martins da Silva \n Gabriel Schiavoni \n João Vítor "Jonny" de Paula Oliveira' ), ('Som', 'Direção de Som..........................Luísa F. Esquiller \n Assistente..........................Álefe Folha'), ('Dublagem', 'Senhor Salvatore..........................Cauã Lopes de Oliveira Santos \n Bruxa..........................Lívia Soares'), ('Produção', 'Enzo Dias')
     creditos_s = "{size=70}Créditos\n"
     c1 = ''
     for c in credito:
@@ -2434,7 +2493,7 @@ label creditos:
     # hide finalnumero with dissolve
 
     #fazendo os creditos rolarem
-    show creditosfinais at Move((0.5, 1.8), (0.5, -1700), credito_velocidade, repeat=False, bounce=False, xanchor="center", yanchor=900) with dissolve
+    show creditosfinais at Move((0.5, 1.8), (0.5, -1900), credito_velocidade, repeat=False, bounce=False, xanchor="center", yanchor=900) with dissolve
     pause(credito_velocidade)
     scene tela preta
     with dissolve
