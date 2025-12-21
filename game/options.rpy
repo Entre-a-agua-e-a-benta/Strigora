@@ -69,7 +69,8 @@ João Vítor "Jonny" de Paula Oliveira \n
 {b}Bruxa:{/b}    Lívia Soares\n
 {size=+15}{b}Produção{/size}{/b} \n
 Enzo Dias
- 
+\n
+{size=-5}Este projeto realizado para a disciplina de Hipermídia II em conjunto à Realização Audiovisual da Universidade Federal de São Carlos, em 2025.{/size}
  """)
 
 ## Um nome curto para o jogo usado para executáveis e diretórios na distribuição
