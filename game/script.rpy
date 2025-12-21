@@ -1690,7 +1690,7 @@ label william_agnes:
             jump levar_agnes
 label levar_agnes:
     $ mostrar_personagem("Agnes", 'N')
-    a "É só ficar quieto e entrar, o Salvatore geralmente fica muito desatento e nem percebe."
+    a "É só ficar quieto e entrar pelos fundos. O Salvatore geralmente fica muito desatento e nem percebe."
     $ checar_interacao()
     jump praca2
 
